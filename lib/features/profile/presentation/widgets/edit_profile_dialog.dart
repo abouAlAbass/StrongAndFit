@@ -37,7 +37,7 @@ class EditProfileDialog extends StatefulWidget {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppColors.card,
+      backgroundColor: AppColors.ofCard(context),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -113,11 +113,11 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
             const SizedBox(height: 16),
 
             // Sheet Title
-            Text(l10n.editProfile, style: AppTypography.titleLarge),
+            Text(l10n.editProfile, style: AppTypography.ofTitleLarge(context)),
             const SizedBox(height: 20),
 
             // 1. Name Input
-            Text(l10n.athleteName, style: AppTypography.caption),
+            Text(l10n.athleteName, style: AppTypography.ofCaption(context)),
             const SizedBox(height: 6),
             TextField(
               controller: _nameController,
@@ -132,7 +132,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(l10n.weightKg, style: AppTypography.caption),
+                      Text(l10n.weightKg, style: AppTypography.ofCaption(context)),
                       const SizedBox(height: 6),
                       TextField(
                         controller: _weightController,
@@ -156,7 +156,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(l10n.heightCm, style: AppTypography.caption),
+                      Text(l10n.heightCm, style: AppTypography.ofCaption(context)),
                       const SizedBox(height: 6),
                       TextField(
                         controller: _heightController,
@@ -180,7 +180,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(l10n.weeklyGoal, style: AppTypography.caption),
+                Text(l10n.weeklyGoal, style: AppTypography.ofCaption(context)),
                 Text(
                   l10n.workoutsPerWeek(_weeklyGoal),
                   style: const TextStyle(
@@ -205,13 +205,13 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                         padding: const EdgeInsetsDirectional.symmetric(vertical: 10),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? AppColors.primaryContainer
-                              : AppColors.surface,
+                              ? AppColors.ofPrimaryContainer(context)
+                              : AppColors.ofSurface(context),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
                             color: isSelected
                                 ? AppColors.primary
-                                : AppColors.border,
+                                : AppColors.ofBorder(context),
                             width: 1.2,
                           ),
                         ),
@@ -223,7 +223,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                               fontWeight: FontWeight.w700,
                               color: isSelected
                                   ? AppColors.primary
-                                  : AppColors.textSecondary,
+                                  : AppColors.ofTextSecondary(context),
                             ),
                           ),
                         ),
@@ -236,21 +236,24 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
             const SizedBox(height: 20),
 
             // 4. Experience Level
-            Text(l10n.experienceLevel, style: AppTypography.caption),
+            Text(l10n.experienceLevel, style: AppTypography.ofCaption(context)),
             const SizedBox(height: 8),
             Row(
               children: [
                 _buildExperienceOption(
+                  context: context,
                   level: ExperienceLevel.beginner,
                   label: l10n.beginner,
                 ),
                 const SizedBox(width: 8),
                 _buildExperienceOption(
+                  context: context,
                   level: ExperienceLevel.intermediate,
                   label: l10n.intermediate,
                 ),
                 const SizedBox(width: 8),
                 _buildExperienceOption(
+                  context: context,
                   level: ExperienceLevel.advanced,
                   label: l10n.advanced,
                 ),
@@ -289,6 +292,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
   }
 
   Widget _buildExperienceOption({
+    required BuildContext context,
     required ExperienceLevel level,
     required String label,
   }) {
@@ -300,10 +304,12 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
         child: Container(
           padding: const EdgeInsetsDirectional.symmetric(vertical: 10),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primaryContainer : AppColors.surface,
+            color: isSelected
+                ? AppColors.ofPrimaryContainer(context)
+                : AppColors.ofSurface(context),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
+              color: isSelected ? AppColors.primary : AppColors.ofBorder(context),
               width: 1.2,
             ),
           ),
@@ -313,7 +319,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isSelected ? AppColors.primary : AppColors.textSecondary,
+                color: isSelected ? AppColors.primary : AppColors.ofTextSecondary(context),
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

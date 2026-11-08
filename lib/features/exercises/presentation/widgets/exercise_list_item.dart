@@ -33,9 +33,9 @@ class ExerciseListItem extends StatelessWidget {
         ),
         margin: const EdgeInsetsDirectional.only(bottom: 8),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: AppColors.ofSurface(context),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.border, width: 0.8),
+          border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
         ),
         child: Row(
           children: [
@@ -57,7 +57,7 @@ class ExerciseListItem extends StatelessWidget {
                 children: [
                   Text(
                     exercise.localizedName(context),
-                    style: AppTypography.titleMedium,
+                    style: AppTypography.ofTitleMedium(context),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -67,7 +67,7 @@ class ExerciseListItem extends StatelessWidget {
                       // Muscle Group Tag
                       _buildTag(
                         label: exercise.localizedMuscleGroup(context),
-                        color: AppColors.primaryContainer,
+                        color: AppColors.ofPrimaryContainer(context),
                         textColor: AppColors.primary,
                       ),
                       const SizedBox(width: 6),
@@ -75,15 +75,17 @@ class ExerciseListItem extends StatelessWidget {
                       // Equipment Tag
                       _buildTag(
                         label: exercise.localizedEquipment(context),
-                        color: AppColors.surfaceElevated,
-                        textColor: AppColors.textSecondary,
+                        color: AppColors.ofSurfaceElevated(context),
+                        textColor: AppColors.ofTextSecondary(context),
                       ),
 
                       if (exercise.isCustom) ...[
                         const SizedBox(width: 6),
                         _buildTag(
                           label: l10n.customExercise,
-                          color: const Color(0xFF2E2413),
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? const Color(0xFF2E2413)
+                              : const Color(0xFFFEF3C7),
                           textColor: AppColors.warmup,
                         ),
                       ],
@@ -94,7 +96,7 @@ class ExerciseListItem extends StatelessWidget {
             ),
 
             IconButton(
-              icon: const Icon(Icons.info_outline_rounded, size: 20, color: AppColors.textSecondary),
+              icon: Icon(Icons.info_outline_rounded, size: 20, color: AppColors.ofTextSecondary(context)),
               tooltip: l10n.exerciseGuide,
               onPressed: () {
                 ExerciseGuideSheet.show(
@@ -107,9 +109,9 @@ class ExerciseListItem extends StatelessWidget {
             if (trailing != null)
               trailing!
             else
-              const Icon(
+              Icon(
                 Icons.chevron_right,
-                color: AppColors.textTertiary,
+                color: AppColors.ofTextTertiary(context),
                 size: 20,
               ),
           ],

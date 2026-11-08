@@ -12,6 +12,7 @@ class RestProgressRing extends StatelessWidget {
   final double strokeWidth;
   final List<Color> colors;
   final Widget? child;
+  final Color? trackColor;
 
   const RestProgressRing({
     super.key,
@@ -20,11 +21,14 @@ class RestProgressRing extends StatelessWidget {
     required this.colors,
     this.strokeWidth = 10,
     this.child,
+    this.trackColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
+    final resolvedTrackColor = trackColor ?? AppColors.ofSurfaceElevated(context);
+
     return TweenAnimationBuilder<double>(
       tween: Tween(end: progress.clamp(0.0, 1.0)),
       duration: const Duration(milliseconds: 350),
@@ -38,6 +42,7 @@ class RestProgressRing extends StatelessWidget {
               strokeWidth: strokeWidth,
               colors: colors,
               mirror: isRtl,
+              trackColor: resolvedTrackColor,
             ),
             child: Center(child: child),
           ),
@@ -52,12 +57,14 @@ class _RingPainter extends CustomPainter {
   final double strokeWidth;
   final List<Color> colors;
   final bool mirror;
+  final Color trackColor;
 
   _RingPainter({
     required this.progress,
     required this.strokeWidth,
     required this.colors,
     required this.mirror,
+    required this.trackColor,
   });
 
   @override
@@ -69,7 +76,7 @@ class _RingPainter extends CustomPainter {
     final track = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth
-      ..color = AppColors.surfaceElevated;
+      ..color = trackColor;
     canvas.drawCircle(center, radius, track);
 
     if (progress <= 0) return;

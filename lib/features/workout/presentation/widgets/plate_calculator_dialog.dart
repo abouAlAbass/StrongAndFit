@@ -24,7 +24,7 @@ class PlateCalculatorDialog extends StatefulWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: AppColors.card,
+      backgroundColor: AppColors.ofCard(context),
       constraints: const BoxConstraints(maxWidth: 560),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
@@ -74,7 +74,7 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: AppColors.border,
+              color: AppColors.ofBorder(context),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -90,12 +90,12 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
                   const SizedBox(width: 8),
                   Text(
                     l10n.plateCalculator,
-                    style: AppTypography.titleLarge,
+                    style: AppTypography.ofTitleLarge(context),
                   ),
                 ],
               ),
               IconButton(
-                icon: const Icon(Icons.close_rounded, color: AppColors.textSecondary),
+                icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -106,9 +106,9 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: AppColors.ofSurface(context),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.border, width: 0.8),
+              border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,12 +118,12 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
                   children: [
                     Text(
                       l10n.weight.toUpperCase(),
-                      style: AppTypography.caption.copyWith(letterSpacing: 1.1),
+                      style: AppTypography.ofCaption(context).copyWith(letterSpacing: 1.1),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       '${result.actualTotalWeight.toStringAsFixed(1)} kg',
-                      style: AppTypography.metricLarge.copyWith(fontSize: 28),
+                      style: AppTypography.ofMetricLarge(context).copyWith(fontSize: 28),
                     ),
                   ],
                 ),
@@ -160,7 +160,7 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
             children: [
               Text(
                 '${l10n.barWeight}:',
-                style: AppTypography.bodySecondary,
+                style: AppTypography.ofBodySecondary(context),
               ),
               const SizedBox(width: 12),
               ...[20.0, 15.0, 10.0].map((bar) {
@@ -171,14 +171,14 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
                     label: Text('${bar.toInt()} kg'),
                     selected: isSelected,
                     showCheckmark: false,
-                    selectedColor: AppColors.primaryContainer,
-                    backgroundColor: AppColors.surface,
+                    selectedColor: AppColors.ofPrimaryContainer(context),
+                    backgroundColor: AppColors.ofSurface(context),
                     side: BorderSide(
-                      color: isSelected ? AppColors.primary : AppColors.border,
+                      color: isSelected ? AppColors.primary : AppColors.ofBorder(context),
                     ),
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                      color: isSelected ? AppColors.primary : AppColors.ofTextPrimary(context),
                     ),
                     onSelected: (_) => setState(() => _barWeight = bar),
                   ),
@@ -238,16 +238,16 @@ class _StepButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.surfaceElevated,
+          color: AppColors.ofSurfaceElevated(context),
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColors.border, width: 0.8),
+          border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
         ),
         child: Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
+            color: AppColors.ofTextPrimary(context),
           ),
         ),
       ),
@@ -272,9 +272,9 @@ class _BarbellSleeveVisual extends StatelessWidget {
       height: 120,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.ofSurface(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border, width: 0.8),
+        border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,7 +284,7 @@ class _BarbellSleeveVisual extends StatelessWidget {
             children: [
               Text(
                 '${(AppLocalizations.of(context)?.perSide ?? "PER SIDE").toUpperCase()}: ${weightPerSide.toStringAsFixed(2)} kg',
-                style: AppTypography.caption.copyWith(
+                style: AppTypography.ofCaption(context).copyWith(
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.1,
                   color: AppColors.secondary,
@@ -292,7 +292,7 @@ class _BarbellSleeveVisual extends StatelessWidget {
               ),
               Text(
                 '${plates.length} plates',
-                style: AppTypography.caption,
+                style: AppTypography.ofCaption(context),
               ),
             ],
           ),
@@ -392,7 +392,7 @@ class _PlateBreakdownList extends StatelessWidget {
       return Center(
         child: Text(
           'Load bar only (no plates needed)',
-          style: AppTypography.bodySecondary,
+          style: AppTypography.ofBodySecondary(context),
         ),
       );
     }
@@ -415,9 +415,9 @@ class _PlateBreakdownList extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.ofSurface(context),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.border, width: 0.8),
+            border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -434,10 +434,10 @@ class _PlateBreakdownList extends StatelessWidget {
               const SizedBox(width: 8),
               Text(
                 '${count}x ${spec.weightKg} kg',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.textPrimary,
+                  color: AppColors.ofTextPrimary(context),
                 ),
               ),
             ],

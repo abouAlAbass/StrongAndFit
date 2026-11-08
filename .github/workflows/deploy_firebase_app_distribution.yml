@@ -17,6 +17,11 @@ on:
         required: false
         default: 'testers'
         type: string
+      testers_emails:
+        description: 'Direct tester emails (comma-separated, optional)'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   distribute_android:
@@ -65,7 +70,8 @@ jobs:
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          groups: ${{ github.event.inputs.testers_group || vars.FIREBASE_TESTERS_GROUP || 'testers' }}
+          groups: ${{ github.event.inputs.testers_group || vars.FIREBASE_TESTERS_GROUP || '' }}
+          testers: ${{ github.event.inputs.testers_emails || secrets.FIREBASE_TESTERS || '' }}
           file: build/app/outputs/flutter-apk/app-release.apk
           releaseNotes: ${{ github.event.inputs.release_notes || github.event.head_commit.message || 'Automated CI/CD build from main branch' }}
 

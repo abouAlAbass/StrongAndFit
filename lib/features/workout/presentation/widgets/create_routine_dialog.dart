@@ -85,9 +85,9 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.85,
-      decoration: const BoxDecoration(
-        color: AppColors.surfaceElevated,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: AppColors.ofSurfaceElevated(context),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Column(
         children: [
@@ -97,7 +97,7 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
             width: 44,
             height: 4,
             decoration: BoxDecoration(
-              color: AppColors.border,
+              color: AppColors.ofBorder(context),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -111,15 +111,15 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(l10n.createRoutine, style: AppTypography.titleLarge),
+                Text(l10n.createRoutine, style: AppTypography.ofTitleLarge(context)),
                 IconButton(
-                  icon: const Icon(Icons.close_rounded, color: AppColors.textSecondary),
+                  icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
             ),
           ),
-          const Divider(color: AppColors.border, height: 1),
+          Divider(color: AppColors.ofBorder(context), height: 1),
 
           // Body
           Expanded(
@@ -146,7 +146,7 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(l10n.exercises, style: AppTypography.titleMedium),
+                    Text(l10n.exercises, style: AppTypography.ofTitleMedium(context)),
                     TextButton.icon(
                       icon: const Icon(Icons.add, size: 18),
                       label: Text(l10n.addExercise),
@@ -171,14 +171,14 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
                   Container(
                     padding: const EdgeInsetsDirectional.all(24),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: AppColors.ofSurface(context),
                       borderRadius: BorderRadius.circular(14),
-                      border: Border.all(color: AppColors.border),
+                      border: Border.all(color: AppColors.ofBorder(context)),
                     ),
                     child: Center(
                       child: Text(
                         l10n.addExercise,
-                        style: AppTypography.bodySecondary,
+                        style: AppTypography.ofBodySecondary(context),
                       ),
                     ),
                   )
@@ -190,9 +190,9 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
                       margin: const EdgeInsetsDirectional.only(bottom: 10),
                       padding: const EdgeInsetsDirectional.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.surface,
+                        color: AppColors.ofSurface(context),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: AppColors.border),
+                        border: Border.all(color: AppColors.ofBorder(context)),
                       ),
                       child: Row(
                         children: [
@@ -202,13 +202,13 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
                               children: [
                                 Text(
                                   draft.exercise.localizedName(context),
-                                  style: AppTypography.body.copyWith(
+                                  style: AppTypography.ofBody(context).copyWith(
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
                                 Text(
                                   draft.exercise.localizedMuscleGroup(context),
-                                  style: AppTypography.caption,
+                                  style: AppTypography.ofCaption(context),
                                 ),
                               ],
                             ),
@@ -221,9 +221,10 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
                           ),
                           Text(
                             '${draft.targetSets} ${l10n.sets.toLowerCase()}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 13,
+                              color: AppColors.ofTextPrimary(context),
                             ),
                           ),
                           IconButton(

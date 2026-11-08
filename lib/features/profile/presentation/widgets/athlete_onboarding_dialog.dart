@@ -80,9 +80,9 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
       },
       child: Container(
         height: MediaQuery.of(context).size.height * 0.86,
-        decoration: const BoxDecoration(
-          color: AppColors.surfaceElevated,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        decoration: BoxDecoration(
+          color: AppColors.ofSurfaceElevated(context),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
           children: [
@@ -92,7 +92,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
               width: 44,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.border,
+                color: AppColors.ofBorder(context),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -104,20 +104,20 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
                 children: [
                   if (_currentStep > 0)
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_rounded, color: AppColors.textSecondary),
+                      icon: Icon(Icons.arrow_back_rounded, color: AppColors.ofTextSecondary(context)),
                       tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                       onPressed: () => setState(() => _currentStep--),
                     ),
-                  Expanded(child: _buildProgressStepper(l10n)),
+                  Expanded(child: _buildProgressStepper(context, l10n)),
                   IconButton(
-                    icon: const Icon(Icons.close_rounded, color: AppColors.textSecondary),
+                    icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
                     tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
               ),
             ),
-            const Divider(color: AppColors.border, height: 1),
+            Divider(color: AppColors.ofBorder(context), height: 1),
 
             // Step Body
             Expanded(
@@ -132,7 +132,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
     );
   }
 
-  Widget _buildProgressStepper(AppLocalizations l10n) {
+  Widget _buildProgressStepper(BuildContext context, AppLocalizations l10n) {
     return Row(
       children: [
         for (int i = 0; i < 3; i++) ...[
@@ -142,10 +142,10 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
             decoration: BoxDecoration(
               color: _currentStep > i
                   ? AppColors.secondary
-                  : (_currentStep == i ? AppColors.primary : AppColors.surface),
+                  : (_currentStep == i ? AppColors.primary : AppColors.ofSurface(context)),
               shape: BoxShape.circle,
               border: Border.all(
-                color: _currentStep >= i ? AppColors.primary : AppColors.border,
+                color: _currentStep >= i ? AppColors.primary : AppColors.ofBorder(context),
                 width: 1.2,
               ),
             ),
@@ -157,7 +157,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: _currentStep == i ? Colors.white : AppColors.textTertiary,
+                      color: _currentStep == i ? Colors.white : AppColors.ofTextTertiary(context),
                     ),
                   ),
           ),
@@ -165,7 +165,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
             Expanded(
               child: Container(
                 height: 2,
-                color: _currentStep > i ? AppColors.secondary : AppColors.border,
+                color: _currentStep > i ? AppColors.secondary : AppColors.ofBorder(context),
               ),
             ),
         ],
@@ -195,11 +195,12 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
       key: const ValueKey('step_0'),
       padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 30),
       children: [
-        Text(l10n.stepTrainingGoal, style: AppTypography.titleLarge),
+        Text(l10n.stepTrainingGoal, style: AppTypography.ofTitleLarge(context)),
         const SizedBox(height: 4),
-        Text(l10n.onboardingSubtitle, style: AppTypography.caption),
+        Text(l10n.onboardingSubtitle, style: AppTypography.ofCaption(context)),
         const SizedBox(height: 20),
         _buildChoiceCard(
+          context: context,
           title: l10n.goalHypertrophy,
           description: l10n.goalHypertrophyDesc,
           icon: Icons.fitness_center_rounded,
@@ -208,6 +209,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         ),
         const SizedBox(height: 12),
         _buildChoiceCard(
+          context: context,
           title: l10n.goalStrength,
           description: l10n.goalStrengthDesc,
           icon: Icons.bolt_rounded,
@@ -216,6 +218,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         ),
         const SizedBox(height: 12),
         _buildChoiceCard(
+          context: context,
           title: l10n.goalFitness,
           description: l10n.goalFitnessDesc,
           icon: Icons.favorite_rounded,
@@ -243,14 +246,15 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
       key: const ValueKey('step_1'),
       padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 30),
       children: [
-        Text(l10n.stepWeeklyAvailability, style: AppTypography.titleLarge),
+        Text(l10n.stepWeeklyAvailability, style: AppTypography.ofTitleLarge(context)),
         const SizedBox(height: 4),
         Text(
           l10n.daysPerWeek(_selectedDays),
-          style: AppTypography.caption.copyWith(color: AppColors.primary),
+          style: AppTypography.ofCaption(context).copyWith(color: AppColors.primary),
         ),
         const SizedBox(height: 20),
         _buildChoiceCard(
+          context: context,
           title: l10n.daysPerWeek(3),
           description: 'Full-body frequency 3x per week. Optimal for fast recovery and baseline strength.',
           icon: Icons.calendar_today_rounded,
@@ -259,6 +263,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         ),
         const SizedBox(height: 12),
         _buildChoiceCard(
+          context: context,
           title: l10n.daysPerWeek(4),
           description: 'Upper / Lower 4-day split. The scientific gold standard for balanced volume.',
           icon: Icons.calendar_view_week_rounded,
@@ -267,6 +272,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         ),
         const SizedBox(height: 12),
         _buildChoiceCard(
+          context: context,
           title: l10n.daysPerWeek(5),
           description: 'Push / Pull / Legs 5-day cycle. Maximum specialization and hypertrophy stimulus.',
           icon: Icons.date_range_rounded,
@@ -303,11 +309,12 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
       key: const ValueKey('step_2'),
       padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 30),
       children: [
-        Text(l10n.stepExperienceLevel, style: AppTypography.titleLarge),
+        Text(l10n.stepExperienceLevel, style: AppTypography.ofTitleLarge(context)),
         const SizedBox(height: 4),
-        Text(l10n.onboardingSubtitle, style: AppTypography.caption),
+        Text(l10n.onboardingSubtitle, style: AppTypography.ofCaption(context)),
         const SizedBox(height: 20),
         _buildChoiceCard(
+          context: context,
           title: l10n.levelBeginner,
           description: l10n.levelBeginnerDesc,
           icon: Icons.school_rounded,
@@ -316,6 +323,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         ),
         const SizedBox(height: 12),
         _buildChoiceCard(
+          context: context,
           title: l10n.levelIntermediate,
           description: l10n.levelIntermediateDesc,
           icon: Icons.trending_up_rounded,
@@ -324,6 +332,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         ),
         const SizedBox(height: 12),
         _buildChoiceCard(
+          context: context,
           title: l10n.levelAdvanced,
           description: l10n.levelAdvancedDesc,
           icon: Icons.military_tech_rounded,
@@ -415,7 +424,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         Center(
           child: Text(
             l10n.recommendedRoutineTitle,
-            style: AppTypography.titleLarge,
+            style: AppTypography.ofTitleLarge(context),
             textAlign: TextAlign.center,
           ),
         ),
@@ -454,13 +463,13 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
                     ),
                   ),
                   const Spacer(),
-                  Icon(Icons.star_rounded, color: AppColors.prGold, size: 20),
+                  const Icon(Icons.star_rounded, color: AppColors.prGold, size: 20),
                 ],
               ),
               const SizedBox(height: 10),
               Text(
                 matchedTemplate != null ? matchedTemplate.template.name : rec.routineName,
-                style: AppTypography.titleLarge.copyWith(fontSize: 19),
+                style: AppTypography.ofTitleLarge(context).copyWith(fontSize: 19, color: Colors.white),
               ),
               const SizedBox(height: 8),
               Text(
@@ -480,9 +489,9 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         Container(
           padding: const EdgeInsetsDirectional.all(14),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: AppColors.ofSurface(context),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.border, width: 0.8),
+            border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -492,9 +501,9 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
               Expanded(
                 child: Text(
                   rec.rationale,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12.5,
-                    color: AppColors.textSecondary,
+                    color: AppColors.ofTextSecondary(context),
                     height: 1.4,
                   ),
                 ),
@@ -554,12 +563,15 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
   }
 
   Widget _buildChoiceCard({
+    required BuildContext context,
     required String title,
     required String description,
     required IconData icon,
     required bool isSelected,
     required VoidCallback onTap,
   }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -567,10 +579,12 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsetsDirectional.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF132238) : AppColors.surface,
+          color: isSelected
+              ? (isDark ? const Color(0xFF132238) : AppColors.ofPrimaryContainer(context))
+              : AppColors.ofSurface(context),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
+            color: isSelected ? AppColors.primary : AppColors.ofBorder(context),
             width: isSelected ? 1.6 : 0.8,
           ),
         ),
@@ -580,12 +594,12 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : AppColors.surfaceElevated,
+                color: isSelected ? AppColors.primary : AppColors.ofSurfaceElevated(context),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
-                color: isSelected ? Colors.white : AppColors.textSecondary,
+                color: isSelected ? Colors.white : AppColors.ofTextSecondary(context),
                 size: 22,
               ),
             ),
@@ -599,7 +613,9 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w700,
-                      color: isSelected ? Colors.white : AppColors.textPrimary,
+                      color: isSelected
+                          ? (isDark ? Colors.white : AppColors.primary)
+                          : AppColors.ofTextPrimary(context),
                     ),
                   ),
                   const SizedBox(height: 3),
@@ -607,7 +623,9 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
                     description,
                     style: TextStyle(
                       fontSize: 12,
-                      color: isSelected ? Colors.white70 : AppColors.textSecondary,
+                      color: isSelected
+                          ? (isDark ? Colors.white70 : AppColors.ofTextSecondary(context))
+                          : AppColors.ofTextSecondary(context),
                       height: 1.35,
                     ),
                   ),
@@ -617,7 +635,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
             const SizedBox(width: 8),
             Icon(
               isSelected ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-              color: isSelected ? AppColors.primary : AppColors.textTertiary,
+              color: isSelected ? AppColors.primary : AppColors.ofTextTertiary(context),
               size: 22,
             ),
           ],

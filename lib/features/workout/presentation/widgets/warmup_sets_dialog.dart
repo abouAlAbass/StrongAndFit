@@ -23,7 +23,7 @@ class WarmupSetsDialog extends StatefulWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: AppColors.card,
+      backgroundColor: AppColors.ofCard(context),
       constraints: const BoxConstraints(maxWidth: 560),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
@@ -68,7 +68,7 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: AppColors.border,
+              color: AppColors.ofBorder(context),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -82,11 +82,11 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
                 children: [
                   const Icon(Icons.fireplace_rounded, color: AppColors.warmup),
                   const SizedBox(width: 8),
-                  Text('Warm-up Calculator', style: AppTypography.titleLarge),
+                  Text('Warm-up Calculator', style: AppTypography.ofTitleLarge(context)),
                 ],
               ),
               IconButton(
-                icon: const Icon(Icons.close_rounded, color: AppColors.textSecondary),
+                icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -97,9 +97,9 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              color: AppColors.surface,
+              color: AppColors.ofSurface(context),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.border, width: 0.8),
+              border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,11 +107,11 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('TARGET WORK SET', style: AppTypography.caption),
+                    Text('TARGET WORK SET', style: AppTypography.ofCaption(context)),
                     const SizedBox(height: 2),
                     Text(
                       '${_workingWeight.toStringAsFixed(1)} kg',
-                      style: AppTypography.metricLarge.copyWith(fontSize: 26),
+                      style: AppTypography.ofMetricLarge(context).copyWith(fontSize: 26),
                     ),
                   ],
                 ),
@@ -135,9 +135,9 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
               decoration: BoxDecoration(
-                color: AppColors.surfaceElevated,
+                color: AppColors.ofSurfaceElevated(context),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.border, width: 0.8),
+                border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
               ),
               child: Row(
                 children: [
@@ -165,11 +165,11 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
                       children: [
                         Text(
                           '${step.weightKg} kg × ${step.reps} reps',
-                          style: AppTypography.metricMedium.copyWith(fontSize: 15),
+                          style: AppTypography.ofMetricMedium(context).copyWith(fontSize: 15),
                         ),
                         Text(
                           step.label,
-                          style: AppTypography.caption.copyWith(color: AppColors.textSecondary),
+                          style: AppTypography.ofCaption(context).copyWith(color: AppColors.ofTextSecondary(context)),
                         ),
                       ],
                     ),
@@ -177,7 +177,7 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: AppColors.surface,
+                      color: AppColors.ofSurface(context),
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
@@ -233,16 +233,16 @@ class _StepButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: AppColors.surfaceElevated,
+          color: AppColors.ofSurfaceElevated(context),
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColors.border, width: 0.8),
+          border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
         ),
         child: Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
+            color: AppColors.ofTextPrimary(context),
           ),
         ),
       ),

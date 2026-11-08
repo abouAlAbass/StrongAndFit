@@ -86,7 +86,7 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Text(l10n.exercises, style: AppTypography.titleLarge),
+                      child: Text(l10n.exercises, style: AppTypography.ofTitleLarge(context)),
                     ),
                     TextButton.icon(
                       icon: const Icon(Icons.add, size: 18),
@@ -103,9 +103,9 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: l10n.searchExercises,
-                    prefixIcon: const Icon(
+                    prefixIcon: Icon(
                       Icons.search,
-                      color: AppColors.textTertiary,
+                      color: AppColors.ofTextTertiary(context),
                     ),
                   ),
                   onChanged: (val) {
@@ -141,19 +141,19 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                                 .read<ExerciseListCubit>()
                                 .selectMuscleGroup(group);
                           },
-                          backgroundColor: AppColors.surface,
-                          selectedColor: AppColors.primaryContainer,
+                          backgroundColor: AppColors.ofSurface(context),
+                          selectedColor: AppColors.ofPrimaryContainer(context),
                           side: BorderSide(
                             color: isSelected
                                 ? AppColors.primary
-                                : AppColors.border,
+                                : AppColors.ofBorder(context),
                           ),
                           labelStyle: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: isSelected
                                 ? AppColors.primary
-                                : AppColors.textSecondary,
+                                : AppColors.ofTextSecondary(context),
                           ),
                         );
                       },
@@ -187,7 +187,7 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                       return Center(
                         child: Text(
                           l10n.emptyTemplates,
-                          style: AppTypography.bodySecondary,
+                          style: AppTypography.ofBodySecondary(context),
                         ),
                       );
                     }
@@ -238,11 +238,11 @@ class ExercisePickerBottomSheet extends StatelessWidget {
       builder: (dialogCtx) => StatefulBuilder(
         builder: (dialogCtx, setDialogState) {
           return AlertDialog(
-            backgroundColor: AppColors.card,
+            backgroundColor: AppColors.ofCard(dialogCtx),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            title: Text(l10n.customExercise, style: AppTypography.titleLarge),
+            title: Text(l10n.customExercise, style: AppTypography.ofTitleLarge(dialogCtx)),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -256,11 +256,11 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                     autofocus: true,
                   ),
                   const SizedBox(height: 16),
-                  Text(l10n.muscleGroupChest, style: AppTypography.caption),
+                  Text(l10n.muscleGroupChest, style: AppTypography.ofCaption(dialogCtx)),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<MuscleGroup>(
                     initialValue: selectedGroup,
-                    dropdownColor: AppColors.surfaceElevated,
+                    dropdownColor: AppColors.ofSurfaceElevated(dialogCtx),
                     decoration: const InputDecoration(),
                     items: MuscleGroup.values.map((g) {
                       return DropdownMenuItem(
@@ -275,11 +275,11 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 16),
-                  Text(l10n.equipmentBarbell, style: AppTypography.caption),
+                  Text(l10n.equipmentBarbell, style: AppTypography.ofCaption(dialogCtx)),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<EquipmentType>(
                     initialValue: selectedEquipment,
-                    dropdownColor: AppColors.surfaceElevated,
+                    dropdownColor: AppColors.ofSurfaceElevated(dialogCtx),
                     decoration: const InputDecoration(),
                     items: EquipmentType.values.map((eq) {
                       return DropdownMenuItem(

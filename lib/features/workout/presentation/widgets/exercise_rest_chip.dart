@@ -23,7 +23,7 @@ class ExerciseRestChip extends StatelessWidget {
     );
     final custom = exercise.restSeconds;
     final seconds = custom ?? defaultSeconds;
-    final color = custom != null ? AppColors.secondary : AppColors.textSecondary;
+    final color = custom != null ? AppColors.secondary : AppColors.ofTextSecondary(context);
     final l10n = AppLocalizations.of(context)!;
 
     return Tooltip(
@@ -31,7 +31,7 @@ class ExerciseRestChip extends StatelessWidget {
       child: Material(
         color: custom != null
             ? AppColors.secondary.withValues(alpha: 0.12)
-            : AppColors.surfaceElevated,
+            : AppColors.ofSurfaceElevated(context),
         borderRadius: BorderRadius.circular(20),
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
@@ -73,7 +73,7 @@ class ExerciseRestChip extends StatelessWidget {
     await showModalBottomSheet<void>(
       context: context,
       useSafeArea: true,
-      backgroundColor: AppColors.card,
+      backgroundColor: AppColors.ofCard(context),
       constraints: const BoxConstraints(maxWidth: 560),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -85,11 +85,11 @@ class ExerciseRestChip extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(l10n.exerciseRest, style: AppTypography.titleLarge),
+              Text(l10n.exerciseRest, style: AppTypography.ofTitleLarge(context)),
               const SizedBox(height: 4),
               Text(
                 exercise.localizedName(context),
-                style: AppTypography.bodySecondary,
+                style: AppTypography.ofBodySecondary(context),
               ),
               const SizedBox(height: 16),
               Wrap(
@@ -102,9 +102,9 @@ class ExerciseRestChip extends StatelessWidget {
                     )),
                     selected: exercise.restSeconds == null,
                     showCheckmark: false,
-                    selectedColor: AppColors.primaryContainer,
-                    backgroundColor: AppColors.surface,
-                    side: const BorderSide(color: AppColors.border),
+                    selectedColor: AppColors.ofPrimaryContainer(context),
+                    backgroundColor: AppColors.ofSurface(context),
+                    side: BorderSide(color: AppColors.ofBorder(context)),
                     onSelected: (_) {
                       cubit.setExerciseRest(exercise.id, null);
                       Navigator.pop(sheetCtx);
@@ -117,13 +117,13 @@ class ExerciseRestChip extends StatelessWidget {
                       selected: selected,
                       showCheckmark: false,
                       selectedColor: AppColors.secondary.withValues(alpha: 0.2),
-                      backgroundColor: AppColors.surface,
+                      backgroundColor: AppColors.ofSurface(context),
                       side: BorderSide(
-                        color: selected ? AppColors.secondary : AppColors.border,
+                        color: selected ? AppColors.secondary : AppColors.ofBorder(context),
                       ),
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.w700,
-                        color: selected ? AppColors.secondary : AppColors.textPrimary,
+                        color: selected ? AppColors.secondary : AppColors.ofTextPrimary(context),
                       ),
                       onSelected: (_) {
                         cubit.setExerciseRest(exercise.id, sec);
@@ -134,7 +134,7 @@ class ExerciseRestChip extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              Text(l10n.restGuide, style: AppTypography.caption),
+              Text(l10n.restGuide, style: AppTypography.ofCaption(context)),
             ],
           ),
         );

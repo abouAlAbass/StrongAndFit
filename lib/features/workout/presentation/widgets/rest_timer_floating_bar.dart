@@ -92,6 +92,7 @@ class _Bar extends StatelessWidget {
                       size: 40,
                       strokeWidth: 4,
                       colors: colors,
+                      trackColor: Colors.white12,
                       child: Icon(
                         isFinished
                             ? Icons.check_rounded
@@ -125,7 +126,7 @@ class _Bar extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: AppTypography.caption.copyWith(
                               fontSize: 11.5,
-                              color: isFinished ? Colors.white70 : AppColors.textSecondary,
+                              color: isFinished ? Colors.white70 : const Color(0xFF9898A0),
                             ),
                           ),
                         ],
@@ -141,7 +142,7 @@ class _Bar extends StatelessWidget {
                       constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
                       icon: Icon(
                         isFinished ? Icons.check_circle_rounded : Icons.close_rounded,
-                        color: isFinished ? AppColors.completed : AppColors.textTertiary,
+                        color: isFinished ? AppColors.completed : const Color(0xFF9898A0),
                         size: 22,
                       ),
                       onPressed: cubit.stop,
@@ -166,7 +167,7 @@ class _QuickButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: AppColors.surfaceElevated,
+      color: const Color(0xFF252A38),
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
@@ -177,14 +178,14 @@ class _QuickButton extends StatelessWidget {
           padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: AppColors.border, width: 0.6),
+            border: Border.all(color: Colors.white24, width: 0.6),
           ),
           child: Text(
             label,
             style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
+              color: Colors.white,
             ),
           ),
         ),

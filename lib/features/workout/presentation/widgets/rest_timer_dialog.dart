@@ -56,7 +56,7 @@ class RestTimerDialog extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      backgroundColor: AppColors.card,
+      backgroundColor: AppColors.ofCard(context),
       constraints: const BoxConstraints(maxWidth: 560),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
@@ -95,11 +95,11 @@ class RestTimerDialog extends StatelessWidget {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(l10n.restTimer, style: AppTypography.titleLarge),
+                      child: Text(l10n.restTimer, style: AppTypography.ofTitleLarge(context)),
                     ),
                     IconButton(
                       tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
-                      icon: const Icon(Icons.close_rounded, color: AppColors.textSecondary),
+                      icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ],
@@ -136,7 +136,7 @@ class RestTimerDialog extends StatelessWidget {
                                   ? state.formattedRemaining
                                   : RestTimerState.formatSeconds(state.defaultDuration),
                               key: ValueKey(state.remainingSeconds),
-                              style: AppTypography.metricLarge.copyWith(
+                              style: AppTypography.ofMetricLarge(context).copyWith(
                                 fontSize: size * 0.2,
                                 letterSpacing: -1,
                               ),
@@ -149,7 +149,7 @@ class RestTimerDialog extends StatelessWidget {
                               fontSize: 12,
                               fontWeight: FontWeight.w800,
                               letterSpacing: 1.4,
-                              color: state.isActive ? colors.first : AppColors.textSecondary,
+                              color: state.isActive ? colors.first : AppColors.ofTextSecondary(context),
                             ),
                           ),
                           if (state.nextExerciseName != null && state.isActive) ...[
@@ -161,8 +161,8 @@ class RestTimerDialog extends StatelessWidget {
                                 maxLines: 2,
                                 textAlign: TextAlign.center,
                                 overflow: TextOverflow.ellipsis,
-                                style: AppTypography.caption.copyWith(
-                                  color: AppColors.textSecondary,
+                                style: AppTypography.ofCaption(context).copyWith(
+                                  color: AppColors.ofTextSecondary(context),
                                 ),
                               ),
                             ),
@@ -210,8 +210,8 @@ class RestTimerDialog extends StatelessWidget {
                         icon: const Icon(Icons.skip_next_rounded, size: 22),
                         style: IconButton.styleFrom(
                           minimumSize: const Size(48, 48),
-                          backgroundColor: AppColors.surfaceElevated,
-                          foregroundColor: AppColors.textSecondary,
+                          backgroundColor: AppColors.ofSurfaceElevated(context),
+                          foregroundColor: AppColors.ofTextSecondary(context),
                         ),
                         onPressed: () {
                           cubit.stop();
@@ -235,14 +235,14 @@ class RestTimerDialog extends StatelessWidget {
                       label: Text(RestTimerVisuals.shortDuration(sec)),
                       selected: selected,
                       showCheckmark: false,
-                      selectedColor: AppColors.primaryContainer,
-                      backgroundColor: AppColors.surface,
+                      selectedColor: AppColors.ofPrimaryContainer(context),
+                      backgroundColor: AppColors.ofSurface(context),
                       side: BorderSide(
-                        color: selected ? AppColors.primary : AppColors.border,
+                        color: selected ? AppColors.primary : AppColors.ofBorder(context),
                       ),
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.w700,
-                        color: selected ? AppColors.primary : AppColors.textPrimary,
+                        color: selected ? AppColors.primary : AppColors.ofTextPrimary(context),
                       ),
                       onSelected: (_) {
                         cubit.setBetweenSetsDuration(sec);
@@ -265,7 +265,7 @@ class RestTimerDialog extends StatelessWidget {
                       seconds: state.preferences.betweenSetsSeconds,
                       onChanged: cubit.setBetweenSetsDuration,
                     ),
-                    const Divider(height: 1, color: AppColors.divider),
+                    Divider(height: 1, color: AppColors.ofDivider(context)),
                     _DurationStepperTile(
                       icon: Icons.swap_horiz_rounded,
                       iconColor: AppColors.dropset,
@@ -280,11 +280,11 @@ class RestTimerDialog extends StatelessWidget {
                   padding: const EdgeInsetsDirectional.symmetric(horizontal: 4),
                   child: Row(
                     children: [
-                      const Icon(Icons.lightbulb_outline_rounded,
-                          size: 14, color: AppColors.textTertiary),
+                      Icon(Icons.lightbulb_outline_rounded,
+                          size: 14, color: AppColors.ofTextTertiary(context)),
                       const SizedBox(width: 6),
                       Expanded(
-                        child: Text(l10n.restGuide, style: AppTypography.caption),
+                        child: Text(l10n.restGuide, style: AppTypography.ofCaption(context)),
                       ),
                     ],
                   ),
@@ -299,7 +299,7 @@ class RestTimerDialog extends StatelessWidget {
                       value: state.preferences.autoStart,
                       onChanged: cubit.toggleAutoStart,
                     ),
-                    const Divider(height: 1, color: AppColors.divider),
+                    Divider(height: 1, color: AppColors.ofDivider(context)),
                     _SwitchTile(
                       icon: Icons.notifications_active_outlined,
                       iconColor: AppColors.warmup,
@@ -307,7 +307,7 @@ class RestTimerDialog extends StatelessWidget {
                       value: state.preferences.notificationsEnabled,
                       onChanged: cubit.toggleNotifications,
                     ),
-                    const Divider(height: 1, color: AppColors.divider),
+                    Divider(height: 1, color: AppColors.ofDivider(context)),
                     _SwitchTile(
                       icon: Icons.vibration_rounded,
                       iconColor: AppColors.dropset,
@@ -339,7 +339,7 @@ class _GrabHandle extends StatelessWidget {
       width: 40,
       height: 4,
       decoration: BoxDecoration(
-        color: AppColors.border,
+        color: AppColors.ofBorder(context),
         borderRadius: BorderRadius.circular(2),
       ),
     );
@@ -356,7 +356,7 @@ class _SectionLabel extends StatelessWidget {
       alignment: AlignmentDirectional.centerStart,
       child: Text(
         text.toUpperCase(),
-        style: AppTypography.caption.copyWith(
+        style: AppTypography.ofCaption(context).copyWith(
           letterSpacing: 1.1,
           fontWeight: FontWeight.w700,
         ),
@@ -468,8 +468,8 @@ class _RoundTextButton extends StatelessWidget {
       duration: const Duration(milliseconds: 150),
       opacity: enabled ? 1 : 0.35,
       child: Material(
-        color: AppColors.surfaceElevated,
-        shape: const CircleBorder(side: BorderSide(color: AppColors.border)),
+        color: AppColors.ofSurfaceElevated(context),
+        shape: CircleBorder(side: BorderSide(color: AppColors.ofBorder(context))),
         child: InkWell(
           customBorder: const CircleBorder(),
           onTap: enabled ? onTap : null,
@@ -478,10 +478,10 @@ class _RoundTextButton extends StatelessWidget {
             child: Center(
               child: Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
+                  color: AppColors.ofTextPrimary(context),
                 ),
               ),
             ),
@@ -500,9 +500,9 @@ class _SettingsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: AppColors.ofSurface(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border, width: 0.8),
+        border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
       ),
       child: Column(children: children),
     );
@@ -551,7 +551,7 @@ class _DurationStepperTile extends StatelessWidget {
         children: [
           _IconBadge(icon, iconColor),
           const SizedBox(width: 12),
-          Expanded(child: Text(label, style: AppTypography.body)),
+          Expanded(child: Text(label, style: AppTypography.ofBody(context))),
           _StepButton(
             icon: Icons.remove_rounded,
             onTap: seconds > RestTimerCubit.minDuration ? () => onChanged(seconds - 15) : null,
@@ -561,7 +561,7 @@ class _DurationStepperTile extends StatelessWidget {
             child: Text(
               RestTimerState.formatSeconds(seconds),
               textAlign: TextAlign.center,
-              style: AppTypography.metricMedium,
+              style: AppTypography.ofMetricMedium(context),
             ),
           ),
           _StepButton(
@@ -586,9 +586,9 @@ class _StepButton extends StatelessWidget {
       icon: Icon(icon, size: 20),
       style: IconButton.styleFrom(
         minimumSize: const Size(40, 40),
-        backgroundColor: AppColors.surfaceElevated,
-        foregroundColor: AppColors.textPrimary,
-        disabledForegroundColor: AppColors.textPlaceholder,
+        backgroundColor: AppColors.ofSurfaceElevated(context),
+        foregroundColor: AppColors.ofTextPrimary(context),
+        disabledForegroundColor: AppColors.ofTextPlaceholder(context),
       ),
     );
   }
@@ -619,7 +619,7 @@ class _SwitchTile extends StatelessWidget {
           children: [
             _IconBadge(icon, iconColor),
             const SizedBox(width: 12),
-            Expanded(child: Text(label, style: AppTypography.body)),
+            Expanded(child: Text(label, style: AppTypography.ofBody(context))),
             Switch(
               value: value,
               activeTrackColor: AppColors.primary,

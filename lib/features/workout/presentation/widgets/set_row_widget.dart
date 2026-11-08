@@ -155,13 +155,15 @@ class _SetRowWidgetState extends State<SetRowWidget> {
         padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 6),
         decoration: BoxDecoration(
           color: isCompleted
-              ? AppColors.completedContainer.withValues(alpha: 0.4)
-              : AppColors.surface,
+              ? (Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.completedContainer.withValues(alpha: 0.4)
+                  : AppColors.lightCompletedContainer)
+              : AppColors.ofSurface(context),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isCompleted
                 ? (isPr ? const Color(0xFFFFD700) : AppColors.completed.withValues(alpha: 0.35))
-                : AppColors.border,
+                : AppColors.ofBorder(context),
             width: isPr && isCompleted ? 1.4 : 0.8,
           ),
           boxShadow: isPr && isCompleted
@@ -188,10 +190,10 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                   child: Text(
                     previousHint,
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textTertiary,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.ofTextSecondary(context),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -205,8 +207,12 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                   child: Container(
                     height: 38,
                     decoration: BoxDecoration(
-                      color: AppColors.inputBackground,
-                      borderRadius: BorderRadius.circular(6),
+                      color: AppColors.ofInputBackground(context),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: AppColors.ofBorder(context),
+                        width: 0.9,
+                      ),
                     ),
                     child: Stack(
                       alignment: AlignmentDirectional.centerEnd,
@@ -218,11 +224,18 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                           inputFormatters: [
                             FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')),
                           ],
-                          style: AppTypography.metricMedium,
-                          decoration: const InputDecoration(
+                          style: AppTypography.ofMetricMedium(context).copyWith(
+                            color: AppColors.ofTextPrimary(context),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          decoration: InputDecoration(
                             hintText: '0',
+                            hintStyle: AppTypography.ofMetricMedium(context).copyWith(
+                              color: AppColors.ofTextPlaceholder(context),
+                              fontWeight: FontWeight.w600,
+                            ),
                             border: InputBorder.none,
-                            contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8),
+                            contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8),
                           ),
                           onChanged: (_) => _onFieldsChanged(),
                         ),
@@ -248,7 +261,7 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                               child: Icon(
                                 Icons.calculate_outlined,
                                 size: 14,
-                                color: AppColors.textTertiary.withValues(alpha: 0.8),
+                                color: AppColors.ofTextTertiary(context),
                               ),
                             ),
                           ),
@@ -265,19 +278,30 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                   child: Container(
                     height: 38,
                     decoration: BoxDecoration(
-                      color: AppColors.inputBackground,
-                      borderRadius: BorderRadius.circular(6),
+                      color: AppColors.ofInputBackground(context),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: AppColors.ofBorder(context),
+                        width: 0.9,
+                      ),
                     ),
                     child: TextField(
                       controller: _repsController,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: AppTypography.metricMedium,
-                      decoration: const InputDecoration(
+                      style: AppTypography.ofMetricMedium(context).copyWith(
+                        color: AppColors.ofTextPrimary(context),
+                        fontWeight: FontWeight.w700,
+                      ),
+                      decoration: InputDecoration(
                         hintText: '0',
+                        hintStyle: AppTypography.ofMetricMedium(context).copyWith(
+                          color: AppColors.ofTextPlaceholder(context),
+                          fontWeight: FontWeight.w600,
+                        ),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsetsDirectional.symmetric(vertical: 8),
+                        contentPadding: const EdgeInsetsDirectional.symmetric(vertical: 8),
                       ),
                       onChanged: (_) => _onFieldsChanged(),
                     ),
@@ -308,19 +332,19 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                     decoration: BoxDecoration(
                       color: isCompleted
                           ? (isPr ? const Color(0xFFD4AF37) : AppColors.completed)
-                          : AppColors.inputBackground,
+                          : AppColors.ofInputBackground(context),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: isCompleted
                             ? (isPr ? const Color(0xFFFFD700) : AppColors.completed)
-                            : AppColors.border,
+                            : AppColors.ofBorder(context),
                         width: 1,
                       ),
                     ),
                     child: Icon(
                       Icons.check,
                       size: 20,
-                      color: isCompleted ? Colors.white : AppColors.textTertiary,
+                      color: isCompleted ? Colors.white : AppColors.ofTextTertiary(context),
                     ),
                   ),
                 ),
@@ -380,7 +404,7 @@ class _SetRowWidgetState extends State<SetRowWidget> {
   }
 
   Widget _buildSetTypeBadge(BuildContext context) {
-    Color badgeColor = AppColors.textSecondary;
+    Color badgeColor = AppColors.ofTextSecondary(context);
     String badgeLabel = widget.setLog.setNumber.toString();
 
     switch (widget.setLog.setType) {
@@ -397,21 +421,23 @@ class _SetRowWidgetState extends State<SetRowWidget> {
         badgeLabel = 'F';
         break;
       case SetType.normal:
-        badgeColor = widget.setLog.isCompleted ? AppColors.completed : AppColors.textSecondary;
+        badgeColor = widget.setLog.isCompleted
+            ? AppColors.completed
+            : AppColors.ofTextSecondary(context);
         badgeLabel = widget.setLog.setNumber.toString();
         break;
     }
 
     return PopupMenuButton<SetType>(
       tooltip: 'Set Type',
-      color: AppColors.surfaceElevated,
+      color: AppColors.ofSurfaceElevated(context),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       onSelected: _changeSetType,
       itemBuilder: (ctx) => [
-        _buildPopupItem(SetType.normal, 'Normal', AppColors.primary),
-        _buildPopupItem(SetType.warmup, 'Warm-up (W)', AppColors.warmup),
-        _buildPopupItem(SetType.dropset, 'Drop Set (D)', AppColors.dropset),
-        _buildPopupItem(SetType.failure, 'Failure (F)', AppColors.failure),
+        _buildPopupItem(context, SetType.normal, 'Normal', AppColors.primary),
+        _buildPopupItem(context, SetType.warmup, 'Warm-up (W)', AppColors.warmup),
+        _buildPopupItem(context, SetType.dropset, 'Drop Set (D)', AppColors.dropset),
+        _buildPopupItem(context, SetType.failure, 'Failure (F)', AppColors.failure),
       ],
       child: Container(
         width: 32,
@@ -435,7 +461,12 @@ class _SetRowWidgetState extends State<SetRowWidget> {
     );
   }
 
-  PopupMenuItem<SetType> _buildPopupItem(SetType type, String label, Color color) {
+  PopupMenuItem<SetType> _buildPopupItem(
+    BuildContext context,
+    SetType type,
+    String label,
+    Color color,
+  ) {
     final isSelected = widget.setLog.setType == type;
     return PopupMenuItem<SetType>(
       value: type,
@@ -452,7 +483,7 @@ class _SetRowWidgetState extends State<SetRowWidget> {
               label,
               style: TextStyle(
                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
-                color: isSelected ? color : AppColors.textPrimary,
+                color: isSelected ? color : AppColors.ofTextPrimary(context),
               ),
             ),
           ),

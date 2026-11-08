@@ -42,17 +42,17 @@ class AppColors {
   static const Color lightSurface = Color(0xFFFFFFFF);
   static const Color lightSurfaceElevated = Color(0xFFEDF1F5);
   static const Color lightCard = Color(0xFFFFFFFF);
-  static const Color lightInputBackground = Color(0xFFEAEFF5);
-  static const Color lightBorder = Color(0xFFDCE2E9);
-  static const Color lightDivider = Color(0xFFE2E7ED);
+  static const Color lightInputBackground = Color(0xFFF1F5F9);
+  static const Color lightBorder = Color(0xFFCBD5E1);
+  static const Color lightDivider = Color(0xFFE2E8F0);
   static const Color lightPrimaryContainer = Color(0xFFDCE7FF);
   static const Color lightCompletedContainer = Color(0xFFDCF8E3);
 
-  // Light Text Hierarchy
+  // Light Text Hierarchy (WCAG AA/AAA compliant high contrast)
   static const Color lightTextPrimary = Color(0xFF0F172A);
-  static const Color lightTextSecondary = Color(0xFF475569);
-  static const Color lightTextTertiary = Color(0xFF94A3B8);
-  static const Color lightTextPlaceholder = Color(0xFFA0ABBB);
+  static const Color lightTextSecondary = Color(0xFF334155);
+  static const Color lightTextTertiary = Color(0xFF64748B);
+  static const Color lightTextPlaceholder = Color(0xFF94A3B8);
 
   // Dynamic Theme Resolvers
   static Color ofBackground(BuildContext context) =>
@@ -90,4 +90,7 @@ class AppColors {
 
   static Color ofTextTertiary(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark ? textTertiary : lightTextTertiary;
+
+  static Color ofTextPlaceholder(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark ? textPlaceholder : lightTextPlaceholder;
 }
