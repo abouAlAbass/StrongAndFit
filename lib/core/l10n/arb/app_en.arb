@@ -219,5 +219,12 @@
   "deleteProfileConfirmTitle": "Delete Profile?",
   "deleteProfileConfirmMessage": "This action is irreversible. All your workout sessions, sets, volume history, and biometrics will be permanently deleted.",
   "deletePermanently": "Delete Permanently",
-  "profileDeletedSuccess": "Profile and athlete data successfully reset"
+  "profileDeletedSuccess": "Profile and athlete data successfully reset",
+  "skip": "Skip",
+  "customWorkoutTitle": "Custom Workout",
+  "customWorkoutSubtitle": "Start an empty workout and log your exercises",
+  "findIdealWorkoutTitle": "Find your ideal workout",
+  "findIdealWorkoutSubtitle": "Answer 3 quick questions to discover your optimal routine",
+  "yourProgram": "Your Program",
+  "readyTemplates": "Ready Templates & Routines"
 }

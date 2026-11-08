@@ -1221,6 +1221,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile and athlete data successfully reset'**
   String get profileDeletedSuccess;
+
+  /// No description provided for @customWorkoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Workout'**
+  String get customWorkoutTitle;
+
+  /// No description provided for @customWorkoutSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start an empty workout and log your exercises'**
+  String get customWorkoutSubtitle;
+
+  /// No description provided for @findIdealWorkoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find your ideal workout'**
+  String get findIdealWorkoutTitle;
+
+  /// No description provided for @findIdealWorkoutSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 3 quick questions to discover your optimal routine'**
+  String get findIdealWorkoutSubtitle;
+
+  /// No description provided for @yourProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Program'**
+  String get yourProgram;
+
+  /// No description provided for @readyTemplates.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready Templates & Routines'**
+  String get readyTemplates;
 }
 
 class _AppLocalizationsDelegate

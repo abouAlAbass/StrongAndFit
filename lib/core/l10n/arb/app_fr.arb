@@ -196,5 +196,12 @@
   "deleteProfileConfirmTitle": "Supprimer le profil ?",
   "deleteProfileConfirmMessage": "Cette action est irréversible. Toutes vos séances d'entraînement, séries, historique de volume et données biométriques seront définitivement effacés.",
   "deletePermanently": "Supprimer définitivement",
-  "profileDeletedSuccess": "Profil et données d'athlète réinitialisés"
+  "profileDeletedSuccess": "Profil et données d'athlète réinitialisés",
+  "skip": "Passer",
+  "customWorkoutTitle": "Séance personnalisée",
+  "customWorkoutSubtitle": "Démarrer une séance libre et ajouter vos exercices",
+  "findIdealWorkoutTitle": "Trouver votre séance idéale",
+  "findIdealWorkoutSubtitle": "Répondez à 3 questions rapides pour trouver la séance qui vous correspond",
+  "yourProgram": "Votre programme",
+  "readyTemplates": "Séances types & modèles"
 }

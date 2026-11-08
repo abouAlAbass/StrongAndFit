@@ -600,4 +600,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get profileDeletedSuccess =>
       'Profile and athlete data successfully reset';
+
+  @override
+  String get customWorkoutTitle => 'Custom Workout';
+
+  @override
+  String get customWorkoutSubtitle =>
+      'Start an empty workout and log your exercises';
+
+  @override
+  String get findIdealWorkoutTitle => 'Find your ideal workout';
+
+  @override
+  String get findIdealWorkoutSubtitle =>
+      'Answer 3 quick questions to discover your optimal routine';
+
+  @override
+  String get yourProgram => 'Your Program';
+
+  @override
+  String get readyTemplates => 'Ready Templates & Routines';
 }

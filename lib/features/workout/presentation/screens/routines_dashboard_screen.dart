@@ -5,7 +5,9 @@ import '../../../../core/l10n/exercise_translation_helper.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
+import '../../../../core/theme/theme_cubit.dart';
 import '../../../../core/widgets/responsive_content_wrapper.dart';
+import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../profile/presentation/widgets/athlete_onboarding_dialog.dart';
 import '../bloc/workout_session_bloc.dart';
 import '../bloc/workout_session_event.dart';
@@ -16,7 +18,7 @@ import '../widgets/create_routine_dialog.dart';
 import 'workout_session_screen.dart';
 
 /// Routines and Workout Start Dashboard with responsive tablet & desktop scaling.
-class RoutinesDashboardScreen extends StatelessWidget {
+class RoutinesDashboardScreen extends StatefulWidget {
   final ValueChanged<Locale> onLocaleChanged;
   final Locale currentLocale;
 
@@ -25,6 +27,47 @@ class RoutinesDashboardScreen extends StatelessWidget {
     required this.onLocaleChanged,
     required this.currentLocale,
   });
+
+  @override
+  State<RoutinesDashboardScreen> createState() => _RoutinesDashboardScreenState();
+}
+
+class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
+  static int? _chosenProgramTemplateId;
+  static bool _hasPromptedOnboarding = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkFirstTimeOnboarding();
+    });
+  }
+
+  void _checkFirstTimeOnboarding() {
+    if (_hasPromptedOnboarding) return;
+    _hasPromptedOnboarding = true;
+
+    final profileState = context.read<ProfileCubit>().state;
+    final totalWorkouts = profileState.lifetimeStats?.totalWorkouts ?? 0;
+
+    // If new athlete without logged workouts or chosen program, prompt onboarding with skip option
+    if (totalWorkouts == 0 && _chosenProgramTemplateId == null) {
+      _openOnboardingDialog();
+    }
+  }
+
+  Future<void> _openOnboardingDialog() async {
+    final chosen = await AthleteOnboardingDialog.show(
+      context,
+      onRoutineStarted: () => _navigateToActiveWorkout(context),
+    );
+    if (chosen != null && mounted) {
+      setState(() {
+        _chosenProgramTemplateId = chosen.template.id;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,223 +92,264 @@ class RoutinesDashboardScreen extends StatelessWidget {
           ],
         ),
         actions: [
+          // 1-Tap Theme Mode Switch (Sun / Moon)
+          BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (context, themeMode) {
+              final isDark = themeMode == ThemeMode.dark;
+              return IconButton(
+                tooltip: isDark ? l10n.themeLight : l10n.themeDark,
+                icon: Icon(
+                  isDark ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
+                  color: AppColors.ofTextPrimary(context),
+                ),
+                onPressed: () => context.read<ThemeCubit>().toggleTheme(),
+              );
+            },
+          ),
+          // Language Switch Dropdown
           PopupMenuButton<String>(
             icon: Icon(Icons.language, color: AppColors.ofTextPrimary(context)),
             color: AppColors.ofSurfaceElevated(context),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            onSelected: (code) => onLocaleChanged(Locale(code)),
+            onSelected: (code) => widget.onLocaleChanged(Locale(code)),
             itemBuilder: (ctx) => [
-              _buildPopupItem(context, 'en', 'English (EN)', currentLocale.languageCode == 'en'),
-              _buildPopupItem(context, 'fr', 'Français (FR)', currentLocale.languageCode == 'fr'),
-              _buildPopupItem(context, 'ar', 'العربية (AR - RTL)', currentLocale.languageCode == 'ar'),
+              _buildPopupItem(context, 'en', 'English (EN)', widget.currentLocale.languageCode == 'en'),
+              _buildPopupItem(context, 'fr', 'Français (FR)', widget.currentLocale.languageCode == 'fr'),
+              _buildPopupItem(context, 'ar', 'العربية (AR - RTL)', widget.currentLocale.languageCode == 'ar'),
             ],
           ),
         ],
       ),
       body: ResponsiveContentWrapper(
         maxWidth: 780,
-        child: ListView(
-          padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 40),
-          children: [
-            // 1. Ongoing Session Sticky Card (if active)
-            BlocBuilder<WorkoutSessionBloc, WorkoutSessionState>(
-              builder: (context, state) {
-                if (!state.hasActiveSession) return const SizedBox.shrink();
-                return Container(
-                  margin: const EdgeInsetsDirectional.only(bottom: 16),
-                  padding: const EdgeInsetsDirectional.all(16),
+        child: BlocBuilder<RoutinesCubit, RoutinesState>(
+          builder: (context, routinesState) {
+            TemplateDetail? userProgram;
+            if (_chosenProgramTemplateId != null && routinesState.templates.isNotEmpty) {
+              final matches = routinesState.templates
+                  .where((t) => t.template.id == _chosenProgramTemplateId);
+              if (matches.isNotEmpty) {
+                userProgram = matches.first;
+              }
+            }
+
+            final otherTemplates = routinesState.templates.where((t) {
+              return userProgram == null || t.template.id != userProgram.template.id;
+            }).toList();
+
+            return ListView(
+              padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 40),
+              children: [
+                // 1. Ongoing Session Sticky Card (if active)
+                BlocBuilder<WorkoutSessionBloc, WorkoutSessionState>(
+                  builder: (context, state) {
+                    if (!state.hasActiveSession) return const SizedBox.shrink();
+                    return Container(
+                      margin: const EdgeInsetsDirectional.only(bottom: 16),
+                      padding: const EdgeInsetsDirectional.all(16),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF1E3A8A), Color(0xFF172554)],
+                          begin: AlignmentDirectional.topStart,
+                          end: AlignmentDirectional.bottomEnd,
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.primary, width: 1.2),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 44,
+                            height: 44,
+                            decoration: const BoxDecoration(
+                              color: AppColors.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 26),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l10n.ongoingWorkout,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.secondary,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  state.detail!.session.title,
+                                  style: AppTypography.titleMedium.copyWith(color: Colors.white),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Text(
+                                  state.formattedDuration,
+                                  style: AppTypography.caption.copyWith(color: Colors.white70),
+                                ),
+                              ],
+                            ),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsetsDirectional.symmetric(horizontal: 14, vertical: 8),
+                            ),
+                            onPressed: () {
+                              _navigateToActiveWorkout(context);
+                            },
+                            child: Text(l10n.resumeWorkout),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+
+                // 2. "Votre programme" (displayed prominently first if chosen)
+                if (userProgram != null) ...[
+                  Row(
+                    children: [
+                      const Icon(Icons.verified_rounded, color: AppColors.secondary, size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        l10n.yourProgram,
+                        style: AppTypography.ofTitleLarge(context),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  _buildRoutineCard(context, userProgram, isFeatured: true),
+                  const SizedBox(height: 16),
+                ],
+
+                // 3. "Séance personnalisée" (Quick Start Empty Workout)
+                Container(
+                  padding: const EdgeInsetsDirectional.all(18),
                   decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF1E3A8A), Color(0xFF172554)],
-                      begin: AlignmentDirectional.topStart,
-                      end: AlignmentDirectional.bottomEnd,
-                    ),
+                    color: AppColors.ofCard(context),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.primary, width: 1.2),
+                    border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
                   ),
                   child: Row(
                     children: [
                       Container(
-                        width: 44,
-                        height: 44,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          color: AppColors.ofPrimaryContainer(context),
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 26),
+                        child: const Icon(Icons.add, color: AppColors.primary, size: 28),
                       ),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              l10n.ongoingWorkout,
-                              style: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.secondary,
-                              ),
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              state.detail!.session.title,
-                              style: AppTypography.titleMedium.copyWith(color: Colors.white),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            Text(
-                              state.formattedDuration,
-                              style: AppTypography.caption.copyWith(color: Colors.white70),
-                            ),
+                            Text(l10n.customWorkoutTitle, style: AppTypography.ofTitleLarge(context)),
+                            const SizedBox(height: 3),
+                            Text(l10n.customWorkoutSubtitle, style: AppTypography.ofCaption(context)),
                           ],
                         ),
                       ),
+                      const SizedBox(width: 8),
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primary,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsetsDirectional.symmetric(horizontal: 14, vertical: 8),
-                        ),
                         onPressed: () {
+                          context.read<WorkoutSessionBloc>().add(const StartSessionRequested());
                           _navigateToActiveWorkout(context);
                         },
-                        child: Text(l10n.resumeWorkout),
+                        child: Text(l10n.startWorkout),
                       ),
                     ],
                   ),
-                );
-              },
-            ),
+                ),
+                const SizedBox(height: 16),
 
-            // 2. Quick Start Empty Workout (Card)
-            Container(
-              padding: const EdgeInsetsDirectional.all(18),
-              decoration: BoxDecoration(
-                color: AppColors.ofCard(context),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 48,
-                    height: 48,
+                // 4. "Trouver votre séance idéale" (Onboarding / Recommender Banner)
+                InkWell(
+                  onTap: _openOnboardingDialog,
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    padding: const EdgeInsetsDirectional.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.ofPrimaryContainer(context),
-                      borderRadius: BorderRadius.circular(12),
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFF1E3A8A), Color(0xFF1E293B)],
+                        begin: AlignmentDirectional.topStart,
+                        end: AlignmentDirectional.bottomEnd,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: AppColors.primary.withAlpha(120), width: 1.2),
                     ),
-                    child: const Icon(Icons.add, color: AppColors.primary, size: 28),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Row(
                       children: [
-                        Text(l10n.quickStart, style: AppTypography.ofTitleLarge(context)),
-                        const SizedBox(height: 2),
-                        Text(l10n.quickStartSubtitle, style: AppTypography.ofCaption(context)),
+                        Container(
+                          width: 44,
+                          height: 44,
+                          decoration: BoxDecoration(
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(Icons.auto_awesome, color: Colors.white, size: 24),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.findIdealWorkoutTitle,
+                                style: AppTypography.titleMedium.copyWith(color: Colors.white),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                l10n.findIdealWorkoutSubtitle,
+                                style: AppTypography.caption.copyWith(color: Colors.white70),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.chevron_right_rounded, color: Colors.white70, size: 24),
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<WorkoutSessionBloc>().add(const StartSessionRequested());
-                      _navigateToActiveWorkout(context);
-                    },
-                    child: Text(l10n.startWorkout),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // 2b. Modern Program Matching Banner (Onboarding / Recommender)
-            InkWell(
-              onTap: () => AthleteOnboardingDialog.show(
-                context,
-                onRoutineStarted: () => _navigateToActiveWorkout(context),
-              ),
-              borderRadius: BorderRadius.circular(16),
-              child: Container(
-                padding: const EdgeInsetsDirectional.all(16),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF1E3A8A), Color(0xFF1E293B)],
-                    begin: AlignmentDirectional.topStart,
-                    end: AlignmentDirectional.bottomEnd,
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.primary.withAlpha(120), width: 1.2),
                 ),
-                child: Row(
+                const SizedBox(height: 24),
+
+                // 5. "Séances types & modèles" Section Header
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(Icons.auto_awesome, color: Colors.white, size: 24),
-                    ),
-                    const SizedBox(width: 14),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.findIdealProgram,
-                            style: AppTypography.titleMedium.copyWith(color: Colors.white),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            l10n.onboardingSubtitle,
-                            style: AppTypography.caption.copyWith(color: Colors.white70),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
+                      child: Text(l10n.readyTemplates, style: AppTypography.ofTitleLarge(context)),
                     ),
-                    const SizedBox(width: 8),
-                    const Icon(Icons.chevron_right_rounded, color: Colors.white70, size: 24),
+                    TextButton.icon(
+                      icon: const Icon(Icons.add_rounded, size: 18),
+                      label: Text(l10n.createRoutine),
+                      onPressed: () => CreateRoutineDialog.show(context),
+                    ),
                   ],
                 ),
-              ),
-            ),
-            const SizedBox(height: 24),
+                const SizedBox(height: 12),
 
-            // 3. Pre-designed Routines Section Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(l10n.routines, style: AppTypography.ofTitleLarge(context)),
-                ),
-                TextButton.icon(
-                  icon: const Icon(Icons.add_rounded, size: 18),
-                  label: Text(l10n.createRoutine),
-                  onPressed: () => CreateRoutineDialog.show(context),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-
-            // 4. List of Pre-Designed Routines
-            BlocBuilder<RoutinesCubit, RoutinesState>(
-              builder: (context, state) {
-                if (state.status == RoutinesStatus.loading && state.templates.isEmpty) {
-                  return const Center(
+                // 6. List of Routines / Templates
+                if (routinesState.status == RoutinesStatus.loading && routinesState.templates.isEmpty)
+                  const Center(
                     child: Padding(
                       padding: EdgeInsets.all(32.0),
                       child: CircularProgressIndicator(),
                     ),
-                  );
-                }
-
-                if (state.templates.isEmpty) {
-                  return Center(
+                  )
+                else if (otherTemplates.isEmpty && userProgram == null)
+                  Center(
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: Text(
@@ -273,23 +357,26 @@ class RoutinesDashboardScreen extends StatelessWidget {
                         style: AppTypography.ofBodySecondary(context),
                       ),
                     ),
-                  );
-                }
-
-                return Column(
-                  children: state.templates.map((template) {
-                    return _buildRoutineCard(context, template);
-                  }).toList(),
-                );
-              },
-            ),
-          ],
+                  )
+                else
+                  Column(
+                    children: otherTemplates.map((template) {
+                      return _buildRoutineCard(context, template);
+                    }).toList(),
+                  ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildRoutineCard(BuildContext context, TemplateDetail template) {
+  Widget _buildRoutineCard(
+    BuildContext context,
+    TemplateDetail template, {
+    bool isFeatured = false,
+  }) {
     final l10n = AppLocalizations.of(context)!;
     final exercisesCount = template.exercises.length;
 
@@ -297,9 +384,14 @@ class RoutinesDashboardScreen extends StatelessWidget {
       margin: const EdgeInsetsDirectional.only(bottom: 14),
       padding: const EdgeInsetsDirectional.all(16),
       decoration: BoxDecoration(
-        color: AppColors.ofSurface(context),
+        color: isFeatured
+            ? AppColors.ofSurfaceElevated(context)
+            : AppColors.ofSurface(context),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+        border: Border.all(
+          color: isFeatured ? AppColors.secondary : AppColors.ofBorder(context),
+          width: isFeatured ? 1.5 : 0.8,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -312,10 +404,31 @@ class RoutinesDashboardScreen extends StatelessWidget {
               Expanded(
                 child: Text(
                   _resolveTemplateTitle(template.template.name, l10n),
-                  style: AppTypography.ofTitleMedium(context).copyWith(fontSize: 17),
+                  style: AppTypography.ofTitleMedium(context).copyWith(
+                    fontSize: 17,
+                    fontWeight: isFeatured ? FontWeight.w700 : FontWeight.w600,
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
+              if (isFeatured)
+                Container(
+                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
+                  margin: const EdgeInsetsDirectional.only(end: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondary.withAlpha(40),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: AppColors.secondary, width: 0.8),
+                  ),
+                  child: Text(
+                    l10n.yourProgram,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.secondary,
+                    ),
+                  ),
+                ),
               Container(
                 padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
@@ -378,8 +491,10 @@ class RoutinesDashboardScreen extends StatelessWidget {
               icon: const Icon(Icons.fitness_center, size: 18),
               label: Text(l10n.startRoutine),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.ofPrimaryContainer(context),
-                foregroundColor: AppColors.primary,
+                backgroundColor: isFeatured
+                    ? AppColors.primary
+                    : AppColors.ofPrimaryContainer(context),
+                foregroundColor: isFeatured ? Colors.white : AppColors.primary,
                 elevation: 0,
               ),
               onPressed: () {
@@ -399,8 +514,8 @@ class RoutinesDashboardScreen extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => WorkoutSessionScreen(
-          currentLocale: currentLocale,
-          onLocaleChanged: onLocaleChanged,
+          currentLocale: widget.currentLocale,
+          onLocaleChanged: widget.onLocaleChanged,
         ),
       ),
     );

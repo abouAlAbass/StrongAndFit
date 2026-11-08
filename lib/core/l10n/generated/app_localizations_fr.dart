@@ -601,4 +601,24 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get profileDeletedSuccess =>
       'Profil et données d\'athlète réinitialisés';
+
+  @override
+  String get customWorkoutTitle => 'Séance personnalisée';
+
+  @override
+  String get customWorkoutSubtitle =>
+      'Démarrer une séance libre et ajouter vos exercices';
+
+  @override
+  String get findIdealWorkoutTitle => 'Trouver votre séance idéale';
+
+  @override
+  String get findIdealWorkoutSubtitle =>
+      'Répondez à 3 questions rapides pour trouver la séance qui vous correspond';
+
+  @override
+  String get yourProgram => 'Votre programme';
+
+  @override
+  String get readyTemplates => 'Séances types & modèles';
 }

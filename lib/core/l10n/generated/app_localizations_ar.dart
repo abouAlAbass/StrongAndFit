@@ -599,4 +599,24 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get profileDeletedSuccess =>
       'تمت إعادة ضبط الملف الشخصي والبيانات بنجاح';
+
+  @override
+  String get customWorkoutTitle => 'تمرين مخصص';
+
+  @override
+  String get customWorkoutSubtitle =>
+      'ابدأ جلسة حرة واختر التمارين التي تريدها';
+
+  @override
+  String get findIdealWorkoutTitle => 'اكتشف تمرينك المثالي';
+
+  @override
+  String get findIdealWorkoutSubtitle =>
+      'أجب عن 3 أسئلة سريعة لاقتراح البرنامج الأنسب لك';
+
+  @override
+  String get yourProgram => 'برنامجك التدريبي';
+
+  @override
+  String get readyTemplates => 'نماذج الجلسات الجاهزة';
 }

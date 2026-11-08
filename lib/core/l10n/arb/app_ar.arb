@@ -196,5 +196,12 @@
   "deleteProfileConfirmTitle": "حذف الملف الشخصي؟",
   "deleteProfileConfirmMessage": "هذا الإجراء لا يمكن التراجع عنه. سيتم حذف جميع جلسات التمارين والمجموعات وسجل الأوزان والبيانات الحيوية بشكل دائم.",
   "deletePermanently": "حذف نهائي",
-  "profileDeletedSuccess": "تمت إعادة ضبط الملف الشخصي والبيانات بنجاح"
+  "profileDeletedSuccess": "تمت إعادة ضبط الملف الشخصي والبيانات بنجاح",
+  "skip": "تخطي",
+  "customWorkoutTitle": "تمرين مخصص",
+  "customWorkoutSubtitle": "ابدأ جلسة حرة واختر التمارين التي تريدها",
+  "findIdealWorkoutTitle": "اكتشف تمرينك المثالي",
+  "findIdealWorkoutSubtitle": "أجب عن 3 أسئلة سريعة لاقتراح البرنامج الأنسب لك",
+  "yourProgram": "برنامجك التدريبي",
+  "readyTemplates": "نماذج الجلسات الجاهزة"
 }

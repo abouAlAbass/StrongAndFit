@@ -21,8 +21,8 @@ class AthleteOnboardingDialog extends StatefulWidget {
     this.onRoutineStarted,
   });
 
-  static Future<void> show(BuildContext context, {VoidCallback? onRoutineStarted}) {
-    return showModalBottomSheet(
+  static Future<TemplateDetail?> show(BuildContext context, {VoidCallback? onRoutineStarted}) {
+    return showModalBottomSheet<TemplateDetail>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -97,9 +97,9 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
               ),
             ),
 
-            // Header: Progress Indicator & Close
+            // Header: Progress Indicator, Skip & Close
             Padding(
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 8),
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
               child: Row(
                 children: [
                   if (_currentStep > 0)
@@ -109,6 +109,17 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
                       onPressed: () => setState(() => _currentStep--),
                     ),
                   Expanded(child: _buildProgressStepper(context, l10n)),
+                  if (_currentStep < 3)
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(
+                        l10n.skip,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.ofTextSecondary(context),
+                        ),
+                      ),
+                    ),
                   IconButton(
                     icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
                     tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
@@ -530,7 +541,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
                 context.read<WorkoutSessionBloc>().add(
                       StartSessionFromTemplateRequested(matchedTemplate!),
                     );
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(matchedTemplate);
                 widget.onRoutineStarted?.call();
               },
             ),
@@ -547,7 +558,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
             label: Text(l10n.applyAndSave),
             onPressed: () {
               _applyToProfile();
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(matchedTemplate);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(l10n.onboardingDone),
