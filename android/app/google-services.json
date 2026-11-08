@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "352306880294",
+    "project_id": "strongfit-a51cb",
+    "storage_bucket": "strongfit-a51cb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352306880294:android:1dd99d4df0c6a9e6c72be7",
+        "android_client_info": {
+          "package_name": "com.strong.app.strong"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZwkH7OBisFiMg93pBYude6LeV4Add-FU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

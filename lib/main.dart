@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/database/app_database.dart';
@@ -22,9 +23,19 @@ import 'features/workout/presentation/bloc/workout_session_bloc.dart';
 import 'features/workout/presentation/bloc/workout_session_event.dart';
 import 'features/workout/presentation/cubit/rest_timer_cubit.dart';
 import 'features/workout/presentation/cubit/routines_cubit.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase (fail-safe for offline tests)
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    debugPrint('Firebase initialization: $e');
+  }
 
   // Instantiate singleton Drift Database (100% offline-first SQLite)
   final database = AppDatabase();
