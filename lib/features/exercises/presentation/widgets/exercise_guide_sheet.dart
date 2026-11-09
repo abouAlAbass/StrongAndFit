@@ -7,6 +7,7 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../workout/domain/repositories/workout_repository.dart';
 import '../../data/exercise_guides_data.dart';
 import '../../domain/models/exercise_guide.dart';
+import 'exercise_media_viewer.dart';
 
 /// Responsive, modern modal sheet presenting biomechanical execution guidelines,
 /// anatomical targeting, breathing mechanics, and injury-prevention coaching cues.
@@ -121,6 +122,10 @@ class ExerciseGuideSheet extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsetsDirectional.fromSTEB(20, 16, 20, 36),
               children: [
+                // 0. Visual Media / Biomechanical Illustration Viewer
+                ExerciseMediaViewer(guide: guide),
+                const SizedBox(height: 16),
+
                 // 1. Rep-Range & Tempo Badges
                 _buildMetricsBanner(context, l10n),
                 const SizedBox(height: 20),

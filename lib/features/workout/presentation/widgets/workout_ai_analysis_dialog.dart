@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../../core/l10n/generated/app_localizations.dart';
+import '../../../../core/l10n/generated/app_localizations_fr.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../domain/models/workout_ai_models.dart';
@@ -35,6 +37,7 @@ class WorkoutAiAnalysisDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context) ?? AppLocalizationsFr();
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       backgroundColor: AppColors.ofSurfaceElevated(context),
@@ -69,7 +72,7 @@ class WorkoutAiAnalysisDialog extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Analyse Préparateur Physique',
+                          l10n.aiAnalysisDialogTitle,
                           style: AppTypography.ofTitleLarge(
                             context,
                           ).copyWith(fontSize: 18),
@@ -140,7 +143,7 @@ class WorkoutAiAnalysisDialog extends StatelessWidget {
               // Surcharge progressive
               _buildSectionCard(
                 context,
-                title: 'Surcharge Progressive & Intensité',
+                title: l10n.aiAnalysisProgressiveOverloadTitle,
                 icon: Icons.trending_up_rounded,
                 iconColor: AppColors.primary,
                 content: analysis.progressiveOverloadAssessment,
@@ -150,7 +153,7 @@ class WorkoutAiAnalysisDialog extends StatelessWidget {
               // Fatigue & RPE
               _buildSectionCard(
                 context,
-                title: 'Récupération & Fatigue (RPE/RIR)',
+                title: l10n.aiAnalysisRecoveryRpeTitle,
                 icon: Icons.battery_charging_full_rounded,
                 iconColor: const Color(0xFF00C7BE),
                 content: analysis.recoveryAndRpeAssessment,
@@ -161,7 +164,7 @@ class WorkoutAiAnalysisDialog extends StatelessWidget {
               if (analysis.strengthHighlights.isNotEmpty) ...[
                 _buildListCard(
                   context,
-                  title: 'Points Forts & Accomplissements',
+                  title: l10n.aiAnalysisHighlightsTitle,
                   icon: Icons.check_circle_outline_rounded,
                   iconColor: AppColors.completed,
                   items: analysis.strengthHighlights,
@@ -173,7 +176,7 @@ class WorkoutAiAnalysisDialog extends StatelessWidget {
               if (analysis.plateausOrRisks.isNotEmpty) ...[
                 _buildListCard(
                   context,
-                  title: 'Points de Vigilance & Risques',
+                  title: l10n.aiAnalysisPlateausRisksTitle,
                   icon: Icons.warning_amber_rounded,
                   iconColor: AppColors.warmup,
                   items: analysis.plateausOrRisks,
@@ -185,7 +188,7 @@ class WorkoutAiAnalysisDialog extends StatelessWidget {
               if (analysis.nextCycleRecommendations.isNotEmpty) ...[
                 _buildListCard(
                   context,
-                  title: 'Recommandations pour le prochain cycle',
+                  title: l10n.aiAnalysisNextCycleTitle,
                   icon: Icons.lightbulb_outline_rounded,
                   iconColor: const Color(0xFFBF5AF2),
                   items: analysis.nextCycleRecommendations,
@@ -204,9 +207,9 @@ class WorkoutAiAnalysisDialog extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                child: const Text(
-                  'Fermer',
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                child: Text(
+                  l10n.aiAnalysisCloseButton,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ],

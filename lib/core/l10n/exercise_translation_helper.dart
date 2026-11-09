@@ -48,6 +48,42 @@ class ExerciseTranslationHelper {
         return l10n.exercise_plank;
       case 'hanging_leg_raise':
         return l10n.exercise_hanging_leg_raise;
+      case 'dips':
+        return l10n.exercise_dips;
+      case 'cable_fly':
+        return l10n.exercise_cable_fly;
+      case 'chin_up':
+        return l10n.exercise_chin_up;
+      case 'dumbbell_row':
+        return l10n.exercise_dumbbell_row;
+      case 'seated_cable_row':
+        return l10n.exercise_seated_cable_row;
+      case 'lunges':
+        return l10n.exercise_lunges;
+      case 'hip_thrust':
+        return l10n.exercise_hip_thrust;
+      case 'bulgarian_split_squat':
+        return l10n.exercise_bulgarian_split_squat;
+      case 'leg_extension':
+        return l10n.exercise_leg_extension;
+      case 'leg_curl':
+        return l10n.exercise_leg_curl;
+      case 'calf_raise':
+        return l10n.exercise_calf_raise;
+      case 'dumbbell_shoulder_press':
+        return l10n.exercise_dumbbell_shoulder_press;
+      case 'face_pull':
+        return l10n.exercise_face_pull;
+      case 'hammer_curl':
+        return l10n.exercise_hammer_curl;
+      case 'incline_dumbbell_curl':
+        return l10n.exercise_incline_dumbbell_curl;
+      case 'overhead_triceps_extension':
+        return l10n.exercise_overhead_triceps_extension;
+      case 'skull_crusher':
+        return l10n.exercise_skull_crusher;
+      case 'cable_crunch':
+        return l10n.exercise_cable_crunch;
       default:
         return null;
     }

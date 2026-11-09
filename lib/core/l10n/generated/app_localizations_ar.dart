@@ -413,6 +413,60 @@ class AppLocalizationsAr extends AppLocalizations {
   String get exercise_hanging_leg_raise => 'رفع الأرجل معلقاً';
 
   @override
+  String get exercise_dips => 'متوازي للصدر والترايسبس (Dips)';
+
+  @override
+  String get exercise_cable_fly => 'تفتيح صدر بالكيبل';
+
+  @override
+  String get exercise_chin_up => 'عقلة قبضة معكوسة (سوبينيشن)';
+
+  @override
+  String get exercise_dumbbell_row => 'سحب دامبل فردي للظهر (منشار)';
+
+  @override
+  String get exercise_seated_cable_row => 'سحب أرضي جالس بالكيبل';
+
+  @override
+  String get exercise_lunges => 'طعن المشي بالدامبلز (Lunges)';
+
+  @override
+  String get exercise_hip_thrust => 'دفع الحوض بالبار (Hip Thrust)';
+
+  @override
+  String get exercise_bulgarian_split_squat => 'سكوات بلغاري بالدامبلز';
+
+  @override
+  String get exercise_leg_extension => 'رفرفة أرجل أمامي بالجهاز';
+
+  @override
+  String get exercise_leg_curl => 'ثني الأرجل الخلفي بالجهاز';
+
+  @override
+  String get exercise_calf_raise => 'رفع السمانة واقفاً';
+
+  @override
+  String get exercise_dumbbell_shoulder_press => 'ضغط أكتاف جالس بالدامبلز';
+
+  @override
+  String get exercise_face_pull => 'سحب الحبل للوجه (Face Pull)';
+
+  @override
+  String get exercise_hammer_curl => 'كيرل مطرقة بالدامبلز (هامر)';
+
+  @override
+  String get exercise_incline_dumbbell_curl => 'كيرل بايسبس على مقعد مائل';
+
+  @override
+  String get exercise_overhead_triceps_extension => 'تمديد الترايسبس خلف الرأس';
+
+  @override
+  String get exercise_skull_crusher => 'كسارة الجمجمة بالبار (Skull Crusher)';
+
+  @override
+  String get exercise_cable_crunch => 'طحن البطن بالكيبل العالي';
+
+  @override
   String get exerciseGuide => 'دليل التمرين';
 
   @override
@@ -747,4 +801,158 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get systemDefault => 'النظام (افتراضي)';
+
+  @override
+  String get importJsonTitle => 'استيراد نسخة احتياطية JSON';
+
+  @override
+  String get importJsonSubtitle =>
+      'استعادة ملفك الشخصي وتمارينك المخصصة وسجل تدريباتك من ملف JSON';
+
+  @override
+  String get importConfirmTitle => 'استيراد نسخة احتياطية JSON؟';
+
+  @override
+  String get importConfirmMessage =>
+      'اختر طريقة الاستعادة. الدمج يحتفظ بتمارينك الحالية ويضيف بيانات النسخة الاحتياطية، بينما الاستبدال يمسح السجل الحالي بالكامل.';
+
+  @override
+  String get importMergeOption => 'دمج مع البيانات الحالية (موصى به)';
+
+  @override
+  String get importOverwriteOption => 'استبدال السجل الحالي بالكامل';
+
+  @override
+  String get importFilePathHint =>
+      'اختر نسخة احتياطية محلية أو الصق محتوى JSON أدناه';
+
+  @override
+  String get importPasteJsonLabel =>
+      'محتوى JSON للنسخة الاحتياطية أو مسار الملف';
+
+  @override
+  String get importStartButton => 'بدء الاستيراد';
+
+  @override
+  String importSuccessMessage(int sessions, int sets) {
+    return 'تم استيراد النسخة الاحتياطية بنجاح ($sessions تمارين، $sets مجموعات)!';
+  }
+
+  @override
+  String importErrorMessage(String error) {
+    return 'فشل الاستيراد: $error';
+  }
+
+  @override
+  String get aiCoachCardTitle => 'المدرب الذكي — Google Gemini (مفتاحك الخاص)';
+
+  @override
+  String get aiCoachCardSubtitle =>
+      'تحليل الزيادة التدريجية ومعدل الجهد والأرقام القياسية';
+
+  @override
+  String get aiCoachCardDescription =>
+      'استخدم مفتاح Google AI Studio المجاني الخاص بك للحصول على توصيات تدريبية مخصصة دون أي اشتراك مدفوع.';
+
+  @override
+  String get aiCoachConfigureButton => 'إعداد مفتاح Gemini الخاص بي';
+
+  @override
+  String get aiKeySheetTitle => 'المدرب الذكي — مفتاح Google Gemini';
+
+  @override
+  String get aiKeySheetSubtitle => 'استخدم مفتاحك الخاص (BYOK) — مجاني 100%';
+
+  @override
+  String get aiKeyPrivacyCallout =>
+      'يبقى مفتاحك على جهازك فقط، حيث يتم تشفيره في نظام الحماية الداخلي للهاتف ولا يتم إرساله لأي خادم خارجي.';
+
+  @override
+  String get aiKeyStepsTitle => 'كيفية الحصول على مفتاحك المجاني في 30 ثانية:';
+
+  @override
+  String get aiKeyStep1 =>
+      'سجل الدخول بحساب Google الخاص بك في منصة AI Studio.';
+
+  @override
+  String get aiKeyStep2 =>
+      'اضغط على \"Create API Key\" (لا يتطلب أي وسيلة دفع).';
+
+  @override
+  String get aiKeyStep3 => 'انسخ المفتاح والصقه في الحقل أدناه.';
+
+  @override
+  String get aiKeyGetFreeKeyButton =>
+      'احصل على مفتاح مجاني من Google AI Studio';
+
+  @override
+  String get aiKeyInputLabel => 'مفتاح Google Gemini API (مثال: AIzaSy...)';
+
+  @override
+  String get aiKeyInputHint => 'الصق مفتاحك هنا';
+
+  @override
+  String get aiKeyPasteTooltip => 'لصق';
+
+  @override
+  String get aiKeyValidateAndSaveButton => 'التحقق والحفظ';
+
+  @override
+  String get aiKeyDeleteSavedButton => 'حذف المفتاح المحفوظ';
+
+  @override
+  String get aiKeyDeleteConfirmTitle => 'حذف مفتاح Gemini؟';
+
+  @override
+  String get aiKeyDeleteConfirmMessage =>
+      'سيتم إيقاف ميزات التحليل الذكي للتمارين والأرقام القياسية.';
+
+  @override
+  String get aiKeyEmptyError => 'يرجى إدخال أو لصق مفتاح Gemini API الخاص بك.';
+
+  @override
+  String get aiKeySavedSuccess => 'تم التحقق من مفتاح Gemini وحفظه بأمان!';
+
+  @override
+  String get aiKeyDeletedSuccess => 'تم حذف المفتاح.';
+
+  @override
+  String get networkConnectionError =>
+      'تعذر الاتصال بخوادم Google Gemini. يرجى التحقق من اتصالك بالإنترنت.';
+
+  @override
+  String get aiAnalysisDialogTitle => 'تحليل المعد البدني الذكي';
+
+  @override
+  String get aiAnalysisProgressiveOverloadTitle =>
+      'الزيادة التدريجية للأحمال والشدة';
+
+  @override
+  String get aiAnalysisRecoveryRpeTitle =>
+      'الاستشفاء والإجهاد العضلي (RPE/RIR)';
+
+  @override
+  String get aiAnalysisHighlightsTitle => 'نقاط القوة والإنجازات';
+
+  @override
+  String get aiAnalysisPlateausRisksTitle => 'نقاط الحذر ومخاطر ثبات المستوى';
+
+  @override
+  String get aiAnalysisNextCycleTitle => 'توصيات للدورة التدريبية القادمة';
+
+  @override
+  String get aiAnalysisCloseButton => 'إغلاق';
+
+  @override
+  String get aiAnalyzeSessionButton => 'تحليل التمرين مع المدرب الذكي Gemini';
+
+  @override
+  String get aiAnalyzingProgress => 'جارٍ تحليل التمرين بواسطة المدرب الذكي...';
+
+  @override
+  String get finishWorkoutTitle => 'إنهاء وتأكيد التمرين';
+
+  @override
+  String get finishWorkoutNotesHint =>
+      'كيف كان أداؤك وشعورك في التمرين؟ (ملاحظات، الطاقة، مستوى الجهد...)';
 }

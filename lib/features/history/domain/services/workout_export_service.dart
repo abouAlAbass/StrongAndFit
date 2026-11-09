@@ -102,9 +102,9 @@ class WorkoutExportService {
     final sessions = await db.select(db.workoutSessions).get();
     final workoutExercises = await db.select(db.workoutExercises).get();
     final sets = await db.select(db.setLogs).get();
-    final customExercises = await (db.select(
-      db.exercises,
-    )..where((t) => t.isCustom.equals(true))).get();
+    final allExercises = await db.select(db.exercises).get();
+    final exerciseIdToSlug = {for (final e in allExercises) e.id: e.slug};
+    final customExercises = allExercises.where((e) => e.isCustom).toList();
 
     final backupData = {
       'app': 'Strong Track',
@@ -148,7 +148,9 @@ class WorkoutExportService {
               'id': we.id,
               'sessionId': we.sessionId,
               'exerciseId': we.exerciseId,
+              'exerciseSlug': exerciseIdToSlug[we.exerciseId],
               'orderIndex': we.orderIndex,
+              'supersetGroupId': we.supersetGroupId,
             },
           )
           .toList(),

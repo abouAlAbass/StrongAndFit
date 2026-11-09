@@ -7,6 +7,8 @@ class RestPreferences extends Equatable {
   final bool autoStart;
   final bool notificationsEnabled;
   final bool vibrationEnabled;
+  final String preferredLocale;
+  final String themeMode;
 
   const RestPreferences({
     this.betweenSetsSeconds = 90,
@@ -14,6 +16,8 @@ class RestPreferences extends Equatable {
     this.autoStart = true,
     this.notificationsEnabled = true,
     this.vibrationEnabled = true,
+    this.preferredLocale = 'en',
+    this.themeMode = 'dark',
   });
 
   RestPreferences copyWith({
@@ -22,6 +26,8 @@ class RestPreferences extends Equatable {
     bool? autoStart,
     bool? notificationsEnabled,
     bool? vibrationEnabled,
+    String? preferredLocale,
+    String? themeMode,
   }) {
     return RestPreferences(
       betweenSetsSeconds: betweenSetsSeconds ?? this.betweenSetsSeconds,
@@ -30,6 +36,8 @@ class RestPreferences extends Equatable {
       autoStart: autoStart ?? this.autoStart,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
       vibrationEnabled: vibrationEnabled ?? this.vibrationEnabled,
+      preferredLocale: preferredLocale ?? this.preferredLocale,
+      themeMode: themeMode ?? this.themeMode,
     );
   }
 
@@ -40,5 +48,7 @@ class RestPreferences extends Equatable {
     autoStart,
     notificationsEnabled,
     vibrationEnabled,
+    preferredLocale,
+    themeMode,
   ];
 }

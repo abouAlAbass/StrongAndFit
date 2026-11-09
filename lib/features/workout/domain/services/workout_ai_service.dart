@@ -1,7 +1,19 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import '../../../../core/services/ai_key_storage_service.dart';
 import '../models/workout_ai_models.dart';
+
+/// Exception specifically thrown when network connectivity fails during Gemini AI operations.
+class AiNetworkException implements Exception {
+  final String message;
+  const AiNetworkException([
+    this.message = 'Vérifiez votre connexion Internet.',
+  ]);
+
+  @override
+  String toString() => message;
+}
 
 /// Service interfacing directly with Google Gemini Generative AI for
 /// deep athletic analysis, strength coaching insights, and BYOK validation.
@@ -32,6 +44,9 @@ class WorkoutAiService {
       }
       throw Exception('Aucune réponse reçue de Google Gemini.');
     } on GenerativeAIException catch (e) {
+      if (_isNetworkError(e)) {
+        throw const AiNetworkException();
+      }
       if (e.message.contains('API_KEY_INVALID') ||
           e.message.contains('API key not valid')) {
         throw Exception('Clé d\'API Google AI Studio invalide.');
@@ -40,17 +55,48 @@ class WorkoutAiService {
         throw Exception('Quota dépassé pour cette clé.');
       }
       throw Exception('Erreur Google Gemini: ${e.message}');
+    } on SocketException catch (_) {
+      throw const AiNetworkException();
+    } on HttpException catch (_) {
+      throw const AiNetworkException();
     } catch (e) {
-      if (e is Exception) rethrow;
+      if (e is Exception) {
+        if (_isNetworkError(e)) {
+          throw const AiNetworkException();
+        }
+        rethrow;
+      }
+      if (_isNetworkError(e)) {
+        throw const AiNetworkException();
+      }
       throw Exception('Erreur de connexion avec l\'API Google AI: $e');
     }
   }
 
-  /// System prompt acting as a world-class strength & conditioning coach.
-  static const String _coachSystemInstruction = '''
+  static bool _isNetworkError(dynamic error) {
+    if (error is SocketException || error is HttpException) return true;
+    final msg = error.toString().toLowerCase();
+    return msg.contains('socket') ||
+        msg.contains('failed host lookup') ||
+        msg.contains('no address associated') ||
+        msg.contains('network is unreachable') ||
+        msg.contains('connection refused') ||
+        msg.contains('clientexception') ||
+        msg.contains('handshakeexception');
+  }
+
+  /// Builds the localized system instruction acting as a world-class strength & conditioning coach.
+  static String buildSystemInstruction(String languageCode) {
+    final targetLang = switch (languageCode) {
+      'ar' => 'Arabic (العربية الفصحى الرياضية الواضحة)',
+      'en' => 'English',
+      _ => 'French (Français)',
+    };
+    return '''
 Tu es un préparateur physique d'élite et expert en biomécanique et hypertrophie (CSCS / Master en sciences du sport).
 Analyse les données d'entraînement fournies au format JSON.
-Tu dois répondre UNIQUEMENT par un objet JSON valide, sans texte d'introduction ni backticks markdown autour si possible.
+IMPORTANT : Rédige TOUTES les valeurs textuelles du JSON dans la langue suivante : $targetLang. Les clés du JSON ("overview", "progressive_overload", etc.) doivent rester strictement en anglais comme spécifié ci-dessous.
+Tu dois répondre UNIQUEMENT par un objet JSON valide, sans texte d'introduction ni backticks markdown autour.
 
 Format JSON attendu :
 {
@@ -63,11 +109,13 @@ Format JSON attendu :
   "overall_score": 8
 }
 ''';
+  }
 
   /// Performs full athletic review using the saved or explicitly passed API key.
   Future<WorkoutAiAnalysis> analyzeWorkoutData(
     WorkoutSummary payload, {
     String? explicitKey,
+    String languageCode = 'fr',
   }) async {
     final apiKey = explicitKey ?? await _keyStorage.getApiKey();
     if (apiKey == null || apiKey.isEmpty) {
@@ -84,7 +132,7 @@ Format JSON attendu :
           responseMimeType: 'application/json',
           temperature: 0.3,
         ),
-        systemInstruction: Content.system(_coachSystemInstruction),
+        systemInstruction: Content.system(buildSystemInstruction(languageCode)),
       );
 
       final prompt =
@@ -113,6 +161,9 @@ Format JSON attendu :
       final decoded = jsonDecode(cleanedJson) as Map<String, dynamic>;
       return WorkoutAiAnalysis.fromJson(decoded);
     } on GenerativeAIException catch (e) {
+      if (_isNetworkError(e)) {
+        throw const AiNetworkException();
+      }
       if (e.message.contains('API_KEY_INVALID')) {
         throw Exception(
           'Clé d\'API invalide. Vérifiez vos paramètres dans votre profil.',
@@ -123,8 +174,20 @@ Format JSON attendu :
         );
       }
       throw Exception('Erreur Gemini : ${e.message}');
+    } on SocketException catch (_) {
+      throw const AiNetworkException();
+    } on HttpException catch (_) {
+      throw const AiNetworkException();
     } catch (e) {
-      if (e is Exception) rethrow;
+      if (e is Exception) {
+        if (_isNetworkError(e)) {
+          throw const AiNetworkException();
+        }
+        rethrow;
+      }
+      if (_isNetworkError(e)) {
+        throw const AiNetworkException();
+      }
       throw Exception('Erreur lors de l\'analyse IA : $e');
     }
   }

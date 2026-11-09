@@ -23,4 +23,10 @@ class RestSettings extends Table {
 
   BoolColumn get vibrationEnabled =>
       boolean().withDefault(const Constant(true))();
+
+  /// Persisted application language code ('ar', 'en', 'fr').
+  TextColumn get preferredLocale => text().withDefault(const Constant('en'))();
+
+  /// Persisted visual theme mode ('system', 'light', 'dark').
+  TextColumn get themeMode => text().withDefault(const Constant('dark'))();
 }

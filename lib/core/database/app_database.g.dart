@@ -3170,6 +3170,30 @@ class $RestSettingsTable extends RestSettings
     ),
     defaultValue: const Constant(true),
   );
+  static const VerificationMeta _preferredLocaleMeta = const VerificationMeta(
+    'preferredLocale',
+  );
+  @override
+  late final GeneratedColumn<String> preferredLocale = GeneratedColumn<String>(
+    'preferred_locale',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('en'),
+  );
+  static const VerificationMeta _themeModeMeta = const VerificationMeta(
+    'themeMode',
+  );
+  @override
+  late final GeneratedColumn<String> themeMode = GeneratedColumn<String>(
+    'theme_mode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('dark'),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -3178,6 +3202,8 @@ class $RestSettingsTable extends RestSettings
     autoStart,
     notificationsEnabled,
     vibrationEnabled,
+    preferredLocale,
+    themeMode,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -3236,6 +3262,21 @@ class $RestSettingsTable extends RestSettings
         ),
       );
     }
+    if (data.containsKey('preferred_locale')) {
+      context.handle(
+        _preferredLocaleMeta,
+        preferredLocale.isAcceptableOrUnknown(
+          data['preferred_locale']!,
+          _preferredLocaleMeta,
+        ),
+      );
+    }
+    if (data.containsKey('theme_mode')) {
+      context.handle(
+        _themeModeMeta,
+        themeMode.isAcceptableOrUnknown(data['theme_mode']!, _themeModeMeta),
+      );
+    }
     return context;
   }
 
@@ -3269,6 +3310,18 @@ class $RestSettingsTable extends RestSettings
         DriftSqlType.bool,
         data['${effectivePrefix}vibration_enabled'],
       )!,
+      preferredLocale:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}preferred_locale'],
+          ) ??
+          'en',
+      themeMode:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}theme_mode'],
+          ) ??
+          'dark',
     );
   }
 
@@ -3286,6 +3339,8 @@ class RestSettingsData extends DataClass
   final bool autoStart;
   final bool notificationsEnabled;
   final bool vibrationEnabled;
+  final String preferredLocale;
+  final String themeMode;
   const RestSettingsData({
     required this.id,
     required this.betweenSetsSeconds,
@@ -3293,6 +3348,8 @@ class RestSettingsData extends DataClass
     required this.autoStart,
     required this.notificationsEnabled,
     required this.vibrationEnabled,
+    this.preferredLocale = 'en',
+    this.themeMode = 'dark',
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3303,6 +3360,8 @@ class RestSettingsData extends DataClass
     map['auto_start'] = Variable<bool>(autoStart);
     map['notifications_enabled'] = Variable<bool>(notificationsEnabled);
     map['vibration_enabled'] = Variable<bool>(vibrationEnabled);
+    map['preferred_locale'] = Variable<String>(preferredLocale);
+    map['theme_mode'] = Variable<String>(themeMode);
     return map;
   }
 
@@ -3314,6 +3373,8 @@ class RestSettingsData extends DataClass
       autoStart: Value(autoStart),
       notificationsEnabled: Value(notificationsEnabled),
       vibrationEnabled: Value(vibrationEnabled),
+      preferredLocale: Value(preferredLocale),
+      themeMode: Value(themeMode),
     );
   }
 
@@ -3333,6 +3394,12 @@ class RestSettingsData extends DataClass
         json['notificationsEnabled'],
       ),
       vibrationEnabled: serializer.fromJson<bool>(json['vibrationEnabled']),
+      preferredLocale: json['preferredLocale'] != null
+          ? serializer.fromJson<String>(json['preferredLocale'])
+          : 'en',
+      themeMode: json['themeMode'] != null
+          ? serializer.fromJson<String>(json['themeMode'])
+          : 'dark',
     );
   }
   @override
@@ -3347,6 +3414,8 @@ class RestSettingsData extends DataClass
       'autoStart': serializer.toJson<bool>(autoStart),
       'notificationsEnabled': serializer.toJson<bool>(notificationsEnabled),
       'vibrationEnabled': serializer.toJson<bool>(vibrationEnabled),
+      'preferredLocale': serializer.toJson<String>(preferredLocale),
+      'themeMode': serializer.toJson<String>(themeMode),
     };
   }
 
@@ -3357,6 +3426,8 @@ class RestSettingsData extends DataClass
     bool? autoStart,
     bool? notificationsEnabled,
     bool? vibrationEnabled,
+    String? preferredLocale,
+    String? themeMode,
   }) => RestSettingsData(
     id: id ?? this.id,
     betweenSetsSeconds: betweenSetsSeconds ?? this.betweenSetsSeconds,
@@ -3365,6 +3436,8 @@ class RestSettingsData extends DataClass
     autoStart: autoStart ?? this.autoStart,
     notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
     vibrationEnabled: vibrationEnabled ?? this.vibrationEnabled,
+    preferredLocale: preferredLocale ?? this.preferredLocale,
+    themeMode: themeMode ?? this.themeMode,
   );
   RestSettingsData copyWithCompanion(RestSettingsCompanion data) {
     return RestSettingsData(
@@ -3382,6 +3455,10 @@ class RestSettingsData extends DataClass
       vibrationEnabled: data.vibrationEnabled.present
           ? data.vibrationEnabled.value
           : this.vibrationEnabled,
+      preferredLocale: data.preferredLocale.present
+          ? data.preferredLocale.value
+          : this.preferredLocale,
+      themeMode: data.themeMode.present ? data.themeMode.value : this.themeMode,
     );
   }
 
@@ -3393,7 +3470,9 @@ class RestSettingsData extends DataClass
           ..write('betweenExercisesSeconds: $betweenExercisesSeconds, ')
           ..write('autoStart: $autoStart, ')
           ..write('notificationsEnabled: $notificationsEnabled, ')
-          ..write('vibrationEnabled: $vibrationEnabled')
+          ..write('vibrationEnabled: $vibrationEnabled, ')
+          ..write('preferredLocale: $preferredLocale, ')
+          ..write('themeMode: $themeMode')
           ..write(')'))
         .toString();
   }
@@ -3406,6 +3485,8 @@ class RestSettingsData extends DataClass
     autoStart,
     notificationsEnabled,
     vibrationEnabled,
+    preferredLocale,
+    themeMode,
   );
   @override
   bool operator ==(Object other) =>
@@ -3416,7 +3497,9 @@ class RestSettingsData extends DataClass
           other.betweenExercisesSeconds == this.betweenExercisesSeconds &&
           other.autoStart == this.autoStart &&
           other.notificationsEnabled == this.notificationsEnabled &&
-          other.vibrationEnabled == this.vibrationEnabled);
+          other.vibrationEnabled == this.vibrationEnabled &&
+          other.preferredLocale == this.preferredLocale &&
+          other.themeMode == this.themeMode);
 }
 
 class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
@@ -3426,6 +3509,8 @@ class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
   final Value<bool> autoStart;
   final Value<bool> notificationsEnabled;
   final Value<bool> vibrationEnabled;
+  final Value<String> preferredLocale;
+  final Value<String> themeMode;
   const RestSettingsCompanion({
     this.id = const Value.absent(),
     this.betweenSetsSeconds = const Value.absent(),
@@ -3433,6 +3518,8 @@ class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
     this.autoStart = const Value.absent(),
     this.notificationsEnabled = const Value.absent(),
     this.vibrationEnabled = const Value.absent(),
+    this.preferredLocale = const Value.absent(),
+    this.themeMode = const Value.absent(),
   });
   RestSettingsCompanion.insert({
     this.id = const Value.absent(),
@@ -3441,6 +3528,8 @@ class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
     this.autoStart = const Value.absent(),
     this.notificationsEnabled = const Value.absent(),
     this.vibrationEnabled = const Value.absent(),
+    this.preferredLocale = const Value.absent(),
+    this.themeMode = const Value.absent(),
   });
   static Insertable<RestSettingsData> custom({
     Expression<int>? id,
@@ -3449,6 +3538,8 @@ class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
     Expression<bool>? autoStart,
     Expression<bool>? notificationsEnabled,
     Expression<bool>? vibrationEnabled,
+    Expression<String>? preferredLocale,
+    Expression<String>? themeMode,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -3460,6 +3551,8 @@ class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
       if (notificationsEnabled != null)
         'notifications_enabled': notificationsEnabled,
       if (vibrationEnabled != null) 'vibration_enabled': vibrationEnabled,
+      if (preferredLocale != null) 'preferred_locale': preferredLocale,
+      if (themeMode != null) 'theme_mode': themeMode,
     });
   }
 
@@ -3470,6 +3563,8 @@ class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
     Value<bool>? autoStart,
     Value<bool>? notificationsEnabled,
     Value<bool>? vibrationEnabled,
+    Value<String>? preferredLocale,
+    Value<String>? themeMode,
   }) {
     return RestSettingsCompanion(
       id: id ?? this.id,
@@ -3479,6 +3574,8 @@ class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
       autoStart: autoStart ?? this.autoStart,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
       vibrationEnabled: vibrationEnabled ?? this.vibrationEnabled,
+      preferredLocale: preferredLocale ?? this.preferredLocale,
+      themeMode: themeMode ?? this.themeMode,
     );
   }
 
@@ -3505,6 +3602,12 @@ class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
     if (vibrationEnabled.present) {
       map['vibration_enabled'] = Variable<bool>(vibrationEnabled.value);
     }
+    if (preferredLocale.present) {
+      map['preferred_locale'] = Variable<String>(preferredLocale.value);
+    }
+    if (themeMode.present) {
+      map['theme_mode'] = Variable<String>(themeMode.value);
+    }
     return map;
   }
 
@@ -3516,7 +3619,9 @@ class RestSettingsCompanion extends UpdateCompanion<RestSettingsData> {
           ..write('betweenExercisesSeconds: $betweenExercisesSeconds, ')
           ..write('autoStart: $autoStart, ')
           ..write('notificationsEnabled: $notificationsEnabled, ')
-          ..write('vibrationEnabled: $vibrationEnabled')
+          ..write('vibrationEnabled: $vibrationEnabled, ')
+          ..write('preferredLocale: $preferredLocale, ')
+          ..write('themeMode: $themeMode')
           ..write(')'))
         .toString();
   }
@@ -6536,6 +6641,8 @@ typedef $$RestSettingsTableCreateCompanionBuilder =
       Value<bool> autoStart,
       Value<bool> notificationsEnabled,
       Value<bool> vibrationEnabled,
+      Value<String> preferredLocale,
+      Value<String> themeMode,
     });
 typedef $$RestSettingsTableUpdateCompanionBuilder =
     RestSettingsCompanion Function({
@@ -6545,6 +6652,8 @@ typedef $$RestSettingsTableUpdateCompanionBuilder =
       Value<bool> autoStart,
       Value<bool> notificationsEnabled,
       Value<bool> vibrationEnabled,
+      Value<String> preferredLocale,
+      Value<String> themeMode,
     });
 
 class $$RestSettingsTableFilterComposer
@@ -6583,6 +6692,16 @@ class $$RestSettingsTableFilterComposer
 
   ColumnFilters<bool> get vibrationEnabled => $composableBuilder(
     column: $table.vibrationEnabled,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get preferredLocale => $composableBuilder(
+    column: $table.preferredLocale,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get themeMode => $composableBuilder(
+    column: $table.themeMode,
     builder: (column) => ColumnFilters(column),
   );
 }
@@ -6625,6 +6744,16 @@ class $$RestSettingsTableOrderingComposer
     column: $table.vibrationEnabled,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get preferredLocale => $composableBuilder(
+    column: $table.preferredLocale,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get themeMode => $composableBuilder(
+    column: $table.themeMode,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$RestSettingsTableAnnotationComposer
@@ -6661,6 +6790,14 @@ class $$RestSettingsTableAnnotationComposer
     column: $table.vibrationEnabled,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get preferredLocale => $composableBuilder(
+    column: $table.preferredLocale,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get themeMode =>
+      $composableBuilder(column: $table.themeMode, builder: (column) => column);
 }
 
 class $$RestSettingsTableTableManager
@@ -6700,6 +6837,8 @@ class $$RestSettingsTableTableManager
                 Value<bool> autoStart = const Value.absent(),
                 Value<bool> notificationsEnabled = const Value.absent(),
                 Value<bool> vibrationEnabled = const Value.absent(),
+                Value<String> preferredLocale = const Value.absent(),
+                Value<String> themeMode = const Value.absent(),
               }) => RestSettingsCompanion(
                 id: id,
                 betweenSetsSeconds: betweenSetsSeconds,
@@ -6707,6 +6846,8 @@ class $$RestSettingsTableTableManager
                 autoStart: autoStart,
                 notificationsEnabled: notificationsEnabled,
                 vibrationEnabled: vibrationEnabled,
+                preferredLocale: preferredLocale,
+                themeMode: themeMode,
               ),
           createCompanionCallback:
               ({
@@ -6716,6 +6857,8 @@ class $$RestSettingsTableTableManager
                 Value<bool> autoStart = const Value.absent(),
                 Value<bool> notificationsEnabled = const Value.absent(),
                 Value<bool> vibrationEnabled = const Value.absent(),
+                Value<String> preferredLocale = const Value.absent(),
+                Value<String> themeMode = const Value.absent(),
               }) => RestSettingsCompanion.insert(
                 id: id,
                 betweenSetsSeconds: betweenSetsSeconds,
@@ -6723,6 +6866,8 @@ class $$RestSettingsTableTableManager
                 autoStart: autoStart,
                 notificationsEnabled: notificationsEnabled,
                 vibrationEnabled: vibrationEnabled,
+                preferredLocale: preferredLocale,
+                themeMode: themeMode,
               ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))

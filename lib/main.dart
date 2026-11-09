@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/database/app_database.dart';
 import 'core/l10n/generated/app_localizations.dart';
+import 'core/l10n/locale_cubit.dart';
 import 'core/notifications/rest_notification_service.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_cubit.dart';
@@ -10,6 +11,7 @@ import 'features/exercises/data/repositories/exercise_repository_impl.dart';
 import 'features/exercises/domain/repositories/exercise_repository.dart';
 import 'features/exercises/presentation/cubit/exercise_list_cubit.dart';
 import 'features/history/domain/services/workout_export_service.dart';
+import 'features/history/domain/services/workout_import_service.dart';
 import 'features/home/presentation/screens/main_navigation_screen.dart';
 import 'features/profile/data/repositories/profile_repository_impl.dart';
 import 'features/profile/domain/repositories/profile_repository.dart';
@@ -50,6 +52,7 @@ void main() async {
     database.settingsDao,
   );
   final exportService = WorkoutExportService(database);
+  final importService = WorkoutImportService(database);
 
   // OS-level alert when rest ends (works with the screen locked).
   final restNotifications = LocalRestNotificationService();
@@ -64,11 +67,12 @@ void main() async {
       restSettingsRepository: restSettingsRepository,
       restNotifications: restNotifications,
       exportService: exportService,
+      importService: importService,
     ),
   );
 }
 
-class StrongApp extends StatefulWidget {
+class StrongApp extends StatelessWidget {
   final ExerciseRepository exerciseRepository;
   final WorkoutRepository workoutRepository;
   final TemplateRepository templateRepository;
@@ -76,6 +80,7 @@ class StrongApp extends StatefulWidget {
   final RestSettingsRepository restSettingsRepository;
   final RestNotificationService restNotifications;
   final WorkoutExportService? exportService;
+  final WorkoutImportService? importService;
 
   const StrongApp({
     super.key,
@@ -86,82 +91,77 @@ class StrongApp extends StatefulWidget {
     required this.restSettingsRepository,
     this.restNotifications = const NoopRestNotificationService(),
     this.exportService,
+    this.importService,
   });
-
-  @override
-  State<StrongApp> createState() => _StrongAppState();
-}
-
-class _StrongAppState extends State<StrongApp> {
-  // Default to English, dynamically toggleable to French ('fr') or Arabic ('ar' - RTL)
-  Locale _currentLocale = const Locale('en');
-
-  void _changeLocale(Locale newLocale) {
-    setState(() {
-      _currentLocale = newLocale;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<ExerciseRepository>.value(
-          value: widget.exerciseRepository,
+        RepositoryProvider<ExerciseRepository>.value(value: exerciseRepository),
+        RepositoryProvider<WorkoutRepository>.value(value: workoutRepository),
+        RepositoryProvider<TemplateRepository>.value(value: templateRepository),
+        RepositoryProvider<ProfileRepository>.value(value: profileRepository),
+        RepositoryProvider<RestSettingsRepository>.value(
+          value: restSettingsRepository,
         ),
-        RepositoryProvider<WorkoutRepository>.value(
-          value: widget.workoutRepository,
-        ),
-        RepositoryProvider<TemplateRepository>.value(
-          value: widget.templateRepository,
-        ),
-        RepositoryProvider<ProfileRepository>.value(
-          value: widget.profileRepository,
-        ),
-        if (widget.exportService != null)
-          RepositoryProvider<WorkoutExportService>.value(
-            value: widget.exportService!,
-          ),
+        if (exportService != null)
+          RepositoryProvider<WorkoutExportService>.value(value: exportService!),
+        if (importService != null)
+          RepositoryProvider<WorkoutImportService>.value(value: importService!),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
+          BlocProvider<ThemeCubit>(
+            create: (_) =>
+                ThemeCubit(settingsRepository: restSettingsRepository),
+          ),
+          BlocProvider<LocaleCubit>(
+            create: (_) =>
+                LocaleCubit(settingsRepository: restSettingsRepository),
+          ),
           BlocProvider<WorkoutSessionBloc>(
             create: (ctx) =>
-                WorkoutSessionBloc(widget.workoutRepository)
+                WorkoutSessionBloc(workoutRepository)
                   ..add(const ResumeActiveSessionRequested()),
           ),
           BlocProvider<RoutinesCubit>(
-            create: (ctx) => RoutinesCubit(widget.templateRepository),
+            create: (ctx) => RoutinesCubit(templateRepository),
           ),
           BlocProvider<ProfileCubit>(
-            create: (ctx) => ProfileCubit(widget.profileRepository),
+            create: (ctx) => ProfileCubit(profileRepository),
           ),
           BlocProvider<ExerciseListCubit>(
-            create: (ctx) => ExerciseListCubit(widget.exerciseRepository),
+            create: (ctx) => ExerciseListCubit(exerciseRepository),
           ),
           BlocProvider<RestTimerCubit>(
             create: (ctx) => RestTimerCubit(
-              settings: widget.restSettingsRepository,
-              notifications: widget.restNotifications,
+              settings: restSettingsRepository,
+              notifications: restNotifications,
             ),
           ),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {
-            return MaterialApp(
-              title: 'Strong Track',
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              themeMode: themeMode,
-              locale: _currentLocale,
-              supportedLocales: AppLocalizations.supportedLocales,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              home: MainNavigationScreen(
-                currentLocale: _currentLocale,
-                onLocaleChanged: _changeLocale,
-              ),
+            return BlocBuilder<LocaleCubit, Locale>(
+              builder: (context, currentLocale) {
+                return MaterialApp(
+                  title: 'Strong Track',
+                  debugShowCheckedModeBanner: false,
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppTheme.darkTheme,
+                  themeMode: themeMode,
+                  locale: currentLocale,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  home: MainNavigationScreen(
+                    currentLocale: currentLocale,
+                    onLocaleChanged: (newLocale) =>
+                        context.read<LocaleCubit>().setLocale(newLocale),
+                  ),
+                );
+              },
             );
           },
         ),

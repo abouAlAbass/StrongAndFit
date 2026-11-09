@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:strong/core/l10n/generated/app_localizations.dart';
+import 'package:strong/core/l10n/generated/app_localizations_fr.dart';
 import 'package:strong/core/services/ai_key_storage_service.dart';
 import 'package:strong/core/theme/app_colors.dart';
 import 'package:strong/core/theme/app_typography.dart';
@@ -87,6 +89,9 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
     super.dispose();
   }
 
+  AppLocalizations get _l10n =>
+      AppLocalizations.of(context) ?? AppLocalizationsFr();
+
   Future<void> _launchAiStudioUrl() async {
     final uri = Uri.parse(_kAiStudioUrl);
     try {
@@ -95,22 +100,21 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
         mode: LaunchMode.externalApplication,
       );
       if (!launched && mounted) {
-        setState(
-          () => _errorMessage = 'Impossible d\'ouvrir le lien : $_kAiStudioUrl',
-        );
+        setState(() => _errorMessage = _kAiStudioUrl);
       }
     } catch (e) {
       if (mounted) {
-        setState(() => _errorMessage = 'Erreur ouverture navigateur: $e');
+        setState(() => _errorMessage = '$e');
       }
     }
   }
 
   Future<void> _validateAndSaveKey() async {
+    final l10n = _l10n;
     final inputKey = _apiKeyController.text.trim();
     if (inputKey.isEmpty) {
       setState(() {
-        _errorMessage = 'Veuillez saisir ou coller votre clé API Gemini.';
+        _errorMessage = l10n.aiKeyEmptyError;
         _successMessage = null;
       });
       return;
@@ -135,8 +139,7 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
         setState(() {
           _isLoading = false;
           _hasSavedKey = true;
-          _successMessage =
-              'Clé Gemini validée et enregistrée de façon sécurisée !';
+          _successMessage = l10n.aiKeySavedSuccess;
         });
         widget.onKeyUpdated?.call();
 
@@ -148,26 +151,32 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
     } catch (e) {
       HapticFeedback.heavyImpact();
       if (mounted) {
+        final errorText =
+            e is AiNetworkException ||
+                e.toString().toLowerCase().contains('socket') ||
+                e.toString().toLowerCase().contains('clientexception') ||
+                e.toString().toLowerCase().contains('failed host lookup')
+            ? l10n.networkConnectionError
+            : e.toString().replaceAll('Exception: ', '');
         setState(() {
           _isLoading = false;
-          _errorMessage = e.toString().replaceAll('Exception: ', '');
+          _errorMessage = errorText;
         });
       }
     }
   }
 
   Future<void> _deleteKey() async {
+    final l10n = _l10n;
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Supprimer la clé Gemini ?'),
-        content: const Text(
-          'Les fonctionnalités d\'analyse automatique de séances et de records seront désactivées.',
-        ),
+        title: Text(l10n.aiKeyDeleteConfirmTitle),
+        content: Text(l10n.aiKeyDeleteConfirmMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Annuler'),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(ctx, true),
@@ -175,7 +184,7 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
               backgroundColor: AppColors.error,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Supprimer'),
+            child: Text(l10n.delete),
           ),
         ],
       ),
@@ -188,7 +197,7 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
         setState(() {
           _apiKeyController.clear();
           _hasSavedKey = false;
-          _successMessage = 'Clé supprimée.';
+          _successMessage = l10n.aiKeyDeletedSuccess;
           _errorMessage = null;
         });
         widget.onKeyUpdated?.call();
@@ -198,6 +207,7 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = _l10n;
     return Container(
       padding: EdgeInsets.only(
         left: 20,
@@ -255,13 +265,13 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Coach IA — Clé Google Gemini',
+                              l10n.aiKeySheetTitle,
                               style: AppTypography.ofTitleLarge(
                                 context,
                               ).copyWith(fontSize: 18),
                             ),
                             Text(
-                              'Bring Your Own Key (BYOK) — 100% Gratuit',
+                              l10n.aiKeySheetSubtitle,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: AppColors.ofTextSecondary(context),
@@ -302,7 +312,7 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            'Votre clé reste sur votre appareil. Elle est chiffrée dans le Keystore Android / Keychain iOS et n\'est jamais transmise à un serveur tiers.',
+                            l10n.aiKeyPrivacyCallout,
                             style: TextStyle(
                               fontSize: 11.5,
                               color: AppColors.ofTextSecondary(context),
@@ -317,7 +327,7 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
 
                   // Step-by-Step Instructions
                   Text(
-                    'Comment obtenir votre clé gratuite en 30 secondes :',
+                    l10n.aiKeyStepsTitle,
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
@@ -325,30 +335,18 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  _buildStepRow(
-                    context,
-                    '1',
-                    'Connectez-vous avec votre compte Google sur AI Studio.',
-                  ),
-                  _buildStepRow(
-                    context,
-                    '2',
-                    'Cliquez sur "Create API Key" (aucun moyen de paiement requis).',
-                  ),
-                  _buildStepRow(
-                    context,
-                    '3',
-                    'Copiez la clé et collez-la dans le champ ci-dessous.',
-                  ),
+                  _buildStepRow(context, '1', l10n.aiKeyStep1),
+                  _buildStepRow(context, '2', l10n.aiKeyStep2),
+                  _buildStepRow(context, '3', l10n.aiKeyStep3),
                   const SizedBox(height: 12),
 
                   // Direct Button to Google AI Studio
                   OutlinedButton.icon(
                     onPressed: _launchAiStudioUrl,
                     icon: const Icon(Icons.open_in_new_rounded, size: 16),
-                    label: const Text(
-                      'Obtenir une clé gratuite sur Google AI Studio',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    label: Text(
+                      l10n.aiKeyGetFreeKeyButton,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.primary,
@@ -369,8 +367,8 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                     controller: _apiKeyController,
                     obscureText: _obscureText,
                     decoration: InputDecoration(
-                      labelText: 'Clé d\'API Google Gemini (ex: AIzaSy...)',
-                      hintText: 'Collez votre clé ici',
+                      labelText: l10n.aiKeyInputLabel,
+                      hintText: l10n.aiKeyInputHint,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(
@@ -392,7 +390,7 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                           ),
                           IconButton(
                             icon: const Icon(Icons.content_paste_rounded),
-                            tooltip: 'Coller',
+                            tooltip: l10n.aiKeyPasteTooltip,
                             onPressed: () async {
                               final data = await Clipboard.getData(
                                 'text/plain',
@@ -498,9 +496,9 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                               ),
                             ),
                           )
-                        : const Text(
-                            'Valider et Sauvegarder',
-                            style: TextStyle(
+                        : Text(
+                            l10n.aiKeyValidateAndSaveButton,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 15,
                             ),
@@ -513,7 +511,7 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                     TextButton.icon(
                       onPressed: _isLoading ? null : _deleteKey,
                       icon: const Icon(Icons.delete_outline_rounded, size: 16),
-                      label: const Text('Supprimer la clé enregistrée'),
+                      label: Text(l10n.aiKeyDeleteSavedButton),
                       style: TextButton.styleFrom(
                         foregroundColor: AppColors.error,
                       ),

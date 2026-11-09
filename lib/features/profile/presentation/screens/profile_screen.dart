@@ -7,9 +7,11 @@ import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/theme_cubit.dart';
 import '../../../../core/widgets/responsive_content_wrapper.dart';
 import '../../../history/domain/services/workout_export_service.dart';
+import '../../../history/domain/services/workout_import_service.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 import '../widgets/ai_key_settings_sheet.dart';
+import '../widgets/backup_import_dialog.dart';
 import '../widgets/edit_profile_dialog.dart';
 import '../widgets/muscle_distribution_card.dart';
 import '../widgets/weight_progression_card.dart';
@@ -410,6 +412,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _buildGeminiAiCard(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsetsDirectional.all(16),
       decoration: BoxDecoration(
@@ -442,11 +445,11 @@ class ProfileScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Coach IA — Google Gemini (BYOK)',
+                      l10n.aiCoachCardTitle,
                       style: AppTypography.ofTitleMedium(context),
                     ),
                     Text(
-                      'Analyse de surcharge progressive, RPE et records',
+                      l10n.aiCoachCardSubtitle,
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.ofTextSecondary(context),
@@ -459,7 +462,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           const SizedBox(height: 14),
           Text(
-            'Utilisez votre propre clé d\'API Google AI Studio pour obtenir des recommandations d\'entraînement personnalisées et sans abonnement payant.',
+            l10n.aiCoachCardDescription,
             style: TextStyle(
               fontSize: 12.5,
               color: AppColors.ofTextSecondary(context),
@@ -472,9 +475,9 @@ class ProfileScreen extends StatelessWidget {
             child: OutlinedButton.icon(
               onPressed: () => AiKeySettingsSheet.show(context),
               icon: const Icon(Icons.vpn_key_rounded, size: 16),
-              label: const Text(
-                'Configurer ma clé Gemini',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              label: Text(
+                l10n.aiCoachConfigureButton,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),
@@ -618,8 +621,12 @@ class ProfileScreen extends StatelessWidget {
   Widget _buildExportCard(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     WorkoutExportService? exportService;
+    WorkoutImportService? importService;
     try {
       exportService = context.read<WorkoutExportService>();
+    } catch (_) {}
+    try {
+      importService = context.read<WorkoutImportService>();
     } catch (_) {}
 
     return Container(
@@ -795,6 +802,86 @@ class ProfileScreen extends StatelessWidget {
                     Icons.backup_outlined,
                     size: 20,
                     color: AppColors.secondary,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // JSON Restore / Import Option
+          InkWell(
+            onTap: () async {
+              if (importService == null) return;
+              final result = await BackupImportDialog.show(
+                context,
+                importService: importService,
+              );
+              if (result != null && context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppColors.completed,
+                    behavior: SnackBarBehavior.floating,
+                    content: Text(
+                      l10n.importSuccessMessage(
+                        result.sessionsImported,
+                        result.setsImported,
+                      ),
+                    ),
+                  ),
+                );
+              }
+            },
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              padding: const EdgeInsetsDirectional.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.ofSurface(context),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: AppColors.ofBorder(context),
+                  width: 0.6,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.completed.withAlpha(25),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.settings_backup_restore_rounded,
+                      color: AppColors.completed,
+                      size: 22,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.importJsonTitle,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13.5,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          l10n.importJsonSubtitle,
+                          style: AppTypography.ofCaption(context),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(
+                    Icons.upload_file_rounded,
+                    size: 20,
+                    color: AppColors.completed,
                   ),
                 ],
               ),

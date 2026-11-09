@@ -19,6 +19,8 @@ class RestSettingsRepositoryImpl implements RestSettingsRepository {
       autoStart: row.autoStart,
       notificationsEnabled: row.notificationsEnabled,
       vibrationEnabled: row.vibrationEnabled,
+      preferredLocale: row.preferredLocale,
+      themeMode: row.themeMode,
     );
   }
 
@@ -31,6 +33,8 @@ class RestSettingsRepositoryImpl implements RestSettingsRepository {
         autoStart: Value(p.autoStart),
         notificationsEnabled: Value(p.notificationsEnabled),
         vibrationEnabled: Value(p.vibrationEnabled),
+        preferredLocale: Value(p.preferredLocale),
+        themeMode: Value(p.themeMode),
       ),
     );
   }
@@ -38,5 +42,15 @@ class RestSettingsRepositoryImpl implements RestSettingsRepository {
   @override
   Future<void> setExerciseRest(int exerciseId, int? seconds) {
     return _dao.setExerciseRest(exerciseId, seconds);
+  }
+
+  @override
+  Future<void> savePreferredLocale(String languageCode) {
+    return _dao.setPreferredLocale(languageCode);
+  }
+
+  @override
+  Future<void> saveThemeMode(String themeModeName) {
+    return _dao.setThemeMode(themeModeName);
   }
 }

@@ -414,6 +414,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String get exercise_hanging_leg_raise => 'Hanging Leg Raise';
 
   @override
+  String get exercise_dips => 'Chest & Triceps Dips';
+
+  @override
+  String get exercise_cable_fly => 'Cable Chest Fly';
+
+  @override
+  String get exercise_chin_up => 'Chin-Up (Underhand)';
+
+  @override
+  String get exercise_dumbbell_row => 'One-Arm Dumbbell Row';
+
+  @override
+  String get exercise_seated_cable_row => 'Seated Cable Row';
+
+  @override
+  String get exercise_lunges => 'Dumbbell Walking Lunges';
+
+  @override
+  String get exercise_hip_thrust => 'Barbell Hip Thrust';
+
+  @override
+  String get exercise_bulgarian_split_squat => 'Bulgarian Split Squat';
+
+  @override
+  String get exercise_leg_extension => 'Seated Leg Extension';
+
+  @override
+  String get exercise_leg_curl => 'Hamstring Leg Curl';
+
+  @override
+  String get exercise_calf_raise => 'Standing Calf Raise';
+
+  @override
+  String get exercise_dumbbell_shoulder_press =>
+      'Seated Dumbbell Shoulder Press';
+
+  @override
+  String get exercise_face_pull => 'Cable Face Pull';
+
+  @override
+  String get exercise_hammer_curl => 'Dumbbell Hammer Curl';
+
+  @override
+  String get exercise_incline_dumbbell_curl => 'Incline Dumbbell Curl';
+
+  @override
+  String get exercise_overhead_triceps_extension =>
+      'Overhead Triceps Extension';
+
+  @override
+  String get exercise_skull_crusher => 'EZ-Bar Skull Crusher';
+
+  @override
+  String get exercise_cable_crunch => 'Kneeling Cable Crunch';
+
+  @override
   String get exerciseGuide => 'Exercise Guide';
 
   @override
@@ -751,4 +807,153 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get systemDefault => 'System (Default)';
+
+  @override
+  String get importJsonTitle => 'Import JSON Backup';
+
+  @override
+  String get importJsonSubtitle =>
+      'Restore your profile, custom exercises, and workout history from a JSON file';
+
+  @override
+  String get importConfirmTitle => 'Import JSON Backup?';
+
+  @override
+  String get importConfirmMessage =>
+      'Choose how to restore the backup data. Merging keeps your current workouts and adds the backup records. Overwriting replaces all current workout history.';
+
+  @override
+  String get importMergeOption => 'Merge with existing data (Recommended)';
+
+  @override
+  String get importOverwriteOption => 'Overwrite existing history';
+
+  @override
+  String get importFilePathHint =>
+      'Select a local backup or paste JSON content below';
+
+  @override
+  String get importPasteJsonLabel => 'JSON Backup Content or File Path';
+
+  @override
+  String get importStartButton => 'Restore Backup';
+
+  @override
+  String importSuccessMessage(int sessions, int sets) {
+    return 'Backup restored successfully ($sessions workouts, $sets sets)!';
+  }
+
+  @override
+  String importErrorMessage(String error) {
+    return 'Import failed: $error';
+  }
+
+  @override
+  String get aiCoachCardTitle => 'AI Coach — Google Gemini (BYOK)';
+
+  @override
+  String get aiCoachCardSubtitle => 'Progressive overload, RPE & PR analysis';
+
+  @override
+  String get aiCoachCardDescription =>
+      'Use your own free Google AI Studio API key to get personalized strength coaching insights without any paid subscription.';
+
+  @override
+  String get aiCoachConfigureButton => 'Configure my Gemini key';
+
+  @override
+  String get aiKeySheetTitle => 'AI Coach — Google Gemini Key';
+
+  @override
+  String get aiKeySheetSubtitle => 'Bring Your Own Key (BYOK) — 100% Free';
+
+  @override
+  String get aiKeyPrivacyCallout =>
+      'Your key stays on your device. It is encrypted in Android Keystore / iOS Keychain and is never sent to any third-party server.';
+
+  @override
+  String get aiKeyStepsTitle => 'How to get your free key in 30 seconds:';
+
+  @override
+  String get aiKeyStep1 => 'Sign in with your Google account on AI Studio.';
+
+  @override
+  String get aiKeyStep2 =>
+      'Click \"Create API Key\" (no payment method required).';
+
+  @override
+  String get aiKeyStep3 => 'Copy the key and paste it into the field below.';
+
+  @override
+  String get aiKeyGetFreeKeyButton => 'Get a free key on Google AI Studio';
+
+  @override
+  String get aiKeyInputLabel => 'Google Gemini API Key (e.g. AIzaSy...)';
+
+  @override
+  String get aiKeyInputHint => 'Paste your key here';
+
+  @override
+  String get aiKeyPasteTooltip => 'Paste';
+
+  @override
+  String get aiKeyValidateAndSaveButton => 'Validate and Save';
+
+  @override
+  String get aiKeyDeleteSavedButton => 'Delete saved key';
+
+  @override
+  String get aiKeyDeleteConfirmTitle => 'Delete Gemini key?';
+
+  @override
+  String get aiKeyDeleteConfirmMessage =>
+      'Automatic workout and personal record AI analysis features will be disabled.';
+
+  @override
+  String get aiKeyEmptyError => 'Please enter or paste your Gemini API key.';
+
+  @override
+  String get aiKeySavedSuccess => 'Gemini key validated and securely saved!';
+
+  @override
+  String get aiKeyDeletedSuccess => 'Key deleted.';
+
+  @override
+  String get networkConnectionError =>
+      'Unable to connect to Google Gemini servers. Please check your Internet connection.';
+
+  @override
+  String get aiAnalysisDialogTitle => 'Strength Coach Analysis';
+
+  @override
+  String get aiAnalysisProgressiveOverloadTitle =>
+      'Progressive Overload & Intensity';
+
+  @override
+  String get aiAnalysisRecoveryRpeTitle => 'Recovery & Fatigue (RPE/RIR)';
+
+  @override
+  String get aiAnalysisHighlightsTitle => 'Strengths & Achievements';
+
+  @override
+  String get aiAnalysisPlateausRisksTitle => 'Watchpoints & Plateau Risks';
+
+  @override
+  String get aiAnalysisNextCycleTitle => 'Next Cycle Recommendations';
+
+  @override
+  String get aiAnalysisCloseButton => 'Close';
+
+  @override
+  String get aiAnalyzeSessionButton => 'Analyze with Gemini AI Coach';
+
+  @override
+  String get aiAnalyzingProgress => 'AI Coach analysis in progress...';
+
+  @override
+  String get finishWorkoutTitle => 'Complete Workout Session';
+
+  @override
+  String get finishWorkoutNotesHint =>
+      'How did the session feel? (RPE, energy, form notes...)';
 }

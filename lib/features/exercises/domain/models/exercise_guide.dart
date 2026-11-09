@@ -1,5 +1,5 @@
 /// Model representing comprehensive biomechanical execution guidelines,
-/// anatomical muscle targeting, and coaching cues for an exercise.
+/// anatomical muscle targeting, coaching cues, and optional visual illustration asset.
 class ExerciseGuide {
   final String slug;
   final String title;
@@ -13,6 +13,7 @@ class ExerciseGuide {
   final String hypertrophyRepRange;
   final String strengthRepRange;
   final String tempo;
+  final String? assetIllustrationPath;
 
   const ExerciseGuide({
     required this.slug,
@@ -27,5 +28,6 @@ class ExerciseGuide {
     this.hypertrophyRepRange = '8 - 12 reps (RPE 7-8)',
     this.strengthRepRange = '3 - 6 reps (RPE 8-9)',
     this.tempo = '3-0-1-0',
+    this.assetIllustrationPath,
   });
 }

@@ -33,68 +33,94 @@ class RpePickerDialog extends StatelessWidget {
     );
   }
 
-  static const List<({double rpe, double rir, String labelFr, String labelEn})>
+  static const List<
+    ({double rpe, double rir, String labelFr, String labelEn, String labelAr})
+  >
   rpeScales = [
     (
       rpe: 10.0,
       rir: 0.0,
       labelFr: 'Échec musculaire absolu',
       labelEn: 'Absolute failure, no reps left',
+      labelAr: 'فشل عضلي تام، لا تكرارات متبقية',
     ),
     (
       rpe: 9.5,
       rir: 0.5,
       labelFr: 'Peut-être 1 rep non garantie',
       labelEn: 'Maybe 1 rep left',
+      labelAr: 'ربما تكرار واحد غير مضمون',
     ),
     (
       rpe: 9.0,
       rir: 1.0,
       labelFr: '1 rep restante en réserve',
       labelEn: '1 rep left in reserve',
+      labelAr: 'تكرار واحد متبقٍ في الاحتياط',
     ),
     (
       rpe: 8.5,
       rir: 1.5,
       labelFr: '1 à 2 reps en réserve',
       labelEn: '1-2 reps left in reserve',
+      labelAr: '١ إلى ٢ تكرار في الاحتياط',
     ),
     (
       rpe: 8.0,
       rir: 2.0,
       labelFr: '2 reps en réserve (Zone optimale)',
       labelEn: '2 reps left (Hypertrophy sweetspot)',
+      labelAr: 'تكراران في الاحتياط (نطاق الضخامة المثالي)',
     ),
     (
       rpe: 7.5,
       rir: 2.5,
       labelFr: '2 à 3 reps en réserve',
       labelEn: '2-3 reps left in reserve',
+      labelAr: '٢ إلى ٣ تكرارات في الاحتياط',
     ),
     (
       rpe: 7.0,
       rir: 3.0,
       labelFr: '3 reps en réserve (Charge vive)',
       labelEn: '3 reps left (Solid speed)',
+      labelAr: '٣ تكرارات في الاحتياط (سرعة عالية)',
     ),
     (
       rpe: 6.5,
       rir: 3.5,
       labelFr: '3 à 4 reps en réserve',
       labelEn: '3-4 reps left in reserve',
+      labelAr: '٣ إلى ٤ تكرارات في الاحتياط',
     ),
     (
       rpe: 6.0,
       rir: 4.0,
       labelFr: '4+ reps (Échauffement / Vitesse)',
       labelEn: '4+ reps (Warm-up / Speed)',
+      labelAr: '٤+ تكرارات (إحماء / سرعة)',
     ),
   ];
+
+  static String localizedLabelFor(
+    ({double rpe, double rir, String labelFr, String labelEn, String labelAr})
+    item,
+    String languageCode,
+  ) {
+    switch (languageCode) {
+      case 'ar':
+        return item.labelAr;
+      case 'fr':
+        return item.labelFr;
+      default:
+        return item.labelEn;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final isFrench = Localizations.localeOf(context).languageCode == 'fr';
+    final languageCode = Localizations.localeOf(context).languageCode;
 
     return Container(
       constraints: BoxConstraints(
@@ -239,7 +265,7 @@ class RpePickerDialog extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    isFrench ? item.labelFr : item.labelEn,
+                                    localizedLabelFor(item, languageCode),
                                     style: AppTypography.ofCaption(context),
                                   ),
                                 ],

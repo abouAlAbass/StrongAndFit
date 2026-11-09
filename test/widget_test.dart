@@ -24,7 +24,10 @@ import 'package:strong/features/workout/domain/repositories/workout_repository.d
 import 'package:strong/features/workout/domain/services/one_rep_max_calculator.dart';
 import 'package:strong/features/workout/domain/services/plate_calculator.dart';
 import 'package:strong/core/enums/set_type.dart';
+import 'package:strong/core/l10n/locale_cubit.dart';
+import 'package:strong/features/exercises/presentation/widgets/exercise_media_viewer.dart';
 import 'package:strong/features/history/domain/services/workout_export_service.dart';
+import 'package:strong/features/history/domain/services/workout_import_service.dart';
 import 'package:strong/features/workout/domain/models/workout_session_detail.dart';
 import 'package:strong/core/theme/theme_cubit.dart';
 import 'package:strong/features/profile/presentation/cubit/profile_cubit.dart';
@@ -1422,6 +1425,149 @@ void main() {
           expect(find.text('Record sur le Squat'), findsOneWidget);
           expect(find.text('Légère fatigue lombaire'), findsOneWidget);
           expect(find.text('Augmenter le repos à 180s'), findsOneWidget);
+        },
+      );
+    });
+
+    group('Missions 1-5: JSON Import, Locale/Theme Persistence & Catalog', () {
+      test(
+        'WorkoutExportService -> WorkoutImportService round-trip restores sessions, exercises, and sets atomically',
+        () async {
+          final exportService = WorkoutExportService(
+            database,
+            tempDirectoryProvider: () async => Directory.systemTemp,
+          );
+
+          // 1. Create a workout session with a completed set
+          final sessionId = await workoutRepo.startNewSession(
+            title: 'Push Day Backup',
+          );
+          final allExercises = await exerciseRepo.watchAllExercises().first;
+          final dips = allExercises.firstWhere((e) => e.slug == 'dips');
+          final weId = await workoutRepo.addExerciseToSession(
+            sessionId: sessionId,
+            exerciseId: dips.id,
+          );
+          await workoutRepo.addSet(
+            workoutExerciseId: weId,
+            setNumber: 1,
+            setType: SetType.normal,
+            weightKg: 40.0,
+            reps: 10,
+            rpe: 8.5,
+          );
+          final sets = await (database.select(
+            database.setLogs,
+          )..where((t) => t.workoutExerciseId.equals(weId))).get();
+          await workoutRepo.toggleSetCompletion(
+            setId: sets.first.id,
+            isCompleted: true,
+          );
+          await workoutRepo.completeSession(
+            sessionId: sessionId,
+            durationSeconds: 2400,
+          );
+
+          final jsonFile = await exportService.generateJsonBackup();
+
+          // 2. Import into a fresh in-memory database with overwrite = true
+          final targetDb = AppDatabase(NativeDatabase.memory());
+          final targetImport = WorkoutImportService(
+            targetDb,
+            tempDirectoryProvider: () async => Directory.systemTemp,
+          );
+          final result = await targetImport.importFromFile(
+            jsonFile,
+            overwrite: true,
+            purgeTempFileAfterRead: true,
+          );
+
+          expect(result.sessionsImported, 1);
+          expect(result.setsImported, greaterThanOrEqualTo(1));
+
+          final targetSessions = await (targetDb.select(
+            targetDb.workoutSessions,
+          )).get();
+          expect(targetSessions.length, 1);
+          expect(targetSessions.first.title, 'Push Day Backup');
+          final targetDetail = await targetDb.workoutDao
+              .watchSessionWithSets(targetSessions.first.id)
+              .first;
+          expect(targetDetail, isNotNull);
+          expect(targetDetail!.exercises.first.exercise.slug, 'dips');
+          expect(
+            targetDetail.exercises.first.sets.any((s) => s.weightKg == 40.0),
+            isTrue,
+          );
+
+          await targetDb.close();
+        },
+      );
+
+      test(
+        'LocaleCubit and ThemeCubit persist and hydrate preferences via RestSettingsRepository',
+        () async {
+          await restSettingsRepo.savePreferredLocale('ar');
+          await restSettingsRepo.saveThemeMode('light');
+
+          final prefs = await restSettingsRepo.load();
+          expect(prefs.preferredLocale, 'ar');
+          expect(prefs.themeMode, 'light');
+
+          final localeCubit = LocaleCubit(settingsRepository: restSettingsRepo);
+          final themeCubit = ThemeCubit(settingsRepository: restSettingsRepo);
+
+          await Future<void>.delayed(const Duration(milliseconds: 50));
+          expect(localeCubit.state.languageCode, 'ar');
+          expect(themeCubit.state, ThemeMode.light);
+
+          await localeCubit.close();
+          await themeCubit.close();
+        },
+      );
+
+      test(
+        'RpePickerDialog provides trilingual (AR/EN/FR) effort labels and ExerciseGuidesData covers all 34 exercises',
+        () async {
+          for (final item in RpePickerDialog.rpeScales) {
+            expect(
+              RpePickerDialog.localizedLabelFor(item, 'ar').isNotEmpty,
+              isTrue,
+            );
+            expect(
+              RpePickerDialog.localizedLabelFor(item, 'en').isNotEmpty,
+              isTrue,
+            );
+            expect(
+              RpePickerDialog.localizedLabelFor(item, 'fr').isNotEmpty,
+              isTrue,
+            );
+          }
+
+          final exercises = await exerciseRepo.watchAllExercises().first;
+          expect(exercises.length, 34);
+          for (final ex in exercises) {
+            final guideAr = ExerciseGuidesData.getGuide(ex.slug, 'ar');
+            final guideEn = ExerciseGuidesData.getGuide(ex.slug, 'en');
+            final guideFr = ExerciseGuidesData.getGuide(ex.slug, 'fr');
+            expect(guideAr.primaryMuscles.isNotEmpty, isTrue);
+            expect(guideEn.primaryMuscles.isNotEmpty, isTrue);
+            expect(guideFr.primaryMuscles.isNotEmpty, isTrue);
+          }
+        },
+      );
+
+      testWidgets(
+        'ExerciseMediaViewer renders biomechanical schematic fallback cleanly',
+        (WidgetTester tester) async {
+          final guide = ExerciseGuidesData.getGuide('dips', 'fr');
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(body: ExerciseMediaViewer(guide: guide)),
+            ),
+          );
+          await tester.pumpAndSettle();
+          expect(find.byType(ExerciseMediaViewer), findsOneWidget);
         },
       );
     });

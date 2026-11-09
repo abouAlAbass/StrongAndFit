@@ -616,6 +616,458 @@ class ExerciseGuidesData {
       hypertrophyRepRange: '10 - 15 reps',
       strengthRepRange: '12 - 20 reps',
       tempo: '2-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/hanging_leg_raise.svg',
+    ),
+    'dips': const ExerciseGuide(
+      slug: 'dips',
+      title: 'Dips aux barres parallèles',
+      primaryMuscles: [
+        'Grand pectoral (faisceau inférieur)',
+        'Triceps brachial',
+      ],
+      secondaryMuscles: ['Deltoïde antérieur'],
+      setupInstructions: [
+        'Saisissez les barres parallèles en prise neutre, bras tendus et épaules basses.',
+        'Inclinez légèrement le buste vers l\'avant (20-30°) pour cibler davantage les pectoraux, ou restez droit pour les triceps.',
+      ],
+      executionInstructions: [
+        'Fléchissez les coudes avec contrôle jusqu\'à ce que vos épaules arrivent à hauteur des coudes (90°).',
+        'Repoussez vigoureusement les poignées jusqu\'à l\'extension complète sans hausser les épaules.',
+      ],
+      breathingInstructions:
+          'Inspirez pendant la descente ; expirez en poussant vers le haut.',
+      commonMistakes: [
+        'Descendre trop bas au-delà de sa mobilité scapulaire.',
+        'Hausser les épaules vers les oreilles en bas du mouvement.',
+      ],
+      coachTip:
+          'Maintenez les omoplates abaissées tout au long de la série pour protéger l\'articulation gléno-humérale.',
+      hypertrophyRepRange: '8 - 12 reps',
+      strengthRepRange: '5 - 8 reps lestées',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/dips.svg',
+    ),
+    'cable_fly': const ExerciseGuide(
+      slug: 'cable_fly',
+      title: 'Écartés à la poulie vis-à-vis',
+      primaryMuscles: ['Grand pectoral (fibres sternales et internes)'],
+      secondaryMuscles: ['Deltoïde antérieur', 'Biceps (stabilisation)'],
+      setupInstructions: [
+        'Réglez les deux poulies à hauteur d\'épaules ou légèrement au-dessus.',
+        'Avancez d\'un pas pour créer une pré-tension, coudes légèrement fléchis.',
+      ],
+      executionInstructions: [
+        'Ramenez les poignées l\'une vers l\'autre en dessinant un grand arc de cercle (comme pour enlacer un arbre).',
+        'Contractez fortement les pectoraux pendant 1 seconde les mains jointes.',
+        'Ouvrez les bras lentement jusqu\'à l\'étirement complet sans laisser partir les épaules.',
+      ],
+      breathingInstructions:
+          'Inspirez à l\'ouverture thoracique ; expirez en resserrant les poignées.',
+      commonMistakes: [
+        'Transformer l\'écarté en développé en pliant trop les coudes.',
+      ],
+      coachTip:
+          'Cherchez à faire se toucher l\'intérieur de vos coudes plutôt que vos mains pour maximiser la contraction pectorale.',
+      hypertrophyRepRange: '12 - 15 reps',
+      strengthRepRange: '10 - 12 reps',
+      tempo: '2-1-1-1',
+      assetIllustrationPath: 'assets/illustrations/cable_fly.svg',
+    ),
+    'chin_up': const ExerciseGuide(
+      slug: 'chin_up',
+      title: 'Tractions en supination (Chin-Up)',
+      primaryMuscles: ['Grand dorsal', 'Biceps brachial'],
+      secondaryMuscles: ['Grand rond', 'Rhomboïdes', 'Sangle abdominale'],
+      setupInstructions: [
+        'Suspendez-vous à la barre fixe avec les paumes tournées vers vous (prise supination) à largeur d\'épaules.',
+      ],
+      executionInstructions: [
+        'Abaissez les omoplates puis tirez votre poitrine vers la barre en gardant les coudes proches du corps.',
+        'Passez le menton au-dessus de la barre, puis redescendez lentement jusqu\'à l\'extension complète.',
+      ],
+      breathingInstructions: 'Inspirez en bas ; expirez pendant la traction.',
+      commonMistakes: [
+        'Arrêter la descente à mi-chemin sans tendre les bras.',
+        'Donner des coups de genoux pour monter.',
+      ],
+      coachTip:
+          'Les tractions supination placent le biceps dans sa ligne de force idéale tout en étirant puissamment le grand dorsal.',
+      hypertrophyRepRange: '6 - 12 reps',
+      strengthRepRange: '3 - 6 reps lestées',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/chin_up.svg',
+    ),
+    'dumbbell_row': const ExerciseGuide(
+      slug: 'dumbbell_row',
+      title: 'Rowing haltère à un bras (Bûcheron)',
+      primaryMuscles: ['Grand dorsal', 'Rhomboïdes'],
+      secondaryMuscles: ['Trapèze moyen', 'Deltoïde postérieur', 'Biceps'],
+      setupInstructions: [
+        'Prenez appui avec une main et un genou sur un banc plat, ou la main sur le rack.',
+        'Dos plat parallèle au sol, l\'haltère pendant à la verticale.',
+      ],
+      executionInstructions: [
+        'Tirez l\'haltère en trajectoire courbe vers votre hanche (et non vers l\'épaule).',
+        'Marquez un temps d\'arrêt en haut, puis étirez l\'omoplate vers le sol à la descente.',
+      ],
+      breathingInstructions:
+          'Inspirez à l\'étirement bas ; expirez en tirant vers la hanche.',
+      commonMistakes: [
+        'Tourner excessivement le buste à chaque répétition.',
+        'Tirer vers l\'aisselle avec le biceps.',
+      ],
+      coachTip:
+          'Sciez vers l\'arrière en visant votre poche de pantalon avec votre coude.',
+      hypertrophyRepRange: '8 - 12 reps par bras',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '2-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/dumbbell_row.svg',
+    ),
+    'seated_cable_row': const ExerciseGuide(
+      slug: 'seated_cable_row',
+      title: 'Tirage horizontal à la poulie basse',
+      primaryMuscles: ['Milieu du dos (Rhomboïdes, Trapèzes)', 'Grand dorsal'],
+      secondaryMuscles: ['Biceps', 'Érecteurs du rachis'],
+      setupInstructions: [
+        'Asseyez-vous pieds calés sur les cale-pieds, genoux légèrement fléchis.',
+        'Buste droit, poitrine sortie, bras tendus devant vous.',
+      ],
+      executionInstructions: [
+        'Tirez la poignée vers le bas du sternum / nombril en resserrant les omoplates.',
+        'Maintenez la contraction 1 seconde sans basculer le buste en arrière.',
+        'Accompagnez le retour de la charge avec contrôle.',
+      ],
+      breathingInstructions:
+          'Inspirez bras tendus ; expirez en tirant la poignée au nombril.',
+      commonMistakes: [
+        'Faire du rameur avec le bas du dos d\'avant en arrière.',
+      ],
+      coachTip:
+          'Initiez chaque répétition par le recul des épaules avant même de plier les coudes.',
+      hypertrophyRepRange: '10 - 12 reps',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '2-1-1-1',
+      assetIllustrationPath: 'assets/illustrations/seated_cable_row.svg',
+    ),
+    'lunges': const ExerciseGuide(
+      slug: 'lunges',
+      title: 'Fentes aux haltères',
+      primaryMuscles: ['Quadriceps', 'Grand fessier'],
+      secondaryMuscles: [
+        'Ischio-jambiers',
+        'Moyen fessier (stabilisation)',
+        'Mollets',
+      ],
+      setupInstructions: [
+        'Debout, un haltère dans chaque main le long du corps.',
+        'Regard fixe devant vous, sangle abdominale engagée.',
+      ],
+      executionInstructions: [
+        'Faites un pas contrôlé vers l\'avant et fléchissez les deux genoux à 90 degrés.',
+        'Le genou arrière frôle le sol sans rebondir.',
+        'Poussez fort dans le talon du pied avant pour revenir ou enchaîner le pas suivant.',
+      ],
+      breathingInstructions:
+          'Inspirez lors de la flexion ; expirez en poussant sur la jambe avant.',
+      commonMistakes: [
+        'Aligner les deux pieds sur un fil (perte d\'équilibre) au lieu de garder la largeur du bassin.',
+        'Laisser le genou avant rentrer vers l\'intérieur.',
+      ],
+      coachTip:
+          'Un pas plus court cible davantage les quadriceps ; un pas plus long et buste légèrement penché recrute plus les fessiers.',
+      hypertrophyRepRange: '10 - 12 reps par jambe',
+      strengthRepRange: '6 - 8 reps par jambe',
+      tempo: '2-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/lunges.svg',
+    ),
+    'hip_thrust': const ExerciseGuide(
+      slug: 'hip_thrust',
+      title: 'Hip Thrust à la barre',
+      primaryMuscles: ['Grand fessier'],
+      secondaryMuscles: ['Ischio-jambiers', 'Quadriceps', 'Abdominaux'],
+      setupInstructions: [
+        'Adossez le bas de vos omoplates contre un banc stable, barre avec mousse placée au pli des hanches.',
+        'Pieds à plat largeur d\'épaules, tibias strictement verticaux en position haute.',
+      ],
+      executionInstructions: [
+        'Poussez dans les talons pour monter le bassin jusqu\'à l\'alignement genoux-hanches-épaules.',
+        'Gardez le menton rentré vers le sternum et basculez le bassin en rétroversion en haut.',
+        'Contractez les fessiers 1 à 2 secondes, puis redescendez sous contrôle.',
+      ],
+      breathingInstructions:
+          'Inspirez en bas ; expirez et verrouillez les fessiers en haut.',
+      commonMistakes: [
+        'Cambrer les lombaires en jetant la tête en arrière.',
+        'Pieds trop proches ou trop loin (les tibias doivent être à 90° en haut).',
+      ],
+      coachTip:
+          'Gardez le regard fixé droit devant vous tout au long du mouvement pour neutraliser la colonne lombaire.',
+      hypertrophyRepRange: '8 - 12 reps',
+      strengthRepRange: '5 - 8 reps',
+      tempo: '2-1-1-1',
+      assetIllustrationPath: 'assets/illustrations/hip_thrust.svg',
+    ),
+    'bulgarian_split_squat': const ExerciseGuide(
+      slug: 'bulgarian_split_squat',
+      title: 'Squat bulgare aux haltères',
+      primaryMuscles: ['Quadriceps', 'Grand fessier'],
+      secondaryMuscles: ['Moyen fessier', 'Adducteurs', 'Ischio-jambiers'],
+      setupInstructions: [
+        'Posez le coup de pied arrière sur un banc ou un rouleau, pied avant avancé d\'environ deux pas.',
+        'Tenez deux haltères ou un seul côté opposé pour l\'équilibre.',
+      ],
+      executionInstructions: [
+        'Descendez verticalement sur la jambe avant jusqu\'à l\'étirement profond de la hanche.',
+        '80 à 90% du poids doit reposer sur la jambe avant.',
+        'Repoussez le sol avec le pied avant sans vous aider de la jambe arrière.',
+      ],
+      breathingInstructions: 'Inspirez à la descente ; expirez à la remontée.',
+      commonMistakes: ['Pousser avec le pied arrière posé sur le banc.'],
+      coachTip:
+          'Asseyez-vous au bord du banc jambes tendues devant vous : là où arrivent vos talons est la distance exacte de votre pied avant.',
+      hypertrophyRepRange: '8 - 12 reps par jambe',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '3-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/bulgarian_split_squat.svg',
+    ),
+    'leg_extension': const ExerciseGuide(
+      slug: 'leg_extension',
+      title: 'Leg Extension à la machine',
+      primaryMuscles: ['Quadriceps (Droit fémoral, Vastes)'],
+      secondaryMuscles: [],
+      setupInstructions: [
+        'Alignez l\'axe de rotation de la machine exactement avec l\'articulation de vos genoux.',
+        'Boudin posé sur le bas des tibias, fessiers plaqués au fond du siège.',
+      ],
+      executionInstructions: [
+        'Tendez les jambes jusqu\'à la contraction complète des quadriceps.',
+        'Maintenez 1 seconde d\'isométrie en haut en tirant les poignées.',
+        'Redescendez lentement sans laisser retomber les plaques.',
+      ],
+      breathingInstructions:
+          'Expirez lors de l\'extension ; inspirez à la flexion contrôlée.',
+      commonMistakes: [
+        'Décoller les fesses du siège en donnant des coups de reins.',
+      ],
+      coachTip:
+          'Pointez les orteils vers le haut (dorsiflexion) pour maximiser la contraction du droit fémoral.',
+      hypertrophyRepRange: '12 - 15 reps',
+      strengthRepRange: '8 - 10 reps',
+      tempo: '2-0-1-1',
+      assetIllustrationPath: 'assets/illustrations/leg_extension.svg',
+    ),
+    'leg_curl': const ExerciseGuide(
+      slug: 'leg_curl',
+      title: 'Leg Curl ischio-jambiers',
+      primaryMuscles: ['Ischio-jambiers'],
+      secondaryMuscles: ['Gastrocnémiens (Mollets)'],
+      setupInstructions: [
+        'Ajustez le coussin juste au-dessus des tendons d\'Achille, genoux alignés sur le pivot.',
+      ],
+      executionInstructions: [
+        'Fléchissez les genoux en ramenant les talons le plus près possible des fessiers.',
+        'Contractez fort 1 seconde, puis retenez la phase excentrique sur 3 secondes.',
+      ],
+      breathingInstructions:
+          'Expirez en pliant les jambes ; inspirez en les tendant.',
+      commonMistakes: ['Soulever le bassin pour tricher avec le bas du dos.'],
+      coachTip:
+          'Le leg curl assis étire davantage les ischio-jambiers à la hanche et favorise une hypertrophie supérieure.',
+      hypertrophyRepRange: '10 - 15 reps',
+      strengthRepRange: '6 - 10 reps',
+      tempo: '3-0-1-1',
+      assetIllustrationPath: 'assets/illustrations/leg_curl.svg',
+    ),
+    'calf_raise': const ExerciseGuide(
+      slug: 'calf_raise',
+      title: 'Mollets debout (Standing Calf Raise)',
+      primaryMuscles: ['Gastrocnémiens (Jumeaux)'],
+      secondaryMuscles: ['Soléaire'],
+      setupInstructions: [
+        'Placez l\'avant des pieds sur la cale, talons dans le vide, genoux tendus (sans hyperextension).',
+      ],
+      executionInstructions: [
+        'Descendez les talons au maximum et marquez 2 secondes d\'étirement en bas.',
+        'Montez tout en haut sur la pointe des gros orteils et contractez 1 seconde.',
+      ],
+      breathingInstructions:
+          'Inspirez à l\'étirement ; expirez en montant sur les pointes.',
+      commonMistakes: [
+        'Faire de petits rebonds rapides en utilisant l\'élasticité du tendon d\'Achille.',
+      ],
+      coachTip:
+          'La pause de 2 secondes en bas annule le réflexe élastique du tendon et force le muscle du mollet à travailler.',
+      hypertrophyRepRange: '12 - 20 reps',
+      strengthRepRange: '8 - 12 reps',
+      tempo: '2-2-1-1',
+      assetIllustrationPath: 'assets/illustrations/calf_raise.svg',
+    ),
+    'dumbbell_shoulder_press': const ExerciseGuide(
+      slug: 'dumbbell_shoulder_press',
+      title: 'Développé épaules assis aux haltères',
+      primaryMuscles: ['Deltoïde antérieur', 'Deltoïde latéral'],
+      secondaryMuscles: ['Triceps brachial', 'Trapèzes supérieurs'],
+      setupInstructions: [
+        'Banc réglé à 75-80 degrés pour soutenir le dos tout en préservant l\'espace sous-acromial.',
+        'Coudes avancés de 30 degrés dans le plan scapulaire.',
+      ],
+      executionInstructions: [
+        'Poussez les haltères vers le haut jusqu\'à l\'extension des bras sans les entrechoquer.',
+        'Descendez avec contrôle jusqu\'à ce que les haltères arrivent au niveau des oreilles / menton.',
+      ],
+      breathingInstructions:
+          'Inspirez à la descente ; expirez pendant la poussée.',
+      commonMistakes: ['Ouvrir les coudes à 90° complètement sur les côtés.'],
+      coachTip:
+          'Une légère inclinaison du dossier à 75° est beaucoup plus naturelle pour les épaules qu\'un dossier à 90° strict.',
+      hypertrophyRepRange: '8 - 12 reps',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/dumbbell_shoulder_press.svg',
+    ),
+    'face_pull': const ExerciseGuide(
+      slug: 'face_pull',
+      title: 'Face Pull à la corde (Poulie haute)',
+      primaryMuscles: [
+        'Deltoïde postérieur',
+        'Coiffe des rotateurs (Infra-épineux)',
+      ],
+      secondaryMuscles: ['Trapèzes moyens et inférieurs', 'Rhomboïdes'],
+      setupInstructions: [
+        'Réglez la poulie à hauteur du visage avec une corde, saisissez les extrémités pouces vers l\'arrière.',
+      ],
+      executionInstructions: [
+        'Tirez le centre de la corde vers votre front / yeux en écartant les mains.',
+        'Terminez en posture de double biceps de dos (rotation externe d\'épaule complète).',
+      ],
+      breathingInstructions:
+          'Expirez en tirant vers le visage ; inspirez au retour.',
+      commonMistakes: [
+        'Mettre trop lourd et tirer vers le menton ou le torse.',
+      ],
+      coachTip:
+          'Vos poignets doivent finir plus en arrière que vos coudes pour engager la rotation externe.',
+      hypertrophyRepRange: '15 - 20 reps',
+      strengthRepRange: '12 - 15 reps',
+      tempo: '2-0-1-2',
+      assetIllustrationPath: 'assets/illustrations/face_pull.svg',
+    ),
+    'hammer_curl': const ExerciseGuide(
+      slug: 'hammer_curl',
+      title: 'Curl marteau aux haltères (Hammer Curl)',
+      primaryMuscles: ['Brachioradial', 'Brachial antérieur'],
+      secondaryMuscles: ['Biceps brachial (chef long)'],
+      setupInstructions: [
+        'Debout ou assis, haltères tenus en prise neutre (paumes face à face comme un marteau).',
+      ],
+      executionInstructions: [
+        'Fléchissez les coudes en gardant la prise neutre du début à la fin.',
+        'Contrôlez la descente sur 2 à 3 secondes sans balancer le buste.',
+      ],
+      breathingInstructions: 'Expirez à la montée ; inspirez à la descente.',
+      commonMistakes: [
+        'Balancer les épaules pour monter des charges trop lourdes.',
+      ],
+      coachTip:
+          'Indispensable pour donner de l\'épaisseur au bras vu de face et renforcer les avant-bras.',
+      hypertrophyRepRange: '10 - 14 reps',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '2-0-1-1',
+      assetIllustrationPath: 'assets/illustrations/hammer_curl.svg',
+    ),
+    'incline_dumbbell_curl': const ExerciseGuide(
+      slug: 'incline_dumbbell_curl',
+      title: 'Curl biceps incliné aux haltères',
+      primaryMuscles: ['Biceps brachial (chef long)'],
+      secondaryMuscles: ['Brachial antérieur'],
+      setupInstructions: [
+        'Allongez-vous sur un banc incliné à 45-60 degrés, bras pendant verticalement derrière la ligne du buste.',
+      ],
+      executionInstructions: [
+        'Fléchissez les avant-bras en gardant les coudes fixes pointés vers le sol.',
+        'Ressentez l\'étirement intense du chef long en position basse.',
+      ],
+      breathingInstructions:
+          'Inspirez en bas ; expirez en montant les haltères.',
+      commonMistakes: [
+        'Avancer les coudes pendant la montée, ce qui annule la tension d\'étirement.',
+      ],
+      coachTip:
+          'L\'hypertrophie en position étirée du curl incliné est l\'une des plus efficaces pour le pic du biceps.',
+      hypertrophyRepRange: '10 - 12 reps',
+      strengthRepRange: '8 - 10 reps',
+      tempo: '3-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/incline_dumbbell_curl.svg',
+    ),
+    'overhead_triceps_extension': const ExerciseGuide(
+      slug: 'overhead_triceps_extension',
+      title: 'Extension triceps poulie au-dessus de la tête',
+      primaryMuscles: ['Triceps brachial (chef long)'],
+      secondaryMuscles: ['Chefs latéral et médial du triceps'],
+      setupInstructions: [
+        'Dos à la poulie, buste incliné à 45°, coudes levés près des oreilles.',
+      ],
+      executionInstructions: [
+        'Laissez la corde étirer vos triceps derrière la nuque.',
+        'Tendez complètement les bras vers l\'avant et le haut sans bouger les coudes.',
+      ],
+      breathingInstructions:
+          'Inspirez à la flexion derrière la tête ; expirez à l\'extension.',
+      commonMistakes: [
+        'Cambrer excessivement le dos au lieu de gainer les abdos.',
+      ],
+      coachTip:
+          'Le chef long du triceps ne s\'étire complètement que lorsque le bras est levé au-dessus de l\'épaule.',
+      hypertrophyRepRange: '10 - 15 reps',
+      strengthRepRange: '8 - 10 reps',
+      tempo: '3-1-1-0',
+      assetIllustrationPath:
+          'assets/illustrations/overhead_triceps_extension.svg',
+    ),
+    'skull_crusher': const ExerciseGuide(
+      slug: 'skull_crusher',
+      title: 'Barre au front (EZ-Bar Skull Crusher)',
+      primaryMuscles: ['Triceps brachial (3 chefs)'],
+      secondaryMuscles: ['Avant-bras'],
+      setupInstructions: [
+        'Allongé sur un banc plat, tenez la barre EZ bras tendus légèrement inclinés vers l\'arrière de la tête.',
+      ],
+      executionInstructions: [
+        'Pliez uniquement les coudes pour descendre la barre vers le front ou juste derrière le crâne.',
+        'Gardez les coudes resserrés et poussez pour revenir en position haute.',
+      ],
+      breathingInstructions: 'Inspirez à la descente ; expirez à l\'extension.',
+      commonMistakes: ['Écarter les coudes vers l\'extérieur.'],
+      coachTip:
+          'Descendre la barre légèrement derrière le sommet du crâne maintient une tension continue et soulage les coudes.',
+      hypertrophyRepRange: '8 - 12 reps',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/skull_crusher.svg',
+    ),
+    'cable_crunch': const ExerciseGuide(
+      slug: 'cable_crunch',
+      title: 'Crunch abdominal à la poulie haute',
+      primaryMuscles: ['Grand droit de l\'abdomen'],
+      secondaryMuscles: ['Obliques'],
+      setupInstructions: [
+        'À genoux face ou dos à la poulie haute, tenez la corde de chaque côté de la tête.',
+      ],
+      executionInstructions: [
+        'Enroulez la colonne vertébrale en amenant le sternum vers le bassin (sans asseoir les fesses sur les talons).',
+        'Expirez tout l\'air en bas et remontez vertèbre par vertèbre.',
+      ],
+      breathingInstructions:
+          'Inspirez en haut ; expirez complètement en enroulant le buste.',
+      commonMistakes: [
+        'Plier les hanches avec le dos plat au lieu d\'enrouler la colonne.',
+      ],
+      coachTip:
+          'Gardez les hanches fixes dans l\'espace : seule votre cage thoracique doit s\'enrouler vers votre nombril.',
+      hypertrophyRepRange: '12 - 15 reps',
+      strengthRepRange: '8 - 12 reps',
+      tempo: '2-0-1-2',
+      assetIllustrationPath: 'assets/illustrations/cable_crunch.svg',
     ),
   };
 
@@ -1025,6 +1477,405 @@ class ExerciseGuidesData {
       hypertrophyRepRange: '10 - 15 reps',
       strengthRepRange: '12 - 20 reps',
       tempo: '2-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/hanging_leg_raise.svg',
+    ),
+    'dips': const ExerciseGuide(
+      slug: 'dips',
+      title: 'Chest & Triceps Parallel Bar Dips',
+      primaryMuscles: ['Lower Pectoralis Major', 'Triceps Brachii'],
+      secondaryMuscles: ['Anterior Deltoid'],
+      setupInstructions: [
+        'Support yourself on parallel bars with depressed shoulders and braced core.',
+        'Lean torso 20-30° forward for chest emphasis, or stay upright for triceps.',
+      ],
+      executionInstructions: [
+        'Lower under control until shoulders reach elbow level (90° flexion).',
+        'Press forcefully back to full lockout while keeping shoulders down.',
+      ],
+      breathingInstructions: 'Inhale descending; exhale pressing up.',
+      commonMistakes: [
+        'Shrugging shoulders toward ears or dropping below active mobility.',
+      ],
+      coachTip:
+          'Keep your shoulder blades actively depressed throughout the entire movement.',
+      hypertrophyRepRange: '8 - 12 reps',
+      strengthRepRange: '5 - 8 weighted reps',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/dips.svg',
+    ),
+    'cable_fly': const ExerciseGuide(
+      slug: 'cable_fly',
+      title: 'Standing Cable Chest Fly',
+      primaryMuscles: ['Pectoralis Major (Sternal Fibers)'],
+      secondaryMuscles: ['Anterior Deltoid'],
+      setupInstructions: [
+        'Set pulleys at shoulder height, step forward into a stable staggered stance.',
+      ],
+      executionInstructions: [
+        'Bring handles together in a wide hugging arc with slightly bent, fixed elbows.',
+        'Squeeze inner chest for 1 full second before returning slowly.',
+      ],
+      breathingInstructions:
+          'Inhale on the stretch; exhale squeezing handles together.',
+      commonMistakes: ['Bending elbows into a press instead of a wide arc.'],
+      coachTip:
+          'Focus on driving the insides of your elbows toward each other.',
+      hypertrophyRepRange: '12 - 15 reps',
+      strengthRepRange: '10 - 12 reps',
+      tempo: '2-1-1-1',
+      assetIllustrationPath: 'assets/illustrations/cable_fly.svg',
+    ),
+    'chin_up': const ExerciseGuide(
+      slug: 'chin_up',
+      title: 'Underhand Chin-Up',
+      primaryMuscles: ['Latissimus Dorsi', 'Biceps Brachii'],
+      secondaryMuscles: ['Teres Major', 'Rhomboids', 'Core'],
+      setupInstructions: [
+        'Grip bar shoulder-width apart with palms facing toward you (supinated).',
+      ],
+      executionInstructions: [
+        'Depress scapulae and pull chest to the bar while driving elbows down.',
+        'Clear the bar with your chin and lower slowly to a full dead hang.',
+      ],
+      breathingInstructions: 'Inhale at bottom; exhale pulling up.',
+      commonMistakes: ['Cutting range of motion short at the bottom.'],
+      coachTip:
+          'Supinated grip places the biceps in their strongest line of pull while deeply stretching the lats.',
+      hypertrophyRepRange: '6 - 12 reps',
+      strengthRepRange: '3 - 6 weighted reps',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/chin_up.svg',
+    ),
+    'dumbbell_row': const ExerciseGuide(
+      slug: 'dumbbell_row',
+      title: 'One-Arm Dumbbell Row',
+      primaryMuscles: ['Latissimus Dorsi', 'Rhomboids'],
+      secondaryMuscles: ['Mid Traps', 'Rear Deltoid', 'Biceps'],
+      setupInstructions: [
+        'Brace non-working hand on bench or rack with torso flat and stable.',
+      ],
+      executionInstructions: [
+        'Row the dumbbell in an arc back toward your hip crease.',
+        'Pause at the top and lower to a full scapular stretch.',
+      ],
+      breathingInstructions: 'Inhale lowering; exhale rowing toward hip.',
+      commonMistakes: [
+        'Pulling straight up to the shoulder instead of back to the hip.',
+      ],
+      coachTip: 'Think about sawing the weight back toward your back pocket.',
+      hypertrophyRepRange: '8 - 12 reps per arm',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '2-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/dumbbell_row.svg',
+    ),
+    'seated_cable_row': const ExerciseGuide(
+      slug: 'seated_cable_row',
+      title: 'Seated Cable Row',
+      primaryMuscles: ['Mid Back (Rhomboids, Traps)', 'Latissimus Dorsi'],
+      secondaryMuscles: ['Biceps', 'Erector Spinae'],
+      setupInstructions: [
+        'Sit tall with feet braced on platform and knees slightly bent.',
+      ],
+      executionInstructions: [
+        'Retract shoulder blades and pull handle to lower sternum / navel.',
+        'Hold peak contraction for 1 second, then return under control.',
+      ],
+      breathingInstructions:
+          'Inhale reaching forward; exhale rowing into abdomen.',
+      commonMistakes: ['Swinging lower back excessively back and forth.'],
+      coachTip:
+          'Initiate every rep by squeezing your shoulder blades together before bending the elbows.',
+      hypertrophyRepRange: '10 - 12 reps',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '2-1-1-1',
+      assetIllustrationPath: 'assets/illustrations/seated_cable_row.svg',
+    ),
+    'lunges': const ExerciseGuide(
+      slug: 'lunges',
+      title: 'Dumbbell Walking Lunges',
+      primaryMuscles: ['Quadriceps', 'Gluteus Maximus'],
+      secondaryMuscles: ['Hamstrings', 'Gluteus Medius', 'Calves'],
+      setupInstructions: [
+        'Stand tall holding dumbbells at your sides with core braced.',
+      ],
+      executionInstructions: [
+        'Step forward hip-width apart and lower until both knees reach 90 degrees.',
+        'Drive through the front heel to step into the next repetition.',
+      ],
+      breathingInstructions: 'Inhale descending; exhale driving up.',
+      commonMistakes: [
+        'Walking on a tightrope line or letting front knee cave inward.',
+      ],
+      coachTip:
+          'A shorter stride emphasizes quads; a slightly longer stride with forward torso lean targets glutes.',
+      hypertrophyRepRange: '10 - 12 reps per leg',
+      strengthRepRange: '6 - 8 reps per leg',
+      tempo: '2-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/lunges.svg',
+    ),
+    'hip_thrust': const ExerciseGuide(
+      slug: 'hip_thrust',
+      title: 'Barbell Hip Thrust',
+      primaryMuscles: ['Gluteus Maximus'],
+      secondaryMuscles: ['Hamstrings', 'Quadriceps', 'Core'],
+      setupInstructions: [
+        'Rest lower scapulae against a stable bench with padded barbell over hip crease.',
+        'Position feet so shins are strictly vertical at the top lockout.',
+      ],
+      executionInstructions: [
+        'Drive through heels to extend hips until torso is parallel to the floor.',
+        'Keep chin tucked and squeeze glutes with posterior pelvic tilt for 1-2 seconds.',
+      ],
+      breathingInstructions: 'Inhale lowering; exhale locking hips at the top.',
+      commonMistakes: [
+        'Hyperextending lower back instead of extending at the hips.',
+      ],
+      coachTip:
+          'Keep your eyes locked on a spot straight ahead to prevent lumbar hyperextension.',
+      hypertrophyRepRange: '8 - 12 reps',
+      strengthRepRange: '5 - 8 reps',
+      tempo: '2-1-1-1',
+      assetIllustrationPath: 'assets/illustrations/hip_thrust.svg',
+    ),
+    'bulgarian_split_squat': const ExerciseGuide(
+      slug: 'bulgarian_split_squat',
+      title: 'Bulgarian Split Squat',
+      primaryMuscles: ['Quadriceps', 'Gluteus Maximus'],
+      secondaryMuscles: ['Gluteus Medius', 'Adductors'],
+      setupInstructions: [
+        'Elevate rear instep on a bench or roller pad, front foot two paces ahead.',
+      ],
+      executionInstructions: [
+        'Lower vertically on the front leg until deep hip and knee flexion.',
+        'Drive through the front mid-foot to return to standing.',
+      ],
+      breathingInstructions: 'Inhale descending; exhale driving up.',
+      commonMistakes: ['Pushing excessively off the back foot.'],
+      coachTip: 'Keep 85-90% of your weight loaded on the front working leg.',
+      hypertrophyRepRange: '8 - 12 reps per leg',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '3-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/bulgarian_split_squat.svg',
+    ),
+    'leg_extension': const ExerciseGuide(
+      slug: 'leg_extension',
+      title: 'Seated Leg Extension',
+      primaryMuscles: ['Quadriceps (Rectus Femoris & Vasti)'],
+      secondaryMuscles: [],
+      setupInstructions: [
+        'Align machine pivot point with your knee joint, pad resting on lower shins.',
+      ],
+      executionInstructions: [
+        'Extend knees completely and hold peak contraction for 1 second.',
+        'Lower slowly over 3 seconds without slamming the weight stack.',
+      ],
+      breathingInstructions: 'Exhale extending; inhale lowering.',
+      commonMistakes: ['Lifting hips off the seat pad.'],
+      coachTip:
+          'Pull yourself firmly into the seat using the side handles and flex toes up.',
+      hypertrophyRepRange: '12 - 15 reps',
+      strengthRepRange: '8 - 10 reps',
+      tempo: '2-0-1-1',
+      assetIllustrationPath: 'assets/illustrations/leg_extension.svg',
+    ),
+    'leg_curl': const ExerciseGuide(
+      slug: 'leg_curl',
+      title: 'Hamstring Leg Curl',
+      primaryMuscles: ['Hamstrings'],
+      secondaryMuscles: ['Gastrocnemius'],
+      setupInstructions: [
+        'Align knee joint with machine axis, pad positioned just above Achilles tendon.',
+      ],
+      executionInstructions: [
+        'Curl heels all the way back toward glutes and hold 1 second.',
+        'Control the eccentric return over 3 full seconds.',
+      ],
+      breathingInstructions: 'Exhale curling; inhale extending.',
+      commonMistakes: ['Hips rising off the pad to cheat the weight.'],
+      coachTip:
+          'Control the negative phase to maximize hamstring hypertrophy and tendon resilience.',
+      hypertrophyRepRange: '10 - 15 reps',
+      strengthRepRange: '6 - 10 reps',
+      tempo: '3-0-1-1',
+      assetIllustrationPath: 'assets/illustrations/leg_curl.svg',
+    ),
+    'calf_raise': const ExerciseGuide(
+      slug: 'calf_raise',
+      title: 'Standing Calf Raise',
+      primaryMuscles: ['Gastrocnemius'],
+      secondaryMuscles: ['Soleus'],
+      setupInstructions: [
+        'Place balls of feet on platform edge with knees straight but unlocked.',
+      ],
+      executionInstructions: [
+        'Lower heels into a full 2-second stretch at the bottom.',
+        'Drive all the way up onto the big toe and pause 1 second at the top.',
+      ],
+      breathingInstructions: 'Inhale at bottom stretch; exhale rising up.',
+      commonMistakes: [
+        'Bouncing rapidly at the bottom using Achilles tendon recoil.',
+      ],
+      coachTip:
+          'Pause 2 seconds at the bottom of every rep to eliminate elastic bounce.',
+      hypertrophyRepRange: '12 - 20 reps',
+      strengthRepRange: '8 - 12 reps',
+      tempo: '2-2-1-1',
+      assetIllustrationPath: 'assets/illustrations/calf_raise.svg',
+    ),
+    'dumbbell_shoulder_press': const ExerciseGuide(
+      slug: 'dumbbell_shoulder_press',
+      title: 'Seated Dumbbell Shoulder Press',
+      primaryMuscles: ['Anterior Deltoid', 'Lateral Deltoid'],
+      secondaryMuscles: ['Triceps Brachii', 'Upper Traps'],
+      setupInstructions: [
+        'Set bench backrest to 75-80 degrees, elbows angled 30° forward in the scapular plane.',
+      ],
+      executionInstructions: [
+        'Press dumbbells overhead to full extension without clanking them together.',
+        'Lower under control until dumbbells reach ear / chin level.',
+      ],
+      breathingInstructions: 'Inhale lowering; exhale pressing up.',
+      commonMistakes: ['Flaring elbows straight out at 90 degrees.'],
+      coachTip:
+          'A 75-degree incline is far friendlier on the shoulder joint than a strict 90-degree upright seat.',
+      hypertrophyRepRange: '8 - 12 reps',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/dumbbell_shoulder_press.svg',
+    ),
+    'face_pull': const ExerciseGuide(
+      slug: 'face_pull',
+      title: 'Cable Face Pull',
+      primaryMuscles: ['Rear Deltoids', 'External Rotators (Infraspinatus)'],
+      secondaryMuscles: ['Mid & Lower Traps', 'Rhomboids'],
+      setupInstructions: [
+        'Set pulley at upper chest/head height with rope attachment.',
+      ],
+      executionInstructions: [
+        'Pull rope toward forehead while pulling handles apart and rotating thumbs back.',
+        'Hold a 1-second rear double-biceps pose at peak contraction.',
+      ],
+      breathingInstructions: 'Exhale pulling toward face; inhale extending.',
+      commonMistakes: ['Going too heavy and pulling down toward chest.'],
+      coachTip:
+          'Finish with your wrists behind your elbows to engage true external rotation.',
+      hypertrophyRepRange: '15 - 20 reps',
+      strengthRepRange: '12 - 15 reps',
+      tempo: '2-0-1-2',
+      assetIllustrationPath: 'assets/illustrations/face_pull.svg',
+    ),
+    'hammer_curl': const ExerciseGuide(
+      slug: 'hammer_curl',
+      title: 'Dumbbell Hammer Curl',
+      primaryMuscles: ['Brachioradialis', 'Brachialis'],
+      secondaryMuscles: ['Biceps Brachii'],
+      setupInstructions: [
+        'Stand tall holding dumbbells with a neutral (palms facing each other) grip.',
+      ],
+      executionInstructions: [
+        'Curl weights up keeping elbows pinned to your ribs and palms neutral.',
+        'Squeeze at the top and lower slowly.',
+      ],
+      breathingInstructions: 'Exhale curling up; inhale lowering.',
+      commonMistakes: [
+        'Swinging shoulders and torso to lift heavier dumbbells.',
+      ],
+      coachTip:
+          'Hammer curls build dense brachialis and forearm thickness that widens the arm from the front.',
+      hypertrophyRepRange: '10 - 14 reps',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '2-0-1-1',
+      assetIllustrationPath: 'assets/illustrations/hammer_curl.svg',
+    ),
+    'incline_dumbbell_curl': const ExerciseGuide(
+      slug: 'incline_dumbbell_curl',
+      title: 'Incline Dumbbell Curl',
+      primaryMuscles: ['Biceps Brachii (Long Head)'],
+      secondaryMuscles: ['Brachialis'],
+      setupInstructions: [
+        'Lie back on a 45-60° incline bench with arms hanging straight down behind your torso line.',
+      ],
+      executionInstructions: [
+        'Curl dumbbells upward while keeping elbows pointing strictly at the floor.',
+        'Lower all the way down into a full long-head bicep stretch.',
+      ],
+      breathingInstructions: 'Inhale lowering; exhale curling.',
+      commonMistakes: ['Letting elbows drift forward during the curl.'],
+      coachTip:
+          'Stretch-mediated hypertrophy on the incline curl preferentially targets the biceps peak.',
+      hypertrophyRepRange: '10 - 12 reps',
+      strengthRepRange: '8 - 10 reps',
+      tempo: '3-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/incline_dumbbell_curl.svg',
+    ),
+    'overhead_triceps_extension': const ExerciseGuide(
+      slug: 'overhead_triceps_extension',
+      title: 'Overhead Cable Triceps Extension',
+      primaryMuscles: ['Triceps Brachii (Long Head)'],
+      secondaryMuscles: ['Lateral & Medial Triceps Heads'],
+      setupInstructions: [
+        'Face away from pulley in a split stance, elbows raised overhead.',
+      ],
+      executionInstructions: [
+        'Allow rope to stretch triceps deeply behind your head.',
+        'Extend forearms overhead to full lockout while keeping elbows stationary.',
+      ],
+      breathingInstructions:
+          'Inhale on the stretch; exhale extending overhead.',
+      commonMistakes: [
+        'Arching lower back excessively instead of bracing abs.',
+      ],
+      coachTip:
+          'Overhead extensions place the long head of the triceps in maximal stretch for superior growth.',
+      hypertrophyRepRange: '10 - 15 reps',
+      strengthRepRange: '8 - 10 reps',
+      tempo: '3-1-1-0',
+      assetIllustrationPath:
+          'assets/illustrations/overhead_triceps_extension.svg',
+    ),
+    'skull_crusher': const ExerciseGuide(
+      slug: 'skull_crusher',
+      title: 'EZ-Bar Skull Crusher',
+      primaryMuscles: ['Triceps Brachii (All 3 Heads)'],
+      secondaryMuscles: ['Forearms'],
+      setupInstructions: [
+        'Lie on flat bench holding EZ-bar with arms angled slightly back toward crown of head.',
+      ],
+      executionInstructions: [
+        'Hinge only at the elbows to lower the bar toward forehead or just behind the head.',
+        'Extend elbows forcefully back to starting angle.',
+      ],
+      breathingInstructions: 'Inhale lowering; exhale extending.',
+      commonMistakes: ['Flaring elbows wide out to the sides.'],
+      coachTip:
+          'Angling upper arms 15° back toward the wall behind you keeps continuous tension on the triceps.',
+      hypertrophyRepRange: '8 - 12 reps',
+      strengthRepRange: '6 - 8 reps',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/skull_crusher.svg',
+    ),
+    'cable_crunch': const ExerciseGuide(
+      slug: 'cable_crunch',
+      title: 'Kneeling Cable Crunch',
+      primaryMuscles: ['Rectus Abdominis'],
+      secondaryMuscles: ['Obliques'],
+      setupInstructions: [
+        'Kneel below high pulley holding rope attachment beside your temples.',
+      ],
+      executionInstructions: [
+        'Flex your spine to curl your ribcage down toward your pelvis while keeping hips stationary.',
+        'Exhale fully at peak contraction and uncurl vertebra by vertebra.',
+      ],
+      breathingInstructions: 'Inhale at top; exhale forcefully curling down.',
+      commonMistakes: [
+        'Sitting hips back onto heels instead of flexing the spine.',
+      ],
+      coachTip:
+          'Lock your hips in place—all movement must come from curling your sternum toward your belly button.',
+      hypertrophyRepRange: '12 - 15 reps',
+      strengthRepRange: '8 - 12 reps',
+      tempo: '2-0-1-2',
+      assetIllustrationPath: 'assets/illustrations/cable_crunch.svg',
     ),
   };
 
@@ -1423,6 +2274,387 @@ class ExerciseGuidesData {
       hypertrophyRepRange: '10 - 15 تكرار',
       strengthRepRange: '12 - 20 تكرار',
       tempo: '2-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/hanging_leg_raise.svg',
+    ),
+    'dips': const ExerciseGuide(
+      slug: 'dips',
+      title: 'تمرين المتوازي للصدر والترايسبس (Dips)',
+      primaryMuscles: ['الصدر السفلي', 'الترايسبس'],
+      secondaryMuscles: ['الكتف الأمامي'],
+      setupInstructions: [
+        'ارتكز على قضبان المتوازي بذراعين ممدودتين مع خفض الأكتاف للأسفل.',
+        'أمل الجذع للأمام قليلاً (20-30 درجة) لاستهداف الصدر أو ابقَ مستقيماً للترايسبس.',
+      ],
+      executionInstructions: [
+        'انزل بتحكم حتى يصل الكتف لمستوى الكوع (زاوية 90 درجة).',
+        'ادفع بقوة للأعلى حتى استقامة الذراعين دون رفع الكتفين نحو الأذنين.',
+      ],
+      breathingInstructions: 'شهيق أثناء النزول وزفير عند الدفع للأعلى.',
+      commonMistakes: ['النزول المفرط فوق مرونة الكتف أو رفع الأكتاف للأعلى.'],
+      coachTip:
+          'حافظ على ثبات لوحي الكتف للأسفل طوال المجموعة لحماية مفصل الكتف.',
+      hypertrophyRepRange: '8 - 12 تكرار',
+      strengthRepRange: '5 - 8 تكرارات بوزن إضافي',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/dips.svg',
+    ),
+    'cable_fly': const ExerciseGuide(
+      slug: 'cable_fly',
+      title: 'تفتيح صدر بالكيبل',
+      primaryMuscles: ['عضلات الصدر (الألياف الوسطى والداخلية)'],
+      secondaryMuscles: ['الكتف الأمامي'],
+      setupInstructions: [
+        'اضبط البكرتين بمستوى الكتف وتقدم خطوة للأمام لتحقيق التوازن والشد المبدئي.',
+      ],
+      executionInstructions: [
+        'اجمع المقبضين أمام صدرك في مسار قوسي واسع مع ثبات زاوية الكوع.',
+        'اعصر عضلة الصدر لثانية كاملة ثم ارجع ببطء.',
+      ],
+      breathingInstructions: 'شهيق عند فتح الذراعين وزفير عند ضمهما.',
+      commonMistakes: [
+        'ثني الكوعين كثيراً وتحويل التمرين إلى ضغط بدلاً من التفتيح.',
+      ],
+      coachTip:
+          'ركز على تقريب الكوعين من بعضهما لتفعيل ألياف الصدر بأقصى درجة.',
+      hypertrophyRepRange: '12 - 15 تكرار',
+      strengthRepRange: '10 - 12 تكرار',
+      tempo: '2-1-1-1',
+      assetIllustrationPath: 'assets/illustrations/cable_fly.svg',
+    ),
+    'chin_up': const ExerciseGuide(
+      slug: 'chin_up',
+      title: 'عقلة قبضة معكوسة (Chin-Up)',
+      primaryMuscles: ['المجنص (اللاتس)', 'البايسبس'],
+      secondaryMuscles: ['وسط الظهر', 'الجذع'],
+      setupInstructions: [
+        'أمسك البار بقبضة باتساع الكتفين بحيث تكون راحتا اليدين باتجاه وجهك.',
+      ],
+      executionInstructions: [
+        'اخفض لوحي الكتف واسحب صدرك نحو البار مع إبقاء الكوعين قريبين من الجسم.',
+        'تجاوز البار بذقنك ثم انزل ببطء حتى الامتداد الكامل للذراعين.',
+      ],
+      breathingInstructions: 'شهيق في الأسفل وزفير أثناء السحب للأعلى.',
+      commonMistakes: ['عدم النزول الكامل في نهاية كل تكرار.'],
+      coachTip:
+          'القبضة المعكوسة تمنحك أقوى تفعيل مشترك للظهر والبايسبس مع مدى حركي كبير.',
+      hypertrophyRepRange: '6 - 12 تكرار',
+      strengthRepRange: '3 - 6 تكرارات بوزن إضافي',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/chin_up.svg',
+    ),
+    'dumbbell_row': const ExerciseGuide(
+      slug: 'dumbbell_row',
+      title: 'سحب دامبل فردي للظهر (منشار)',
+      primaryMuscles: ['المجنص (اللاتس)', 'وسط الظهر'],
+      secondaryMuscles: ['الكتف الخلفي', 'البايسبس'],
+      setupInstructions: [
+        'ارتكز بيدك على مقعد مع الحفاظ على استقامة الظهر موازياً للأرض.',
+      ],
+      executionInstructions: [
+        'اسحب الدامبل في مسار قوسي باتجاه مفصل الحوض وليس باتجاه الكتف.',
+        'اثبت في الأعلى لنصف ثانية ثم أنزل الوزن بتحكم لإطالة الظهر.',
+      ],
+      breathingInstructions: 'شهيق عند النزول وزفير عند السحب نحو الحوض.',
+      commonMistakes: ['لف الجذع المفرط أو السحب بالبايسبس نحو الكتف.'],
+      coachTip: 'وجّه كوعك للخلف نحو جيب بنطالك الخلفي لعزل عضلة المجنص.',
+      hypertrophyRepRange: '8 - 12 تكرار لكل ذراع',
+      strengthRepRange: '6 - 8 تكرارات',
+      tempo: '2-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/dumbbell_row.svg',
+    ),
+    'seated_cable_row': const ExerciseGuide(
+      slug: 'seated_cable_row',
+      title: 'سحب أرضي جالس بالكيبل',
+      primaryMuscles: ['وسط الظهر (الرومبويدز والترابيز)', 'المجنص'],
+      secondaryMuscles: ['البايسبس', 'أسفل الظهر'],
+      setupInstructions: [
+        'اجلس بظهر مستقيم وقدمين ثابتتين على المسند مع ثنية خفيفة في الركبتين.',
+      ],
+      executionInstructions: [
+        'اسحب المقبض باتجاه السرة مع ضم لوحي الكتف بقوة للخلف.',
+        'اثبت ثانية واحدة ثم ارجع للأمام بتحكم دون تقويس أسفل الظهر.',
+      ],
+      breathingInstructions: 'شهيق عند مد الذراعين وزفير عند السحب للبطن.',
+      commonMistakes: ['التأرجح بالظهر للأمام والخلف لرفع الوزن.'],
+      coachTip: 'ابدأ الحركة بإرجاع الكتفين للخلف قبل ثني الكوعين.',
+      hypertrophyRepRange: '10 - 12 تكرار',
+      strengthRepRange: '6 - 8 تكرارات',
+      tempo: '2-1-1-1',
+      assetIllustrationPath: 'assets/illustrations/seated_cable_row.svg',
+    ),
+    'lunges': const ExerciseGuide(
+      slug: 'lunges',
+      title: 'طعن المشي بالدامبلز (Lunges)',
+      primaryMuscles: ['الفخذ الأمامي (الكوادس)', 'الجلوتس'],
+      secondaryMuscles: ['الفخذ الخلفي', 'عضلات التوازن بالحوض'],
+      setupInstructions: [
+        'قف مستقيماً ممسكاً بالدامبلز بجانبي جسمك مع شد البطن.',
+      ],
+      executionInstructions: [
+        'اخطُ للأمام واثنِ الركبتين لزاوية 90 درجة حتى تقترب الركبة الخلفية من الأرض.',
+        'ادفع بكعب القدم الأمامية للنهوض والانتقال للخطوة التالية.',
+      ],
+      breathingInstructions: 'شهيق أثناء النزول وزفير عند الدفع للأعلى.',
+      commonMistakes: ['انحراف الركبة الأمامية للداخل أثناء الصعود.'],
+      coachTip:
+          'الخطوة القصيرة تركز على الفخذ الأمامي، والخطوة الأوسع مع ميل بسيط تستهدف الجلوتس.',
+      hypertrophyRepRange: '10 - 12 تكرار لكل رجل',
+      strengthRepRange: '6 - 8 تكرارات',
+      tempo: '2-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/lunges.svg',
+    ),
+    'hip_thrust': const ExerciseGuide(
+      slug: 'hip_thrust',
+      title: 'دفع الحوض بالبار (Hip Thrust)',
+      primaryMuscles: ['عضلات المؤخرة (الجلوتس)'],
+      secondaryMuscles: ['الفخذ الخلفي', 'عضلات الجذع'],
+      setupInstructions: [
+        'أسند أسفل لوحي الكتف على مقعد ثابت وضع البار المبطن فوق الحوض.',
+        'اضبط مكان القدمين بحيث تكون الساقان عموديتين تماماً في أعلى نقطة.',
+      ],
+      executionInstructions: [
+        'ادفع الأرض بالكعبين لرفع الحوض حتى يصبح الجسم في خط أفقي واحد.',
+        'أبقِ الذقن مضموماً للصدر واعصر الجلوتس لمدة ثانية إلى ثانيتين في الأعلى.',
+      ],
+      breathingInstructions: 'شهيق عند النزول وزفير مع عصر العضلة في الأعلى.',
+      commonMistakes: ['تقويس أسفل الظهر وإرجاع الرأس للخلف.'],
+      coachTip:
+          'ثبت نظرك للأمام طوال الحركة لحماية أسفل الظهر وعزل الجلوتس بالكامل.',
+      hypertrophyRepRange: '8 - 12 تكرار',
+      strengthRepRange: '5 - 8 تكرارات',
+      tempo: '2-1-1-1',
+      assetIllustrationPath: 'assets/illustrations/hip_thrust.svg',
+    ),
+    'bulgarian_split_squat': const ExerciseGuide(
+      slug: 'bulgarian_split_squat',
+      title: 'سكوات بلغاري بالدامبلز',
+      primaryMuscles: ['الفخذ الأمامي', 'الجلوتس'],
+      secondaryMuscles: ['العضلات الضامة', 'توازن الحوض'],
+      setupInstructions: [
+        'ضع مشط القدم الخلفية على مقعد خلفك وتقدم بالقدم الأمامية خطوتين.',
+      ],
+      executionInstructions: [
+        'انزل عمودياً على الرجل الأمامية بعمق كامل وتحكم.',
+        'ادفع الأرض بالقدم الأمامية للعودة للأعلى مع إبقاء 85% من الوزن على الرجل الأمامية.',
+      ],
+      breathingInstructions: 'شهيق أثناء النزول وزفير عند الدفع للأعلى.',
+      commonMistakes: ['الاعتماد على الرجل الخلفية في الدفع.'],
+      coachTip:
+          'الرجل الخلفية للتوازن فقط؛ اجعل كل التركيز والضغط على كعب ومنتصف القدم الأمامية.',
+      hypertrophyRepRange: '8 - 12 تكرار لكل رجل',
+      strengthRepRange: '6 - 8 تكرارات',
+      tempo: '3-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/bulgarian_split_squat.svg',
+    ),
+    'leg_extension': const ExerciseGuide(
+      slug: 'leg_extension',
+      title: 'رفرفة أرجل أمامي بالجهاز',
+      primaryMuscles: ['عضلات الفخذ الأمامية بالكامل'],
+      secondaryMuscles: [],
+      setupInstructions: [
+        'اضبط مسند الظهر ليكون مفصل الركبة بمحاذاة محور دوران الجهاز تماماً.',
+      ],
+      executionInstructions: [
+        'افرد الساقين بالكامل للأعلى واثبت ثانية واحدة مع عصر الفخذ الأمامي.',
+        'انزل ببطء خلال 3 ثوانٍ دون ترك الأوزان ترتطم.',
+      ],
+      breathingInstructions: 'زفير عند فرد الرجلين وشهيق عند النزول.',
+      commonMistakes: ['رفع الحوض عن المقعد أثناء التمرين.'],
+      coachTip:
+          'امسك المقابض الجانبية بقوة لتثبيت الحوض، وارفع أطراف الأصابع للأعلى لزيادة الانقباض.',
+      hypertrophyRepRange: '12 - 15 تكرار',
+      strengthRepRange: '8 - 10 تكرارات',
+      tempo: '2-0-1-1',
+      assetIllustrationPath: 'assets/illustrations/leg_extension.svg',
+    ),
+    'leg_curl': const ExerciseGuide(
+      slug: 'leg_curl',
+      title: 'ثني الأرجل الخلفي بالجهاز',
+      primaryMuscles: ['الفخذ الخلفي (الهامسترنج)'],
+      secondaryMuscles: ['السمانة'],
+      setupInstructions: [
+        'اضبط الوسادة فوق كعب القدم مباشرة مع محاذاة الركبة لمفصل الجهاز.',
+      ],
+      executionInstructions: [
+        'اثنِ ركبتيك لأقصى مدى ممكن مع عصر الخلفيات لثانية واحدة.',
+        'قاوم الوزن أثناء العودة ببطء لمدة 3 ثوانٍ.',
+      ],
+      breathingInstructions: 'زفير عند الثني وشهيق عند الفرد.',
+      commonMistakes: ['تحريك الحوض وأسفل الظهر لرفع الوزن.'],
+      coachTip:
+          'التركيز على النزول البطيء يضاعف البناء العضلي ويحمي أوتار الركبة.',
+      hypertrophyRepRange: '10 - 15 تكرار',
+      strengthRepRange: '6 - 10 تكرارات',
+      tempo: '3-0-1-1',
+      assetIllustrationPath: 'assets/illustrations/leg_curl.svg',
+    ),
+    'calf_raise': const ExerciseGuide(
+      slug: 'calf_raise',
+      title: 'رفع السمانة واقفاً',
+      primaryMuscles: ['عضلة السمانة (Gastrocnemius)'],
+      secondaryMuscles: ['العضلة النعلية (Soleus)'],
+      setupInstructions: [
+        'ضع مقدمة القدم على الحافة مع إبقاء الركبتين مفرودتين دون قفل مفرط.',
+      ],
+      executionInstructions: [
+        'انزل بالكعبين لأقصى تمدد بالأسفل وتوقف لمدة ثانيتين كاملتين.',
+        'اصعد لأقصى ارتفاع على مشط القدم واعصر السمانة لثانية في الأعلى.',
+      ],
+      breathingInstructions: 'شهيق في التمدد بالأسفل وزفير عند الصعود.',
+      commonMistakes: ['الأداء السريع والارتداد بوتر أكيلس دون توقف بالأسفل.'],
+      coachTip:
+          'التوقف ثانيتين في الأسفل يلغي الارتداد المطاطي للوتر ويجبر عضلة السمانة على العمل الفعلي.',
+      hypertrophyRepRange: '12 - 20 تكرار',
+      strengthRepRange: '8 - 12 تكرار',
+      tempo: '2-2-1-1',
+      assetIllustrationPath: 'assets/illustrations/calf_raise.svg',
+    ),
+    'dumbbell_shoulder_press': const ExerciseGuide(
+      slug: 'dumbbell_shoulder_press',
+      title: 'ضغط أكتاف جالس بالدامبلز',
+      primaryMuscles: ['الكتف الأمامي والجانبي'],
+      secondaryMuscles: ['الترايسبس', 'أعلى الترابيز'],
+      setupInstructions: [
+        'اضبط مسند المقعد على زاوية 75-80 درجة وقدم الكوعين للأمام قليلاً بزاوية 30 درجة.',
+      ],
+      executionInstructions: [
+        'ادفع الدامبلز للأعلى حتى استقامة الذراعين دون صدمهما ببعضهما.',
+        'انزل بتحكم حتى مستوى الأذنين.',
+      ],
+      breathingInstructions: 'شهيق عند النزول وزفير أثناء الدفع للأعلى.',
+      commonMistakes: ['فتح الكوعين للخارج بزاوية 90 درجة كاملة.'],
+      coachTip:
+          'تقديم الكوعين 30 درجة للأمام يحمي مفصل الكتف ويمنحك قوة دفع أعلى.',
+      hypertrophyRepRange: '8 - 12 تكرار',
+      strengthRepRange: '6 - 8 تكرارات',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/dumbbell_shoulder_press.svg',
+    ),
+    'face_pull': const ExerciseGuide(
+      slug: 'face_pull',
+      title: 'سحب الحبل للوجه (Face Pull)',
+      primaryMuscles: ['الكتف الخلفي', 'عضلات الكفة المدورة للكتف'],
+      secondaryMuscles: ['الترابيز الأوسط والسفلي'],
+      setupInstructions: ['اضبط البكرة بمستوى الوجه وأمسك طرفي الحبل.'],
+      executionInstructions: [
+        'اسحب الحبل نحو الجبهة مع فتح اليدين للخارج وتدوير الكتف للخلف.',
+        'اثبت ثانية واحدة في أقصى انقباض خلفي ثم ارجع ببطء.',
+      ],
+      breathingInstructions: 'زفير عند السحب للوجه وشهيق عند العودة.',
+      commonMistakes: ['وضع وزن ثقيل جداً والسحب نحو الصدر بدلاً من الجبهة.'],
+      coachTip:
+          'اجعل معصميك ينتهيان خلف مستوى كوعيك لتفعيل الدوران الخارجي للكتف.',
+      hypertrophyRepRange: '15 - 20 تكرار',
+      strengthRepRange: '12 - 15 تكرار',
+      tempo: '2-0-1-2',
+      assetIllustrationPath: 'assets/illustrations/face_pull.svg',
+    ),
+    'hammer_curl': const ExerciseGuide(
+      slug: 'hammer_curl',
+      title: 'كيرل مطرقة بالدامبلز (Hammer Curl)',
+      primaryMuscles: ['عضلة الساعد العضدية (Brachioradialis)', 'البراكياليس'],
+      secondaryMuscles: ['البايسبس'],
+      setupInstructions: [
+        'قف مستقيماً وأمسك الدامبلز بقبضة محايدة (الراحتان متقابلتان كالمطرقة).',
+      ],
+      executionInstructions: [
+        'ارفع الوزن بثني الكوع فقط مع ثبات القبضة المحايدة.',
+        'انزل ببطء وتحكم لمدة ثانيتين إلى 3 ثوانٍ.',
+      ],
+      breathingInstructions: 'زفير عند الرفع وشهيق عند النزول.',
+      commonMistakes: ['التأرجح بالكتفين والجذع لرفع الوزن.'],
+      coachTip: 'تمرين المطرقة أساسي لزيادة سماكة الذراع وقوة الساعد.',
+      hypertrophyRepRange: '10 - 14 تكرار',
+      strengthRepRange: '6 - 8 تكرارات',
+      tempo: '2-0-1-1',
+      assetIllustrationPath: 'assets/illustrations/hammer_curl.svg',
+    ),
+    'incline_dumbbell_curl': const ExerciseGuide(
+      slug: 'incline_dumbbell_curl',
+      title: 'كيرل بايسبس على مقعد مائل',
+      primaryMuscles: ['الرأس الطويل للبايسبس'],
+      secondaryMuscles: ['الساعد'],
+      setupInstructions: [
+        'استلقِ على مقعد مائل بزاوية 45-60 درجة ودع ذراعيك تتدليان عمودياً خلف خط الجسم.',
+      ],
+      executionInstructions: [
+        'اثنِ كوعيك لرفع الدامبلز مع إبقاء الكوع ثابتاً يشير للأرض.',
+        'انزل بالكامل للشعور بأقصى استطالة في البايسبس.',
+      ],
+      breathingInstructions: 'شهيق عند النزول وزفير عند الرفع.',
+      commonMistakes: ['تقديم الكوعين للأمام أثناء الرفع.'],
+      coachTip:
+          'الإطالة القصوى على المقعد المائل تستهدف قمة عضلة البايسبس بفعالية فائقة.',
+      hypertrophyRepRange: '10 - 12 تكرار',
+      strengthRepRange: '8 - 10 تكرارات',
+      tempo: '3-1-1-0',
+      assetIllustrationPath: 'assets/illustrations/incline_dumbbell_curl.svg',
+    ),
+    'overhead_triceps_extension': const ExerciseGuide(
+      slug: 'overhead_triceps_extension',
+      title: 'تمديد الترايسبس خلف الرأس بالكيبل',
+      primaryMuscles: ['الرأس الطويل للترايسبس'],
+      secondaryMuscles: ['الرأس الجانبي والداخلي للترايسبس'],
+      setupInstructions: [
+        'قف معطياً ظهرك للكيبل وارفع الكوعين بجانب الرأس مع شد البطن.',
+      ],
+      executionInstructions: [
+        'دع الحبل ينزل خلف الرأس لإطالة الترايسبس بالكامل.',
+        'افرد الساعدين للأعلى والأمام مع ثبات الكوعين تماماً.',
+      ],
+      breathingInstructions: 'شهيق خلف الرأس وزفير عند الفرد.',
+      commonMistakes: ['تقويس الظهر بدلاً من تثبيت الجذع.'],
+      coachTip:
+          'رفع الذراع فوق الرأس هو الطريقة الوحيدة لإطالة الرأس الطويل للترايسبس بالكامل.',
+      hypertrophyRepRange: '10 - 15 تكرار',
+      strengthRepRange: '8 - 10 تكرارات',
+      tempo: '3-1-1-0',
+      assetIllustrationPath:
+          'assets/illustrations/overhead_triceps_extension.svg',
+    ),
+    'skull_crusher': const ExerciseGuide(
+      slug: 'skull_crusher',
+      title: 'كسارة الجمجمة بالبار المتعرج (Skull Crusher)',
+      primaryMuscles: ['الترايسبس بجميع رؤوسها'],
+      secondaryMuscles: ['الساعد'],
+      setupInstructions: [
+        'استلقِ على مقعد مستوٍ وأمسك البار المتعرج بذراعين مائلتين قليلاً للخلف.',
+      ],
+      executionInstructions: [
+        'اثنِ الكوعين فقط للنزول بالبار نحو الجبهة أو خلف أعلى الرأس قليلاً.',
+        'ادفع بقوة للعودة لنقطة البداية مع الحفاظ على تقارب الكوعين.',
+      ],
+      breathingInstructions: 'شهيق عند النزول وزفير عند الفرد.',
+      commonMistakes: ['فتح الكوعين للخارج أثناء النزول.'],
+      coachTip:
+          'النزول بالبار خلف الرأس قليلاً يحافظ على الشد المستمر ويريح مفصل الكوع.',
+      hypertrophyRepRange: '8 - 12 تكرار',
+      strengthRepRange: '6 - 8 تكرارات',
+      tempo: '3-0-1-0',
+      assetIllustrationPath: 'assets/illustrations/skull_crusher.svg',
+    ),
+    'cable_crunch': const ExerciseGuide(
+      slug: 'cable_crunch',
+      title: 'طحن البطن بالكيبل العالي',
+      primaryMuscles: ['عضلات البطن المستقيمة'],
+      secondaryMuscles: ['العضلات المائلة (الأوبليكس)'],
+      setupInstructions: [
+        'اركع على ركبتيك تحت البكرة العالية وأمسك الحبل بجانب رأسك.',
+      ],
+      executionInstructions: [
+        'لف العمود الفقري لتقريب القفص الصدري من الحوض مع ثبات الفخذين.',
+        'افرغ الهواء بالكامل في الأسفل ثم عد للأعلى ببطء فقرة تلو الأخرى.',
+      ],
+      breathingInstructions: 'شهيق في الأعلى وزفير عميق عند عصر البطن للأسفل.',
+      commonMistakes: [
+        'الجلوس بالمؤخرة على الكعبين بدلاً من ثني العمود الفقري.',
+      ],
+      coachTip:
+          'ثبت مفصل الحوض في مكانه؛ الحركة تأتي فقط من تقريب الصدر نحو السرة.',
+      hypertrophyRepRange: '12 - 15 تكرار',
+      strengthRepRange: '8 - 12 تكرار',
+      tempo: '2-0-1-2',
+      assetIllustrationPath: 'assets/illustrations/cable_crunch.svg',
     ),
   };
 }

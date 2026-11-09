@@ -88,7 +88,7 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                   Icons.auto_awesome_rounded,
                   color: AppColors.primary,
                 ),
-                tooltip: 'Analyser avec le Coach IA',
+                tooltip: l10n.aiAnalyzeSessionButton,
                 onPressed: () => _analyzeWithAi(context, detail),
               ),
               IconButton(
@@ -195,9 +195,9 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                       ),
                     ),
                     icon: const Icon(Icons.auto_awesome_rounded, size: 20),
-                    label: const Text(
-                      'Analyser avec le Coach IA Gemini',
-                      style: TextStyle(
+                    label: Text(
+                      l10n.aiAnalyzeSessionButton,
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
                       ),
@@ -413,6 +413,8 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
     BuildContext context,
     WorkoutSessionDetail detail,
   ) async {
+    final l10n = AppLocalizations.of(context)!;
+    final languageCode = Localizations.localeOf(context).languageCode;
     final keyStorage = AiKeyStorageService();
     final hasKey = await keyStorage.hasApiKey();
 
@@ -453,7 +455,7 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                 const SizedBox(width: 18),
                 Expanded(
                   child: Text(
-                    'Analyse par le Coach IA en cours...',
+                    l10n.aiAnalyzingProgress,
                     style: AppTypography.ofBody(
                       context,
                     ).copyWith(fontWeight: FontWeight.w600),
@@ -506,7 +508,10 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
       );
 
       final aiService = WorkoutAiService(keyStorage: keyStorage);
-      final analysis = await aiService.analyzeWorkoutData(summary);
+      final analysis = await aiService.analyzeWorkoutData(
+        summary,
+        languageCode: languageCode,
+      );
 
       if (context.mounted) {
         Navigator.of(context, rootNavigator: true).pop(); // dismiss loader
@@ -519,11 +524,16 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
     } catch (e) {
       if (context.mounted) {
         Navigator.of(context, rootNavigator: true).pop(); // dismiss loader
+        final errorText =
+            e is AiNetworkException ||
+                e.toString().toLowerCase().contains('socket') ||
+                e.toString().toLowerCase().contains('clientexception') ||
+                e.toString().toLowerCase().contains('failed host lookup')
+            ? l10n.networkConnectionError
+            : 'Erreur Coach IA : ${e.toString().replaceAll("Exception: ", "")}';
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              'Erreur Coach IA : ${e.toString().replaceAll("Exception: ", "")}',
-            ),
+            content: Text(errorText),
             backgroundColor: AppColors.failure,
             behavior: SnackBarBehavior.floating,
           ),

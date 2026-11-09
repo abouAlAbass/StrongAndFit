@@ -415,6 +415,63 @@ class AppLocalizationsFr extends AppLocalizations {
   String get exercise_hanging_leg_raise => 'Relevé de jambes suspendu';
 
   @override
+  String get exercise_dips => 'Dips (Pectoraux / Triceps)';
+
+  @override
+  String get exercise_cable_fly => 'Écartés à la poulie vis-à-vis';
+
+  @override
+  String get exercise_chin_up => 'Tractions supination (Chin-Up)';
+
+  @override
+  String get exercise_dumbbell_row => 'Rowing haltère à un bras';
+
+  @override
+  String get exercise_seated_cable_row => 'Tirage horizontal à la poulie';
+
+  @override
+  String get exercise_lunges => 'Fentes marchées aux haltères';
+
+  @override
+  String get exercise_hip_thrust => 'Hip Thrust à la barre';
+
+  @override
+  String get exercise_bulgarian_split_squat => 'Squat bulgare aux haltères';
+
+  @override
+  String get exercise_leg_extension => 'Leg Extension à la machine';
+
+  @override
+  String get exercise_leg_curl => 'Leg Curl ischio-jambiers';
+
+  @override
+  String get exercise_calf_raise => 'Mollets debout à la machine';
+
+  @override
+  String get exercise_dumbbell_shoulder_press =>
+      'Développé épaules aux haltères';
+
+  @override
+  String get exercise_face_pull => 'Face Pull à la poulie haute';
+
+  @override
+  String get exercise_hammer_curl => 'Curl marteau aux haltères';
+
+  @override
+  String get exercise_incline_dumbbell_curl =>
+      'Curl biceps incliné aux haltères';
+
+  @override
+  String get exercise_overhead_triceps_extension =>
+      'Extension triceps au-dessus de la tête';
+
+  @override
+  String get exercise_skull_crusher => 'Barre au front (Skull Crusher)';
+
+  @override
+  String get exercise_cable_crunch => 'Crunch abdominal à la poulie haute';
+
+  @override
   String get exerciseGuide => 'Guide d\'exercice';
 
   @override
@@ -751,4 +808,163 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get systemDefault => 'Système (Par défaut)';
+
+  @override
+  String get importJsonTitle => 'Importer une sauvegarde JSON';
+
+  @override
+  String get importJsonSubtitle =>
+      'Restaurer votre profil, vos exercices personnalisés et votre historique depuis un fichier JSON';
+
+  @override
+  String get importConfirmTitle => 'Importer une sauvegarde JSON ?';
+
+  @override
+  String get importConfirmMessage =>
+      'Choisissez le mode de restauration. La fusion conserve vos séances actuelles et ajoute celles de la sauvegarde. L\'écrasement remplace tout l\'historique actuel.';
+
+  @override
+  String get importMergeOption =>
+      'Fusionner avec les données actuelles (Recommandé)';
+
+  @override
+  String get importOverwriteOption => 'Écraser l\'historique existant';
+
+  @override
+  String get importFilePathHint =>
+      'Sélectionnez une sauvegarde locale ou collez le contenu JSON ci-dessous';
+
+  @override
+  String get importPasteJsonLabel =>
+      'Contenu JSON de sauvegarde ou chemin du fichier';
+
+  @override
+  String get importStartButton => 'Lancer l\'importation';
+
+  @override
+  String importSuccessMessage(int sessions, int sets) {
+    return 'Sauvegarde importée avec succès ($sessions séances, $sets séries) !';
+  }
+
+  @override
+  String importErrorMessage(String error) {
+    return 'Échec de l\'importation : $error';
+  }
+
+  @override
+  String get aiCoachCardTitle => 'Coach IA — Google Gemini (BYOK)';
+
+  @override
+  String get aiCoachCardSubtitle =>
+      'Analyse de surcharge progressive, RPE et records';
+
+  @override
+  String get aiCoachCardDescription =>
+      'Utilisez votre propre clé d\'API Google AI Studio pour obtenir des recommandations d\'entraînement personnalisées et sans abonnement payant.';
+
+  @override
+  String get aiCoachConfigureButton => 'Configurer ma clé Gemini';
+
+  @override
+  String get aiKeySheetTitle => 'Coach IA — Clé Google Gemini';
+
+  @override
+  String get aiKeySheetSubtitle => 'Bring Your Own Key (BYOK) — 100% Gratuit';
+
+  @override
+  String get aiKeyPrivacyCallout =>
+      'Votre clé reste sur votre appareil. Elle est chiffrée dans le Keystore Android / Keychain iOS et n\'est jamais transmise à un serveur tiers.';
+
+  @override
+  String get aiKeyStepsTitle =>
+      'Comment obtenir votre clé gratuite en 30 secondes :';
+
+  @override
+  String get aiKeyStep1 =>
+      'Connectez-vous avec votre compte Google sur AI Studio.';
+
+  @override
+  String get aiKeyStep2 =>
+      'Cliquez sur \"Create API Key\" (aucun moyen de paiement requis).';
+
+  @override
+  String get aiKeyStep3 =>
+      'Copiez la clé et collez-la dans le champ ci-dessous.';
+
+  @override
+  String get aiKeyGetFreeKeyButton =>
+      'Obtenir une clé gratuite sur Google AI Studio';
+
+  @override
+  String get aiKeyInputLabel => 'Clé d\'API Google Gemini (ex: AIzaSy...)';
+
+  @override
+  String get aiKeyInputHint => 'Collez votre clé ici';
+
+  @override
+  String get aiKeyPasteTooltip => 'Coller';
+
+  @override
+  String get aiKeyValidateAndSaveButton => 'Valider et Sauvegarder';
+
+  @override
+  String get aiKeyDeleteSavedButton => 'Supprimer la clé enregistrée';
+
+  @override
+  String get aiKeyDeleteConfirmTitle => 'Supprimer la clé Gemini ?';
+
+  @override
+  String get aiKeyDeleteConfirmMessage =>
+      'Les fonctionnalités d\'analyse automatique de séances et de records seront désactivées.';
+
+  @override
+  String get aiKeyEmptyError =>
+      'Veuillez saisir ou coller votre clé API Gemini.';
+
+  @override
+  String get aiKeySavedSuccess =>
+      'Clé Gemini validée et enregistrée de façon sécurisée !';
+
+  @override
+  String get aiKeyDeletedSuccess => 'Clé supprimée.';
+
+  @override
+  String get networkConnectionError =>
+      'Impossible de contacter les serveurs Google Gemini. Vérifiez votre connexion Internet.';
+
+  @override
+  String get aiAnalysisDialogTitle => 'Analyse Préparateur Physique';
+
+  @override
+  String get aiAnalysisProgressiveOverloadTitle =>
+      'Surcharge Progressive & Intensité';
+
+  @override
+  String get aiAnalysisRecoveryRpeTitle => 'Récupération & Fatigue (RPE/RIR)';
+
+  @override
+  String get aiAnalysisHighlightsTitle => 'Points Forts & Accomplissements';
+
+  @override
+  String get aiAnalysisPlateausRisksTitle => 'Points de Vigilance & Risques';
+
+  @override
+  String get aiAnalysisNextCycleTitle =>
+      'Recommandations pour le prochain cycle';
+
+  @override
+  String get aiAnalysisCloseButton => 'Fermer';
+
+  @override
+  String get aiAnalyzeSessionButton => 'Analyser avec le Coach IA Gemini';
+
+  @override
+  String get aiAnalyzingProgress => 'Analyse par le Coach IA en cours...';
+
+  @override
+  String get finishWorkoutTitle => 'Valider la séance';
+
+  @override
+  String get finishWorkoutNotesHint =>
+      'Comment s\'est passée la séance ? (Sensations, RPE, énergie...)';
 }

@@ -874,6 +874,114 @@ abstract class AppLocalizations {
   /// **'Hanging Leg Raise'**
   String get exercise_hanging_leg_raise;
 
+  /// No description provided for @exercise_dips.
+  ///
+  /// In en, this message translates to:
+  /// **'Chest & Triceps Dips'**
+  String get exercise_dips;
+
+  /// No description provided for @exercise_cable_fly.
+  ///
+  /// In en, this message translates to:
+  /// **'Cable Chest Fly'**
+  String get exercise_cable_fly;
+
+  /// No description provided for @exercise_chin_up.
+  ///
+  /// In en, this message translates to:
+  /// **'Chin-Up (Underhand)'**
+  String get exercise_chin_up;
+
+  /// No description provided for @exercise_dumbbell_row.
+  ///
+  /// In en, this message translates to:
+  /// **'One-Arm Dumbbell Row'**
+  String get exercise_dumbbell_row;
+
+  /// No description provided for @exercise_seated_cable_row.
+  ///
+  /// In en, this message translates to:
+  /// **'Seated Cable Row'**
+  String get exercise_seated_cable_row;
+
+  /// No description provided for @exercise_lunges.
+  ///
+  /// In en, this message translates to:
+  /// **'Dumbbell Walking Lunges'**
+  String get exercise_lunges;
+
+  /// No description provided for @exercise_hip_thrust.
+  ///
+  /// In en, this message translates to:
+  /// **'Barbell Hip Thrust'**
+  String get exercise_hip_thrust;
+
+  /// No description provided for @exercise_bulgarian_split_squat.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulgarian Split Squat'**
+  String get exercise_bulgarian_split_squat;
+
+  /// No description provided for @exercise_leg_extension.
+  ///
+  /// In en, this message translates to:
+  /// **'Seated Leg Extension'**
+  String get exercise_leg_extension;
+
+  /// No description provided for @exercise_leg_curl.
+  ///
+  /// In en, this message translates to:
+  /// **'Hamstring Leg Curl'**
+  String get exercise_leg_curl;
+
+  /// No description provided for @exercise_calf_raise.
+  ///
+  /// In en, this message translates to:
+  /// **'Standing Calf Raise'**
+  String get exercise_calf_raise;
+
+  /// No description provided for @exercise_dumbbell_shoulder_press.
+  ///
+  /// In en, this message translates to:
+  /// **'Seated Dumbbell Shoulder Press'**
+  String get exercise_dumbbell_shoulder_press;
+
+  /// No description provided for @exercise_face_pull.
+  ///
+  /// In en, this message translates to:
+  /// **'Cable Face Pull'**
+  String get exercise_face_pull;
+
+  /// No description provided for @exercise_hammer_curl.
+  ///
+  /// In en, this message translates to:
+  /// **'Dumbbell Hammer Curl'**
+  String get exercise_hammer_curl;
+
+  /// No description provided for @exercise_incline_dumbbell_curl.
+  ///
+  /// In en, this message translates to:
+  /// **'Incline Dumbbell Curl'**
+  String get exercise_incline_dumbbell_curl;
+
+  /// No description provided for @exercise_overhead_triceps_extension.
+  ///
+  /// In en, this message translates to:
+  /// **'Overhead Triceps Extension'**
+  String get exercise_overhead_triceps_extension;
+
+  /// No description provided for @exercise_skull_crusher.
+  ///
+  /// In en, this message translates to:
+  /// **'EZ-Bar Skull Crusher'**
+  String get exercise_skull_crusher;
+
+  /// No description provided for @exercise_cable_crunch.
+  ///
+  /// In en, this message translates to:
+  /// **'Kneeling Cable Crunch'**
+  String get exercise_cable_crunch;
+
   /// No description provided for @exerciseGuide.
   ///
   /// In en, this message translates to:
@@ -1503,6 +1611,276 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'System (Default)'**
   String get systemDefault;
+
+  /// No description provided for @importJsonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import JSON Backup'**
+  String get importJsonTitle;
+
+  /// No description provided for @importJsonSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore your profile, custom exercises, and workout history from a JSON file'**
+  String get importJsonSubtitle;
+
+  /// No description provided for @importConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import JSON Backup?'**
+  String get importConfirmTitle;
+
+  /// No description provided for @importConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how to restore the backup data. Merging keeps your current workouts and adds the backup records. Overwriting replaces all current workout history.'**
+  String get importConfirmMessage;
+
+  /// No description provided for @importMergeOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge with existing data (Recommended)'**
+  String get importMergeOption;
+
+  /// No description provided for @importOverwriteOption.
+  ///
+  /// In en, this message translates to:
+  /// **'Overwrite existing history'**
+  String get importOverwriteOption;
+
+  /// No description provided for @importFilePathHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a local backup or paste JSON content below'**
+  String get importFilePathHint;
+
+  /// No description provided for @importPasteJsonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON Backup Content or File Path'**
+  String get importPasteJsonLabel;
+
+  /// No description provided for @importStartButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Backup'**
+  String get importStartButton;
+
+  /// No description provided for @importSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup restored successfully ({sessions} workouts, {sets} sets)!'**
+  String importSuccessMessage(int sessions, int sets);
+
+  /// No description provided for @importErrorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed: {error}'**
+  String importErrorMessage(String error);
+
+  /// No description provided for @aiCoachCardTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Coach — Google Gemini (BYOK)'**
+  String get aiCoachCardTitle;
+
+  /// No description provided for @aiCoachCardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Progressive overload, RPE & PR analysis'**
+  String get aiCoachCardSubtitle;
+
+  /// No description provided for @aiCoachCardDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Use your own free Google AI Studio API key to get personalized strength coaching insights without any paid subscription.'**
+  String get aiCoachCardDescription;
+
+  /// No description provided for @aiCoachConfigureButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure my Gemini key'**
+  String get aiCoachConfigureButton;
+
+  /// No description provided for @aiKeySheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Coach — Google Gemini Key'**
+  String get aiKeySheetTitle;
+
+  /// No description provided for @aiKeySheetSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Bring Your Own Key (BYOK) — 100% Free'**
+  String get aiKeySheetSubtitle;
+
+  /// No description provided for @aiKeyPrivacyCallout.
+  ///
+  /// In en, this message translates to:
+  /// **'Your key stays on your device. It is encrypted in Android Keystore / iOS Keychain and is never sent to any third-party server.'**
+  String get aiKeyPrivacyCallout;
+
+  /// No description provided for @aiKeyStepsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to get your free key in 30 seconds:'**
+  String get aiKeyStepsTitle;
+
+  /// No description provided for @aiKeyStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with your Google account on AI Studio.'**
+  String get aiKeyStep1;
+
+  /// No description provided for @aiKeyStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Click \"Create API Key\" (no payment method required).'**
+  String get aiKeyStep2;
+
+  /// No description provided for @aiKeyStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the key and paste it into the field below.'**
+  String get aiKeyStep3;
+
+  /// No description provided for @aiKeyGetFreeKeyButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a free key on Google AI Studio'**
+  String get aiKeyGetFreeKeyButton;
+
+  /// No description provided for @aiKeyInputLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Gemini API Key (e.g. AIzaSy...)'**
+  String get aiKeyInputLabel;
+
+  /// No description provided for @aiKeyInputHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste your key here'**
+  String get aiKeyInputHint;
+
+  /// No description provided for @aiKeyPasteTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste'**
+  String get aiKeyPasteTooltip;
+
+  /// No description provided for @aiKeyValidateAndSaveButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Validate and Save'**
+  String get aiKeyValidateAndSaveButton;
+
+  /// No description provided for @aiKeyDeleteSavedButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete saved key'**
+  String get aiKeyDeleteSavedButton;
+
+  /// No description provided for @aiKeyDeleteConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Gemini key?'**
+  String get aiKeyDeleteConfirmTitle;
+
+  /// No description provided for @aiKeyDeleteConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic workout and personal record AI analysis features will be disabled.'**
+  String get aiKeyDeleteConfirmMessage;
+
+  /// No description provided for @aiKeyEmptyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter or paste your Gemini API key.'**
+  String get aiKeyEmptyError;
+
+  /// No description provided for @aiKeySavedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Gemini key validated and securely saved!'**
+  String get aiKeySavedSuccess;
+
+  /// No description provided for @aiKeyDeletedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Key deleted.'**
+  String get aiKeyDeletedSuccess;
+
+  /// No description provided for @networkConnectionError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to connect to Google Gemini servers. Please check your Internet connection.'**
+  String get networkConnectionError;
+
+  /// No description provided for @aiAnalysisDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength Coach Analysis'**
+  String get aiAnalysisDialogTitle;
+
+  /// No description provided for @aiAnalysisProgressiveOverloadTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Progressive Overload & Intensity'**
+  String get aiAnalysisProgressiveOverloadTitle;
+
+  /// No description provided for @aiAnalysisRecoveryRpeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery & Fatigue (RPE/RIR)'**
+  String get aiAnalysisRecoveryRpeTitle;
+
+  /// No description provided for @aiAnalysisHighlightsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Strengths & Achievements'**
+  String get aiAnalysisHighlightsTitle;
+
+  /// No description provided for @aiAnalysisPlateausRisksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Watchpoints & Plateau Risks'**
+  String get aiAnalysisPlateausRisksTitle;
+
+  /// No description provided for @aiAnalysisNextCycleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Next Cycle Recommendations'**
+  String get aiAnalysisNextCycleTitle;
+
+  /// No description provided for @aiAnalysisCloseButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get aiAnalysisCloseButton;
+
+  /// No description provided for @aiAnalyzeSessionButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze with Gemini AI Coach'**
+  String get aiAnalyzeSessionButton;
+
+  /// No description provided for @aiAnalyzingProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Coach analysis in progress...'**
+  String get aiAnalyzingProgress;
+
+  /// No description provided for @finishWorkoutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Workout Session'**
+  String get finishWorkoutTitle;
+
+  /// No description provided for @finishWorkoutNotesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'How did the session feel? (RPE, energy, form notes...)'**
+  String get finishWorkoutNotesHint;
 }
 
 class _AppLocalizationsDelegate

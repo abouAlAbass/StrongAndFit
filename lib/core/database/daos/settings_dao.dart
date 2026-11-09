@@ -31,4 +31,18 @@ class SettingsDao extends DatabaseAccessor<AppDatabase>
       ExercisesCompanion(restSeconds: Value(seconds)),
     );
   }
+
+  /// Persists the preferred locale language code ('ar', 'en', 'fr').
+  Future<void> setPreferredLocale(String languageCode) async {
+    await updateRestSettings(
+      RestSettingsCompanion(preferredLocale: Value(languageCode)),
+    );
+  }
+
+  /// Persists the preferred visual theme mode ('system', 'light', 'dark').
+  Future<void> setThemeMode(String themeModeName) async {
+    await updateRestSettings(
+      RestSettingsCompanion(themeMode: Value(themeModeName)),
+    );
+  }
 }
