@@ -263,7 +263,7 @@ class _AiRoutineGeneratorDialogState extends State<AiRoutineGeneratorDialog> {
                         style: AppTypography.ofTitleLarge(context),
                       ),
                       Text(
-                        'Conception automatique & insertion SQLite',
+                        l10n.aiRoutineGeneratorCaption,
                         style: AppTypography.ofCaption(context),
                       ),
                     ],
@@ -308,7 +308,7 @@ class _AiRoutineGeneratorDialogState extends State<AiRoutineGeneratorDialog> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Gemini structure votre séance avec les séries et exercices optimaux...',
+              l10n.aiRoutineGeneratingHint,
               style: AppTypography.ofCaption(context),
               textAlign: TextAlign.center,
             ),
@@ -360,9 +360,9 @@ class _AiRoutineGeneratorDialogState extends State<AiRoutineGeneratorDialog> {
         ],
 
         // Quick Focus Chips
-        const Text(
-          'Structure / Focus ciblé',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.5),
+        Text(
+          l10n.aiFocusTargetTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13.5),
         ),
         const SizedBox(height: 8),
         Wrap(
@@ -370,28 +370,28 @@ class _AiRoutineGeneratorDialogState extends State<AiRoutineGeneratorDialog> {
           runSpacing: 8,
           children: [
             _buildChoiceChip(
-              label: 'Push (Pecs / Épaules / Triceps)',
+              label: l10n.aiFocusPush,
               isSelected: _selectedFocus == 'Push',
               onSelected: () => setState(
                 () => _selectedFocus = _selectedFocus == 'Push' ? '' : 'Push',
               ),
             ),
             _buildChoiceChip(
-              label: 'Pull (Dos / Biceps)',
+              label: l10n.aiFocusPull,
               isSelected: _selectedFocus == 'Pull',
               onSelected: () => setState(
                 () => _selectedFocus = _selectedFocus == 'Pull' ? '' : 'Pull',
               ),
             ),
             _buildChoiceChip(
-              label: 'Legs (Cuisses & Fessiers)',
+              label: l10n.aiFocusLegs,
               isSelected: _selectedFocus == 'Legs',
               onSelected: () => setState(
                 () => _selectedFocus = _selectedFocus == 'Legs' ? '' : 'Legs',
               ),
             ),
             _buildChoiceChip(
-              label: 'Full Body (Corps complet)',
+              label: l10n.aiFocusFullBody,
               isSelected: _selectedFocus == 'Full Body',
               onSelected: () => setState(
                 () => _selectedFocus = _selectedFocus == 'Full Body'
@@ -400,7 +400,7 @@ class _AiRoutineGeneratorDialogState extends State<AiRoutineGeneratorDialog> {
               ),
             ),
             _buildChoiceChip(
-              label: 'Upper Body (Haut du corps)',
+              label: l10n.aiFocusUpperBody,
               isSelected: _selectedFocus == 'Upper Body',
               onSelected: () => setState(
                 () => _selectedFocus = _selectedFocus == 'Upper Body'
@@ -535,9 +535,9 @@ class _AiRoutineGeneratorDialogState extends State<AiRoutineGeneratorDialog> {
                       color: AppColors.secondary,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: const Text(
-                      'Généré par Gemini IA',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.aiGeneratedBadge,
+                      style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -551,7 +551,7 @@ class _AiRoutineGeneratorDialogState extends State<AiRoutineGeneratorDialog> {
                       color: Colors.white70,
                       size: 20,
                     ),
-                    tooltip: 'Régénérer',
+                    tooltip: l10n.aiRegenerateTooltip,
                     onPressed: () => setState(() => _generatedRoutine = null),
                   ),
                 ],
@@ -582,11 +582,13 @@ class _AiRoutineGeneratorDialogState extends State<AiRoutineGeneratorDialog> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Exercices planifiés (${_draftExercises.length})',
+              l10n.aiPlannedExercises(_draftExercises.length),
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
             ),
             Text(
-              '${_draftExercises.fold<int>(0, (sum, e) => sum + e.targetSets)} séries au total',
+              l10n.aiTotalSetsCount(
+                _draftExercises.fold<int>(0, (sum, e) => sum + e.targetSets),
+              ),
               style: AppTypography.ofCaption(context),
             ),
           ],

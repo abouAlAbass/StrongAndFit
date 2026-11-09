@@ -460,7 +460,7 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen>
                       const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.refresh, size: 20),
-                        tooltip: 'Actualiser',
+                        tooltip: l10n.aiRefreshReport,
                         onPressed: () => _triggerHistoryAiAnalysis(completed),
                       ),
                     ],

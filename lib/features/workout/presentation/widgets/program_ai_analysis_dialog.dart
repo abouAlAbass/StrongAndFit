@@ -299,7 +299,7 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Gemini analyse le volume, la biomécanique et vos requêtes personnalisées...',
+              l10n.aiProgramAnalyzingHint,
               style: AppTypography.ofCaption(context),
               textAlign: TextAlign.center,
             ),
@@ -690,7 +690,7 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
           height: 46,
           child: ElevatedButton.icon(
             icon: const Icon(Icons.auto_awesome, size: 18),
-            label: const Text('Créer une variante optimisée avec l\'IA'),
+            label: Text(l10n.aiCreateOptimizedVariant),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
@@ -706,7 +706,7 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
         // Re-analyze Button
         OutlinedButton.icon(
           icon: const Icon(Icons.refresh_rounded, size: 18),
-          label: const Text('Modifier mes critères & Ré-analyser'),
+          label: Text(l10n.aiModifyCriteriaAndReanalyze),
           onPressed: () => setState(() => _analysisResult = null),
         ),
       ],

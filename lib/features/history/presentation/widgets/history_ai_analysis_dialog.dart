@@ -195,7 +195,9 @@ class _HistoryAiAnalysisDialogState extends State<HistoryAiAnalysisDialog> {
                         style: AppTypography.ofTitleLarge(context),
                       ),
                       Text(
-                        '${widget.completedSessions.length} séances analysées',
+                        l10n.aiSessionsAnalyzed(
+                          widget.completedSessions.length,
+                        ),
                         style: AppTypography.ofCaption(context),
                       ),
                     ],
@@ -242,7 +244,7 @@ class _HistoryAiAnalysisDialogState extends State<HistoryAiAnalysisDialog> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Gemini analyse votre progression, surcharge et assiduité...',
+              l10n.aiHistoryAnalyzingHint,
               style: AppTypography.ofCaption(context),
               textAlign: TextAlign.center,
             ),
@@ -269,7 +271,7 @@ class _HistoryAiAnalysisDialogState extends State<HistoryAiAnalysisDialog> {
             const SizedBox(height: 20),
             ElevatedButton.icon(
               icon: const Icon(Icons.refresh),
-              label: const Text('Réessayer'),
+              label: Text(l10n.retry),
               onPressed: _runAnalysis,
             ),
           ],
@@ -395,7 +397,7 @@ class _HistoryAiAnalysisDialogState extends State<HistoryAiAnalysisDialog> {
         // Refresh Button
         OutlinedButton.icon(
           icon: const Icon(Icons.refresh_rounded, size: 18),
-          label: const Text('Actualiser le bilan IA'),
+          label: Text(l10n.aiRefreshReport),
           onPressed: _runAnalysis,
         ),
       ],

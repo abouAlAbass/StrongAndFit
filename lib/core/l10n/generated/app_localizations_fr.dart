@@ -1098,7 +1098,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get aiFocusBack => 'Dos & Chaîne postérieure';
 
   @override
-  String get aiFocusLegs => 'Jambes & Fessiers';
+  String get aiFocusLegs => 'Legs (Cuisses & Fessiers)';
 
   @override
   String get aiFocusShouldersArms => 'Épaules & Bras';
@@ -1225,4 +1225,70 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get aiRoutineCreatedSuccess =>
       'Programme IA enregistré avec succès dans vos routines !';
+
+  @override
+  String get aiRoutineGeneratorCaption =>
+      'Conception automatique & insertion SQLite';
+
+  @override
+  String get aiRoutineGeneratingHint =>
+      'Gemini structure votre séance avec les séries et exercices optimaux...';
+
+  @override
+  String get aiFocusTargetTitle => 'Structure / Focus ciblé';
+
+  @override
+  String get aiFocusPush => 'Push (Pecs / Épaules / Triceps)';
+
+  @override
+  String get aiFocusPull => 'Pull (Dos / Biceps)';
+
+  @override
+  String get aiFocusFullBody => 'Full Body (Corps complet)';
+
+  @override
+  String get aiFocusUpperBody => 'Upper Body (Haut du corps)';
+
+  @override
+  String get aiGeneratedBadge => 'Généré par Gemini IA';
+
+  @override
+  String get aiRegenerateTooltip => 'Régénérer';
+
+  @override
+  String aiPlannedExercises(int count) {
+    return 'Exercices planifiés ($count)';
+  }
+
+  @override
+  String aiTotalSetsCount(int count) {
+    return '$count séries au total';
+  }
+
+  @override
+  String get aiProgramAnalyzingHint =>
+      'Gemini analyse le volume, la biomécanique et vos requêtes personnalisées...';
+
+  @override
+  String get aiCreateOptimizedVariant =>
+      'Créer une variante optimisée avec l\'IA';
+
+  @override
+  String get aiModifyCriteriaAndReanalyze =>
+      'Modifier mes critères & Ré-analyser';
+
+  @override
+  String aiSessionsAnalyzed(int count) {
+    return '$count séances analysées';
+  }
+
+  @override
+  String get aiHistoryAnalyzingHint =>
+      'Gemini analyse votre progression, surcharge et assiduité...';
+
+  @override
+  String get aiRefreshReport => 'Actualiser le bilan IA';
+
+  @override
+  String get retry => 'Réessayer';
 }

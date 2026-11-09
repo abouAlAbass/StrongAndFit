@@ -1082,7 +1082,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aiFocusBack => 'الظهر والسلسلة الخلفية';
 
   @override
-  String get aiFocusLegs => 'الأرجل والمؤخرة';
+  String get aiFocusLegs => 'أرجل (أفخاذ ومؤخرة)';
 
   @override
   String get aiFocusShouldersArms => 'الأكتاف والذراعين';
@@ -1205,4 +1205,69 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get aiRoutineCreatedSuccess =>
       'تم حفظ البرنامج التدريبي بنجاح في قائمة تمارينك!';
+
+  @override
+  String get aiRoutineGeneratorCaption =>
+      'تصميم تلقائي وإدراج فوري في قاعدة البيانات';
+
+  @override
+  String get aiRoutineGeneratingHint =>
+      'يقوم جيميني بتنظيم جلستك مع التمارين والمجموعات المثالية...';
+
+  @override
+  String get aiFocusTargetTitle => 'التركيز المستهدف / تقسيم التمرين';
+
+  @override
+  String get aiFocusPush => 'دفع (صدر / أكتاف / ترايسبس)';
+
+  @override
+  String get aiFocusPull => 'سحب (ظهر / بايسبس)';
+
+  @override
+  String get aiFocusFullBody => 'كامل الجسم (شامل)';
+
+  @override
+  String get aiFocusUpperBody => 'الجزء العلوي من الجسم';
+
+  @override
+  String get aiGeneratedBadge => 'تم إنشاؤه بواسطة جيميني الذكي';
+
+  @override
+  String get aiRegenerateTooltip => 'إعادة التوليد';
+
+  @override
+  String aiPlannedExercises(int count) {
+    return 'التمارين المخططة ($count)';
+  }
+
+  @override
+  String aiTotalSetsCount(int count) {
+    return '$count مجموعات إجمالاً';
+  }
+
+  @override
+  String get aiProgramAnalyzingHint =>
+      'يقوم جيميني بتحليل الحجم التدريبي والميكانيكا الحيوية والطلبات الخاصة...';
+
+  @override
+  String get aiCreateOptimizedVariant =>
+      'إنشاء برنامج بديل ومحسّن بالذكاء الاصطناعي';
+
+  @override
+  String get aiModifyCriteriaAndReanalyze => 'تعديل المعايير وإعادة التحليل';
+
+  @override
+  String aiSessionsAnalyzed(int count) {
+    return 'تم تحليل $count جلسات تدريبية';
+  }
+
+  @override
+  String get aiHistoryAnalyzingHint =>
+      'يقوم جيميني بتقييم الزيادة التدريجية والحجم والالتزام...';
+
+  @override
+  String get aiRefreshReport => 'تحديث تقرير الذكاء الاصطناعي';
+
+  @override
+  String get retry => 'إعادة المحاولة';
 }

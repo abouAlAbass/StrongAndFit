@@ -79,7 +79,7 @@ class ProfileScreen extends StatelessWidget {
 
           final profile = state.profile;
           if (profile == null) {
-            return const Center(child: Text('Loading profile...'));
+            return const Center(child: CircularProgressIndicator());
           }
 
           return ResponsiveContentWrapper(
