@@ -11,6 +11,7 @@ class AiKeyStorageService {
     : _storage =
           storage ??
           const FlutterSecureStorage(
+            aOptions: AndroidOptions(),
             iOptions: IOSOptions(
               accessibility: KeychainAccessibility.first_unlock,
             ),
