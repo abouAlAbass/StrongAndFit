@@ -38,6 +38,13 @@ import 'package:strong/features/history/presentation/screens/workout_history_det
 import 'package:strong/features/workout/presentation/cubit/rest_timer_cubit.dart';
 import 'package:strong/features/workout/presentation/cubit/rest_timer_state.dart';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:strong/core/services/ai_key_storage_service.dart';
+import 'package:strong/features/profile/presentation/widgets/ai_key_settings_sheet.dart';
+import 'package:strong/features/workout/domain/models/workout_ai_models.dart';
+import 'package:strong/features/workout/domain/services/workout_ai_service.dart';
+import 'package:strong/features/workout/presentation/widgets/workout_ai_analysis_dialog.dart';
+
 class TestRestNotificationService implements RestNotificationService {
   DateTime? scheduledEndsAt;
   String? scheduledTitle;
@@ -1238,6 +1245,182 @@ void main() {
           expect(themeCubit.state, ThemeMode.light);
 
           await themeCubit.close();
+        },
+      );
+    });
+
+    group('Google Gemini AI & BYOK Feature Tests', () {
+      setUp(() {
+        FlutterSecureStorage.setMockInitialValues({});
+      });
+
+      test(
+        'AiKeyStorageService saves, reads, checks, and deletes API key',
+        () async {
+          final storage = AiKeyStorageService();
+
+          expect(await storage.hasApiKey(), isFalse);
+          expect(await storage.getApiKey(), isNull);
+
+          await storage.saveApiKey('  AIzaSyTestKey12345  ');
+          expect(await storage.hasApiKey(), isTrue);
+          expect(await storage.getApiKey(), 'AIzaSyTestKey12345');
+
+          await storage.deleteApiKey();
+          expect(await storage.hasApiKey(), isFalse);
+          expect(await storage.getApiKey(), isNull);
+        },
+      );
+
+      test(
+        'WorkoutAiModels JSON serialization and deserialization work accurately',
+        () {
+          final summary = WorkoutSummary(
+            athleteName: 'Alexandre',
+            experienceLevel: 'intermediate',
+            bodyWeightKg: 82.5,
+            workoutTitle: 'Push Day - Hypertrophy',
+            date: DateTime(2026, 11, 9, 10, 0),
+            durationMinutes: 55,
+            totalVolumeKg: 4250.0,
+            exercises: const [
+              ExerciseSummary(
+                exerciseName: 'Développé couché barre',
+                muscleGroup: 'Pectoraux',
+                totalSets: 4,
+                totalReps: 32,
+                topWeightKg: 100.0,
+                avgRpe: 8.5,
+                hasPersonalRecord: true,
+              ),
+            ],
+            athleteFeedback: 'Bonnes sensations au bench',
+          );
+
+          final jsonMap = summary.toJson();
+          expect(jsonMap['athlete']['name'], 'Alexandre');
+          expect(jsonMap['athlete']['body_weight_kg'], 82.5);
+          expect(jsonMap['session']['total_volume_kg'], 4250.0);
+          expect((jsonMap['exercises'] as List).length, 1);
+          expect(jsonMap['exercises'][0]['exercise'], 'Développé couché barre');
+
+          final sampleResponseJson = {
+            'overall_score': 9,
+            'overview': 'Excellente séance push avec surcharge progressive.',
+            'progressive_overload':
+                'La charge de 100kg montre une progression de 5%.',
+            'recovery_and_rpe':
+                'RPE moyen de 8.5 bien calibré pour l\'hypertrophie.',
+            'highlights': [
+              'Nouveau PR au développé couché (100 kg)',
+              'Volume total solide de 4250 kg',
+            ],
+            'plateaus_or_risks': [
+              'Attention à la fatigue des triceps sur la fin',
+            ],
+            'next_cycle_recommendations': [
+              'Prendre 3 minutes de repos sur la première série lourde',
+              'Ajouter une série d\'écartés à la poulie',
+            ],
+          };
+
+          final analysis = WorkoutAiAnalysis.fromJson(sampleResponseJson);
+          expect(analysis.overallScore, 9);
+          expect(analysis.overview, contains('Excellente séance'));
+          expect(analysis.strengthHighlights.length, 2);
+          expect(
+            analysis.plateausOrRisks.first,
+            contains('fatigue des triceps'),
+          );
+          expect(analysis.nextCycleRecommendations.length, 2);
+        },
+      );
+
+      test(
+        'WorkoutAiService rejects empty or whitespace-only API keys',
+        () async {
+          final service = WorkoutAiService();
+          expect(() => service.testApiKey('   '), throwsA(isA<Exception>()));
+        },
+      );
+
+      testWidgets(
+        'AiKeySettingsSheet renders all guide steps, buttons, and input field',
+        (WidgetTester tester) async {
+          FlutterSecureStorage.setMockInitialValues({});
+          final storage = AiKeyStorageService();
+          final service = WorkoutAiService(keyStorage: storage);
+
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: AiKeySettingsSheet(
+                  keyStorage: storage,
+                  aiService: service,
+                ),
+              ),
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          expect(find.text('Coach IA — Clé Google Gemini'), findsOneWidget);
+          expect(
+            find.text('Obtenir une clé gratuite sur Google AI Studio'),
+            findsOneWidget,
+          );
+          expect(
+            find.text('Connectez-vous avec votre compte Google sur AI Studio.'),
+            findsOneWidget,
+          );
+          expect(
+            find.text(
+              'Cliquez sur "Create API Key" (aucun moyen de paiement requis).',
+            ),
+            findsOneWidget,
+          );
+          expect(
+            find.text('Copiez la clé et collez-la dans le champ ci-dessous.'),
+            findsOneWidget,
+          );
+          expect(find.text('Valider et Sauvegarder'), findsOneWidget);
+          expect(find.byType(TextField), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'WorkoutAiAnalysisDialog renders athletic scores and recommendations',
+        (WidgetTester tester) async {
+          const analysis = WorkoutAiAnalysis(
+            overallScore: 8,
+            overview: 'Bonne intensité globale.',
+            progressiveOverloadAssessment: 'Progression linéaire validée.',
+            recoveryAndRpeAssessment: 'Récupération optimale.',
+            strengthHighlights: ['Record sur le Squat', 'Excellente forme'],
+            plateausOrRisks: ['Légère fatigue lombaire'],
+            nextCycleRecommendations: ['Augmenter le repos à 180s'],
+          );
+
+          await tester.pumpWidget(
+            const MaterialApp(
+              home: Scaffold(
+                body: WorkoutAiAnalysisDialog(
+                  analysis: analysis,
+                  sessionTitle: 'Leg Day Intensif',
+                ),
+              ),
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          expect(find.text('Leg Day Intensif'), findsOneWidget);
+          expect(find.text('8/10'), findsOneWidget);
+          expect(find.text('Bonne intensité globale.'), findsOneWidget);
+          expect(find.text('Progression linéaire validée.'), findsOneWidget);
+          expect(find.text('Record sur le Squat'), findsOneWidget);
+          expect(find.text('Légère fatigue lombaire'), findsOneWidget);
+          expect(find.text('Augmenter le repos à 180s'), findsOneWidget);
         },
       );
     });

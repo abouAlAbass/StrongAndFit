@@ -11,6 +11,12 @@ import '../../../workout/domain/models/workout_session_detail.dart';
 import '../../../workout/domain/repositories/workout_repository.dart';
 import '../../../workout/domain/services/one_rep_max_calculator.dart';
 import '../../../workout/presentation/cubit/routines_cubit.dart';
+import '../../../../core/services/ai_key_storage_service.dart';
+import '../../../workout/domain/models/workout_ai_models.dart';
+import '../../../workout/domain/services/workout_ai_service.dart';
+import '../../../workout/presentation/widgets/workout_ai_analysis_dialog.dart';
+import '../../../profile/presentation/widgets/ai_key_settings_sheet.dart';
+import '../../../profile/presentation/cubit/profile_cubit.dart';
 
 /// Detailed summary screen for a completed historical workout session.
 class WorkoutHistoryDetailScreen extends StatelessWidget {
@@ -77,6 +83,14 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
               style: AppTypography.ofTitleLarge(context),
             ),
             actions: [
+              IconButton(
+                icon: const Icon(
+                  Icons.auto_awesome_rounded,
+                  color: AppColors.primary,
+                ),
+                tooltip: 'Analyser avec le Coach IA',
+                onPressed: () => _analyzeWithAi(context, detail),
+              ),
               IconButton(
                 icon: const Icon(
                   Icons.bookmark_add_outlined,
@@ -167,6 +181,31 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
+
+                // AI Coach Analysis Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 46,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    icon: const Icon(Icons.auto_awesome_rounded, size: 20),
+                    label: const Text(
+                      'Analyser avec le Coach IA Gemini',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                    onPressed: () => _analyzeWithAi(context, detail),
+                  ),
+                ),
+                const SizedBox(height: 12),
 
                 // Save as Routine Action Button
                 if (detail.exercises.isNotEmpty) ...[
@@ -368,5 +407,128 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _analyzeWithAi(
+    BuildContext context,
+    WorkoutSessionDetail detail,
+  ) async {
+    final keyStorage = AiKeyStorageService();
+    final hasKey = await keyStorage.hasApiKey();
+
+    if (!context.mounted) return;
+
+    if (!hasKey) {
+      final configured = await AiKeySettingsSheet.show(
+        context,
+        keyStorage: keyStorage,
+      );
+      if (configured != true || !context.mounted) return;
+    }
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogCtx) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          backgroundColor: AppColors.ofCard(context),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          content: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(
+                  width: 28,
+                  height: 28,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2.8,
+                    color: AppColors.primary,
+                  ),
+                ),
+                const SizedBox(width: 18),
+                Expanded(
+                  child: Text(
+                    'Analyse par le Coach IA en cours...',
+                    style: AppTypography.ofBody(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+
+    try {
+      final profile = context.read<ProfileCubit>().state.profile;
+
+      final exerciseSummaries = detail.exercises.map((item) {
+        final sets = item.sets;
+        final totalSets = sets.length;
+        final totalReps = sets.fold<int>(0, (sum, s) => sum + (s.reps ?? 0));
+        final topWeight = sets.fold<double>(
+          0.0,
+          (max, s) => (s.weightKg ?? 0.0) > max ? (s.weightKg ?? 0.0) : max,
+        );
+        final rpeSets = sets.where((s) => s.rpe != null && s.rpe! > 0);
+        final avgRpe = rpeSets.isNotEmpty
+            ? rpeSets.fold<double>(0.0, (sum, s) => sum + s.rpe!) /
+                  rpeSets.length
+            : null;
+
+        return ExerciseSummary(
+          exerciseName: item.exercise.localizedName(context),
+          muscleGroup: item.exercise.localizedMuscleGroup(context),
+          totalSets: totalSets,
+          totalReps: totalReps,
+          topWeightKg: topWeight,
+          avgRpe: avgRpe,
+        );
+      }).toList();
+
+      final summary = WorkoutSummary(
+        athleteName: profile?.name ?? 'Athlète',
+        experienceLevel: profile?.experienceLevel.name,
+        bodyWeightKg: profile?.weightKg,
+        workoutTitle: detail.session.title,
+        date: detail.session.startedAt,
+        durationMinutes: (detail.session.durationSeconds / 60).round(),
+        totalVolumeKg: detail.totalVolumeKg,
+        exercises: exerciseSummaries,
+        athleteFeedback: detail.session.notes,
+      );
+
+      final aiService = WorkoutAiService(keyStorage: keyStorage);
+      final analysis = await aiService.analyzeWorkoutData(summary);
+
+      if (context.mounted) {
+        Navigator.of(context, rootNavigator: true).pop(); // dismiss loader
+        WorkoutAiAnalysisDialog.show(
+          context,
+          analysis: analysis,
+          sessionTitle: detail.session.title,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.of(context, rootNavigator: true).pop(); // dismiss loader
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Erreur Coach IA : ${e.toString().replaceAll("Exception: ", "")}',
+            ),
+            backgroundColor: AppColors.failure,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
   }
 }

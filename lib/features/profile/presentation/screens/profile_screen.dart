@@ -9,6 +9,7 @@ import '../../../../core/widgets/responsive_content_wrapper.dart';
 import '../../../history/domain/services/workout_export_service.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
+import '../widgets/ai_key_settings_sheet.dart';
 import '../widgets/edit_profile_dialog.dart';
 import '../widgets/muscle_distribution_card.dart';
 import '../widgets/weight_progression_card.dart';
@@ -103,7 +104,11 @@ class ProfileScreen extends StatelessWidget {
                 MuscleDistributionCard(distribution: state.muscleDistribution),
                 const SizedBox(height: 20),
 
-                // 5. Settings, Theme & Language Card
+                // 6. Gemini Coach AI (BYOK) Configuration Card
+                _buildGeminiAiCard(context),
+                const SizedBox(height: 20),
+
+                // 7. Settings, Theme & Language Card
                 _buildSettingsCard(context),
                 const SizedBox(height: 20),
 
@@ -398,6 +403,88 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGeminiAiCard(BuildContext context) {
+    return Container(
+      padding: const EdgeInsetsDirectional.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.ofCard(context),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF387BFF), Color(0xFF8B5CF6)],
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(
+                  Icons.auto_awesome,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Coach IA — Google Gemini (BYOK)',
+                      style: AppTypography.ofTitleMedium(context),
+                    ),
+                    Text(
+                      'Analyse de surcharge progressive, RPE et records',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.ofTextSecondary(context),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+          Text(
+            'Utilisez votre propre clé d\'API Google AI Studio pour obtenir des recommandations d\'entraînement personnalisées et sans abonnement payant.',
+            style: TextStyle(
+              fontSize: 12.5,
+              color: AppColors.ofTextSecondary(context),
+              height: 1.35,
+            ),
+          ),
+          const SizedBox(height: 14),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () => AiKeySettingsSheet.show(context),
+              icon: const Icon(Icons.vpn_key_rounded, size: 16),
+              label: const Text(
+                'Configurer ma clé Gemini',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              style: OutlinedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                side: const BorderSide(color: AppColors.primary, width: 1.2),
+                foregroundColor: AppColors.primary,
+              ),
+            ),
           ),
         ],
       ),
