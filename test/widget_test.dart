@@ -46,8 +46,12 @@ import 'package:strong/core/services/ai_key_storage_service.dart';
 import 'package:strong/core/services/ai_report_storage_service.dart';
 import 'package:strong/features/history/presentation/screens/workout_history_screen.dart';
 import 'package:strong/features/profile/presentation/widgets/ai_key_settings_sheet.dart';
+import 'package:strong/features/exercises/domain/repositories/exercise_repository.dart';
 import 'package:strong/features/workout/domain/models/workout_ai_models.dart';
 import 'package:strong/features/workout/domain/services/workout_ai_service.dart';
+import 'package:strong/features/workout/presentation/bloc/workout_session_bloc.dart';
+import 'package:strong/features/workout/presentation/cubit/routines_cubit.dart';
+import 'package:strong/features/workout/presentation/widgets/ai_routine_generator_dialog.dart';
 import 'package:strong/features/workout/presentation/widgets/workout_ai_analysis_dialog.dart';
 
 class TestRestNotificationService implements RestNotificationService {
@@ -1629,6 +1633,121 @@ void main() {
             findsNothing,
           );
           expect(find.text('Style clair et épuré'), findsNothing);
+        },
+      );
+
+      test(
+        'GeneratedAiRoutine and GeneratedAiRoutineExercise JSON serialization and validation',
+        () {
+          final sampleJson = {
+            'name': 'Push Hypertrophie Avancé',
+            'rationale':
+                'Accent sur le deltoïde latéral et le haut des pectoraux.',
+            'exercises': [
+              {
+                'exerciseId': 1,
+                'exerciseSlug': 'bench-press',
+                'exerciseName': 'Développé couché',
+                'targetSets': 4,
+              },
+              {
+                'exerciseId': 5,
+                'exerciseSlug': 'dips',
+                'exerciseName': 'Dips',
+                'targetSets': 3,
+              },
+            ],
+          };
+
+          final routine = GeneratedAiRoutine.fromJson(sampleJson);
+          expect(routine.name, 'Push Hypertrophie Avancé');
+          expect(routine.rationale, contains('deltoïde latéral'));
+          expect(routine.exercises.length, 2);
+          expect(routine.exercises[0].exerciseSlug, 'bench-press');
+          expect(routine.exercises[0].targetSets, 4);
+          expect(routine.exercises[1].exerciseSlug, 'dips');
+          expect(routine.exercises[1].targetSets, 3);
+
+          final serialized = routine.toJson();
+          expect(serialized['name'], 'Push Hypertrophie Avancé');
+          expect((serialized['exercises'] as List).length, 2);
+        },
+      );
+
+      test(
+        'WorkoutAiService.buildGenerateRoutineSystemInstruction formats catalog and instructions',
+        () {
+          final instructionFr =
+              WorkoutAiService.buildGenerateRoutineSystemInstruction('fr');
+          expect(instructionFr, contains('concepteur de programmes'));
+          expect(instructionFr, contains('exercise_slug'));
+          expect(instructionFr, contains('French'));
+
+          final instructionAr =
+              WorkoutAiService.buildGenerateRoutineSystemInstruction('ar');
+          expect(instructionAr, contains('Arabic'));
+
+          final instructionEn =
+              WorkoutAiService.buildGenerateRoutineSystemInstruction('en');
+          expect(instructionEn, contains('English'));
+        },
+      );
+
+      testWidgets(
+        'AiRoutineGeneratorDialog renders initial prompt input, chips, and generate button',
+        (WidgetTester tester) async {
+          tester.view.physicalSize = const Size(1080, 2400);
+          tester.view.devicePixelRatio = 2.0;
+          addTearDown(() {
+            tester.view.resetPhysicalSize();
+            tester.view.resetDevicePixelRatio();
+          });
+
+          final routinesCubit = RoutinesCubit(templateRepo);
+          final workoutBloc = WorkoutSessionBloc(workoutRepo);
+          final profileCubit = ProfileCubit(profileRepo);
+
+          await tester.pumpWidget(
+            MultiRepositoryProvider(
+              providers: [
+                RepositoryProvider<ExerciseRepository>.value(
+                  value: exerciseRepo,
+                ),
+              ],
+              child: MultiBlocProvider(
+                providers: [
+                  BlocProvider<RoutinesCubit>.value(value: routinesCubit),
+                  BlocProvider<WorkoutSessionBloc>.value(value: workoutBloc),
+                  BlocProvider<ProfileCubit>.value(value: profileCubit),
+                ],
+                child: const MaterialApp(
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  locale: Locale('fr'),
+                  home: Scaffold(body: AiRoutineGeneratorDialog()),
+                ),
+              ),
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          expect(find.text('Générateur de Routine IA'), findsOneWidget);
+          expect(find.textContaining('Push'), findsOneWidget);
+          expect(find.textContaining('Pull'), findsOneWidget);
+          expect(find.textContaining('Legs'), findsOneWidget);
+          expect(find.text('⏱ 45 min'), findsOneWidget);
+          expect(find.text('⏱ 60 min'), findsOneWidget);
+          expect(
+            find.text('Concevoir le programme avec Gemini'),
+            findsOneWidget,
+          );
+
+          // Drain widget tree cleanly
+          await tester.pumpWidget(const SizedBox.shrink());
+          await tester.pump(const Duration(milliseconds: 100));
+          await tester.pumpAndSettle();
         },
       );
     });

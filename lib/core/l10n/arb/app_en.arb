@@ -424,5 +424,14 @@
   "tabWorkouts": "Workouts",
   "tabAiReports": "AI Coaching Reports",
   "noAiReportsYet": "No AI reports generated yet. Analyze your program or training history to get started!",
-  "configureApiKeyPrompt": "Configure Gemini API key to unlock AI Coach insights."
+  "configureApiKeyPrompt": "Configure Gemini API key to unlock AI Coach insights.",
+  "aiGenerateRoutine": "Generate with AI",
+  "aiRoutineGeneratorTitle": "AI Routine Generator",
+  "aiRoutineGeneratorSubtitle": "Describe your goals, equipment, and constraints — Gemini designs the optimal routine directly in your app.",
+  "aiPromptInputLabel": "Your Goals & Constraints (Free prompt)",
+  "aiPromptInputHint": "e.g. 45-min chest & triceps split, dumbbell-only, avoid heavy axial loading...",
+  "aiGenerateRoutineButton": "Design Routine with Gemini",
+  "aiSaveRoutineToDatabase": "Save to My Routines",
+  "aiStartRoutineImmediately": "Start Workout Now",
+  "aiRoutineCreatedSuccess": "AI Routine successfully saved to your routines!"
 }

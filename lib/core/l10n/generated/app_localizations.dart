@@ -2283,6 +2283,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Configure Gemini API key to unlock AI Coach insights.'**
   String get configureApiKeyPrompt;
+
+  /// No description provided for @aiGenerateRoutine.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate with AI'**
+  String get aiGenerateRoutine;
+
+  /// No description provided for @aiRoutineGeneratorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Routine Generator'**
+  String get aiRoutineGeneratorTitle;
+
+  /// No description provided for @aiRoutineGeneratorSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe your goals, equipment, and constraints — Gemini designs the optimal routine directly in your app.'**
+  String get aiRoutineGeneratorSubtitle;
+
+  /// No description provided for @aiPromptInputLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Goals & Constraints (Free prompt)'**
+  String get aiPromptInputLabel;
+
+  /// No description provided for @aiPromptInputHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 45-min chest & triceps split, dumbbell-only, avoid heavy axial loading...'**
+  String get aiPromptInputHint;
+
+  /// No description provided for @aiGenerateRoutineButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Design Routine with Gemini'**
+  String get aiGenerateRoutineButton;
+
+  /// No description provided for @aiSaveRoutineToDatabase.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to My Routines'**
+  String get aiSaveRoutineToDatabase;
+
+  /// No description provided for @aiStartRoutineImmediately.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Workout Now'**
+  String get aiStartRoutineImmediately;
+
+  /// No description provided for @aiRoutineCreatedSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Routine successfully saved to your routines!'**
+  String get aiRoutineCreatedSuccess;
 }
 
 class _AppLocalizationsDelegate

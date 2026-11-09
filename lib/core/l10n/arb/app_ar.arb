@@ -390,5 +390,14 @@
   "tabWorkouts": "الجلسات",
   "tabAiReports": "تقارير المدرب الذكي",
   "noAiReportsYet": "لم يتم إنشاء أي تقرير بعد. ابدأ بتحليل برنامجك أو سجل تمارينك!",
-  "configureApiKeyPrompt": "قم بإعداد مفتاح Gemini لتفعيل تحليلات المدرب الذكي."
+  "configureApiKeyPrompt": "قم بإعداد مفتاح Gemini لتفعيل تحليلات المدرب الذكي.",
+  "aiGenerateRoutine": "إنشاء بالذكاء الاصطناعي",
+  "aiRoutineGeneratorTitle": "مولد البرامج التدريبية الذكي",
+  "aiRoutineGeneratorSubtitle": "صف أهدافك والوقت المتاح والمعدات — وسيقوم جيميني بتصميم برنامج تدريبي متكامل داخل التطبيق.",
+  "aiPromptInputLabel": "أهدافك ورغباتك (طلب حر)",
+  "aiPromptInputHint": "مثال: حصة 45 دقيقة صدر وترايسبس بالدمبلز فقط، تجنب الضغط على أسفل الظهر...",
+  "aiGenerateRoutineButton": "تصميم البرنامج بواسطة جيميني",
+  "aiSaveRoutineToDatabase": "حفظ في تماريني",
+  "aiStartRoutineImmediately": "بدء التمرين الآن",
+  "aiRoutineCreatedSuccess": "تم حفظ البرنامج التدريبي بنجاح في قائمة تمارينك!"
 }

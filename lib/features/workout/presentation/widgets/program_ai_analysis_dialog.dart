@@ -12,6 +12,7 @@ import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../profile/presentation/widgets/ai_key_settings_sheet.dart';
 import '../../domain/models/workout_ai_models.dart';
 import '../../domain/services/workout_ai_service.dart';
+import 'ai_routine_generator_dialog.dart';
 
 /// Interactive modal sheet allowing athletes to audit their workout program/routine
 /// using Google Gemini AI, featuring interactive questions and free-text custom requests.
@@ -682,6 +683,25 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
           ),
           const SizedBox(height: 24),
         ],
+
+        // Create AI Variant / Generated Routine Button
+        SizedBox(
+          width: double.infinity,
+          height: 46,
+          child: ElevatedButton.icon(
+            icon: const Icon(Icons.auto_awesome, size: 18),
+            label: const Text('Créer une variante optimisée avec l\'IA'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              AiRoutineGeneratorDialog.show(context);
+            },
+          ),
+        ),
+        const SizedBox(height: 12),
 
         // Re-analyze Button
         OutlinedButton.icon(

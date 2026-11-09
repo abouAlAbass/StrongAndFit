@@ -15,6 +15,7 @@ import '../bloc/workout_session_event.dart';
 import '../bloc/workout_session_state.dart';
 import '../cubit/routines_cubit.dart';
 import '../cubit/routines_state.dart';
+import '../widgets/ai_routine_generator_dialog.dart';
 import '../widgets/create_routine_dialog.dart';
 import '../widgets/program_ai_analysis_dialog.dart';
 import 'workout_session_screen.dart';
@@ -483,10 +484,35 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                         style: AppTypography.ofTitleLarge(context),
                       ),
                     ),
-                    TextButton.icon(
-                      icon: const Icon(Icons.add_rounded, size: 18),
-                      label: Text(l10n.createRoutine),
-                      onPressed: () => CreateRoutineDialog.show(context),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        FilledButton.tonalIcon(
+                          icon: const Icon(
+                            Icons.auto_awesome,
+                            size: 16,
+                            color: AppColors.secondary,
+                          ),
+                          label: Text(
+                            l10n.aiGenerateRoutine,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: () => AiRoutineGeneratorDialog.show(
+                            context,
+                            currentLocale: widget.currentLocale,
+                            onLocaleChanged: widget.onLocaleChanged,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        IconButton(
+                          icon: const Icon(Icons.add_rounded),
+                          tooltip: l10n.createRoutine,
+                          onPressed: () => CreateRoutineDialog.show(context),
+                        ),
+                      ],
                     ),
                   ],
                 ),

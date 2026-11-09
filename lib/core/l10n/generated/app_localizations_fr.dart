@@ -1195,4 +1195,34 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get configureApiKeyPrompt =>
       'Configurez votre clé Gemini pour débloquer les analyses du Coach IA.';
+
+  @override
+  String get aiGenerateRoutine => 'Générer par IA';
+
+  @override
+  String get aiRoutineGeneratorTitle => 'Générateur de Routine IA';
+
+  @override
+  String get aiRoutineGeneratorSubtitle =>
+      'Décrivez vos objectifs et contraintes — Gemini conçoit le programme optimal directement dans l\'application.';
+
+  @override
+  String get aiPromptInputLabel => 'Vos objectifs & contraintes (Prompt libre)';
+
+  @override
+  String get aiPromptInputHint =>
+      'Ex: Séance 45 min pecs et triceps aux haltères, sans charge axiale...';
+
+  @override
+  String get aiGenerateRoutineButton => 'Concevoir le programme avec Gemini';
+
+  @override
+  String get aiSaveRoutineToDatabase => 'Enregistrer dans mes routines';
+
+  @override
+  String get aiStartRoutineImmediately => 'Démarrer immédiatement';
+
+  @override
+  String get aiRoutineCreatedSuccess =>
+      'Programme IA enregistré avec succès dans vos routines !';
 }

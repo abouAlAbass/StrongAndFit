@@ -231,6 +231,37 @@ Format JSON attendu :
 ''';
   }
 
+  /// Localized system instruction for generating tailored workout routine templates from scratch.
+  static String buildGenerateRoutineSystemInstruction(String languageCode) {
+    final targetLang = switch (languageCode) {
+      'ar' => 'Arabic (العربية الفصحى الرياضية الواضحة)',
+      'en' => 'English',
+      _ => 'French (Français)',
+    };
+    return '''
+Tu es un préparateur physique d'élite et concepteur de programmes sportifs (CSCS).
+Conçois une séance d'entraînement complète et équilibrée à partir des souhaits de l'athlète et du catalogue des exercices disponibles dans l'application.
+RÈGLE ABSOLUE : Tu dois OBLIGATOIREMENT choisir les exercices parmi la liste JSON d'exercices disponibles fournie dans le prompt. Pour chaque exercice choisi, utilise impérativement son "exercise_id" et son "exercise_slug" exacts.
+Rédige les textes ("name", "rationale", "exercise_name") dans la langue suivante : $targetLang.
+Les clés du JSON ("name", "rationale", "exercises", "exercise_id", "exercise_slug", "exercise_name", "target_sets") doivent rester strictement en anglais comme spécifié ci-dessous.
+Tu dois répondre UNIQUEMENT par un objet JSON valide, sans texte d'introduction ni backticks markdown autour.
+
+Format JSON attendu :
+{
+  "name": "Titre motivant de la routine (ex: Push Hypertrophie & Deltoïdes)",
+  "rationale": "Explication claire de l'objectif et de la sélection des mouvements (2 phrases).",
+  "exercises": [
+    {
+      "exercise_id": 1,
+      "exercise_slug": "bench_press",
+      "exercise_name": "Développé couché à la barre",
+      "target_sets": 4
+    }
+  ]
+}
+''';
+  }
+
   /// Internal helper that sends a structured prompt to Gemini with resilient model discovery.
   Future<Map<String, dynamic>> _executeGeminiQuery({
     required String systemInstruction,
@@ -403,5 +434,38 @@ Format JSON attendu :
       explicitKey: explicitKey,
     );
     return HistoryAiAnalysis.fromJson(decoded);
+  }
+
+  /// Generates a complete workout routine template from scratch using Gemini AI.
+  Future<GeneratedAiRoutine> generateRoutine({
+    required String prompt,
+    required List<Map<String, dynamic>> availableExercises,
+    ProgramAiQuestionnaire? questionnaire,
+    String? athleteName,
+    String? experienceLevel,
+    double? bodyWeightKg,
+    String? explicitKey,
+    String languageCode = 'fr',
+  }) async {
+    final payload = {
+      'athlete': {
+        'name': ?athleteName,
+        'experience_level': ?experienceLevel,
+        'body_weight_kg': ?bodyWeightKg,
+      },
+      'athlete_request': prompt,
+      'questionnaire': ?questionnaire?.toJson(),
+      'available_exercises_catalog': availableExercises,
+    };
+
+    final userPrompt =
+        'Voici la demande de l\'athlète et le catalogue d\'exercices disponibles dans l\'application :\n${jsonEncode(payload)}';
+
+    final decoded = await _executeGeminiQuery(
+      systemInstruction: buildGenerateRoutineSystemInstruction(languageCode),
+      prompt: userPrompt,
+      explicitKey: explicitKey,
+    );
+    return GeneratedAiRoutine.fromJson(decoded);
   }
 }

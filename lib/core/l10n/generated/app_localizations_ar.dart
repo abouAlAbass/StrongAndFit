@@ -1175,4 +1175,34 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get configureApiKeyPrompt =>
       'قم بإعداد مفتاح Gemini لتفعيل تحليلات المدرب الذكي.';
+
+  @override
+  String get aiGenerateRoutine => 'إنشاء بالذكاء الاصطناعي';
+
+  @override
+  String get aiRoutineGeneratorTitle => 'مولد البرامج التدريبية الذكي';
+
+  @override
+  String get aiRoutineGeneratorSubtitle =>
+      'صف أهدافك والوقت المتاح والمعدات — وسيقوم جيميني بتصميم برنامج تدريبي متكامل داخل التطبيق.';
+
+  @override
+  String get aiPromptInputLabel => 'أهدافك ورغباتك (طلب حر)';
+
+  @override
+  String get aiPromptInputHint =>
+      'مثال: حصة 45 دقيقة صدر وترايسبس بالدمبلز فقط، تجنب الضغط على أسفل الظهر...';
+
+  @override
+  String get aiGenerateRoutineButton => 'تصميم البرنامج بواسطة جيميني';
+
+  @override
+  String get aiSaveRoutineToDatabase => 'حفظ في تماريني';
+
+  @override
+  String get aiStartRoutineImmediately => 'بدء التمرين الآن';
+
+  @override
+  String get aiRoutineCreatedSuccess =>
+      'تم حفظ البرنامج التدريبي بنجاح في قائمة تمارينك!';
 }

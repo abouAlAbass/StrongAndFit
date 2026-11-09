@@ -390,5 +390,14 @@
   "tabWorkouts": "Séances",
   "tabAiReports": "Bilans Coach IA",
   "noAiReportsYet": "Aucun bilan IA généré pour l'instant. Lancez l'analyse de votre programme ou de votre historique !",
-  "configureApiKeyPrompt": "Configurez votre clé Gemini pour débloquer les analyses du Coach IA."
+  "configureApiKeyPrompt": "Configurez votre clé Gemini pour débloquer les analyses du Coach IA.",
+  "aiGenerateRoutine": "Générer par IA",
+  "aiRoutineGeneratorTitle": "Générateur de Routine IA",
+  "aiRoutineGeneratorSubtitle": "Décrivez vos objectifs et contraintes — Gemini conçoit le programme optimal directement dans l'application.",
+  "aiPromptInputLabel": "Vos objectifs & contraintes (Prompt libre)",
+  "aiPromptInputHint": "Ex: Séance 45 min pecs et triceps aux haltères, sans charge axiale...",
+  "aiGenerateRoutineButton": "Concevoir le programme avec Gemini",
+  "aiSaveRoutineToDatabase": "Enregistrer dans mes routines",
+  "aiStartRoutineImmediately": "Démarrer immédiatement",
+  "aiRoutineCreatedSuccess": "Programme IA enregistré avec succès dans vos routines !"
 }
