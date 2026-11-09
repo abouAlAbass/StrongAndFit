@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import '../../../../core/enums/set_type.dart';
-import '../../../../core/l10n/exercise_translation_helper.dart';
-import '../../../../core/l10n/generated/app_localizations.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_typography.dart';
-import '../../../../core/widgets/responsive_content_wrapper.dart';
-import '../../../workout/domain/models/workout_session_detail.dart';
-import '../../../workout/domain/repositories/workout_repository.dart';
-import '../../../workout/domain/services/one_rep_max_calculator.dart';
-import '../../../workout/presentation/cubit/routines_cubit.dart';
-import '../../../../core/services/ai_key_storage_service.dart';
-import '../../../workout/domain/models/workout_ai_models.dart';
-import '../../../workout/domain/services/workout_ai_service.dart';
-import '../../../workout/presentation/widgets/workout_ai_analysis_dialog.dart';
-import '../../../profile/presentation/widgets/ai_key_settings_sheet.dart';
-import '../../../profile/presentation/cubit/profile_cubit.dart';
+import 'package:strong/core/enums/set_type.dart';
+import 'package:strong/core/l10n/exercise_translation_helper.dart';
+import 'package:strong/core/l10n/generated/app_localizations.dart';
+import 'package:strong/core/services/ai_key_storage_service.dart';
+import 'package:strong/core/theme/app_colors.dart';
+import 'package:strong/core/theme/app_typography.dart';
+import 'package:strong/core/widgets/responsive_content_wrapper.dart';
+import 'package:strong/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:strong/features/profile/presentation/widgets/ai_key_settings_sheet.dart';
+import 'package:strong/features/workout/domain/models/workout_ai_models.dart';
+import 'package:strong/features/workout/domain/models/workout_session_detail.dart';
+import 'package:strong/features/workout/domain/repositories/workout_repository.dart';
+import 'package:strong/features/workout/domain/services/one_rep_max_calculator.dart';
+import 'package:strong/features/workout/domain/services/workout_ai_service.dart';
+import 'package:strong/features/workout/presentation/cubit/routines_cubit.dart';
+import 'package:strong/features/workout/presentation/widgets/workout_ai_analysis_dialog.dart';
 
 /// Detailed summary screen for a completed historical workout session.
 class WorkoutHistoryDetailScreen extends StatelessWidget {
@@ -197,10 +197,8 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                     icon: const Icon(Icons.auto_awesome_rounded, size: 20),
                     label: const Text(
                       'Analyser avec le Coach IA Gemini',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                     ),
                     onPressed: () => _analyzeWithAi(context, detail),
                   ),
@@ -454,9 +452,9 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'Analyse par le Coach IA en cours...',
-                    style: AppTypography.ofBody(
-                      context,
-                    ).copyWith(fontWeight: FontWeight.w600),
+                    style: AppTypography.ofBody(context).copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
@@ -472,7 +470,8 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
       final exerciseSummaries = detail.exercises.map((item) {
         final sets = item.sets;
         final totalSets = sets.length;
-        final totalReps = sets.fold<int>(0, (sum, s) => sum + (s.reps ?? 0));
+        final totalReps =
+            sets.fold<int>(0, (sum, s) => sum + (s.reps ?? 0));
         final topWeight = sets.fold<double>(
           0.0,
           (max, s) => (s.weightKg ?? 0.0) > max ? (s.weightKg ?? 0.0) : max,
@@ -480,7 +479,7 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
         final rpeSets = sets.where((s) => s.rpe != null && s.rpe! > 0);
         final avgRpe = rpeSets.isNotEmpty
             ? rpeSets.fold<double>(0.0, (sum, s) => sum + s.rpe!) /
-                  rpeSets.length
+                rpeSets.length
             : null;
 
         return ExerciseSummary(
