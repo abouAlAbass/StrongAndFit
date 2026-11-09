@@ -197,8 +197,10 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                     icon: const Icon(Icons.auto_awesome_rounded, size: 20),
                     label: const Text(
                       'Analyser avec le Coach IA Gemini',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
                     ),
                     onPressed: () => _analyzeWithAi(context, detail),
                   ),
@@ -452,9 +454,9 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'Analyse par le Coach IA en cours...',
-                    style: AppTypography.ofBody(context).copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: AppTypography.ofBody(
+                      context,
+                    ).copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
               ],
@@ -470,8 +472,7 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
       final exerciseSummaries = detail.exercises.map((item) {
         final sets = item.sets;
         final totalSets = sets.length;
-        final totalReps =
-            sets.fold<int>(0, (sum, s) => sum + (s.reps ?? 0));
+        final totalReps = sets.fold<int>(0, (sum, s) => sum + (s.reps ?? 0));
         final topWeight = sets.fold<double>(
           0.0,
           (max, s) => (s.weightKg ?? 0.0) > max ? (s.weightKg ?? 0.0) : max,
@@ -479,7 +480,7 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
         final rpeSets = sets.where((s) => s.rpe != null && s.rpe! > 0);
         final avgRpe = rpeSets.isNotEmpty
             ? rpeSets.fold<double>(0.0, (sum, s) => sum + s.rpe!) /
-                rpeSets.length
+                  rpeSets.length
             : null;
 
         return ExerciseSummary(
