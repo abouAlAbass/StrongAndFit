@@ -251,5 +251,22 @@
   "supersetLinked": "Superset linked!",
   "supersetUnlinked": "Exercise unlinked from superset",
   "supersetLabel": "SUPERSET",
-  "linkWithNext": "Link with next exercise"
+  "linkWithNext": "Link with next exercise",
+  "weightProgression": "Body Weight Tracking",
+  "weightProgressionSubtitle": "Weight progression curve & weigh-in logs",
+  "logWeight": "New Weigh-in",
+  "weightHistory": "Weigh-in History",
+  "noWeightHistory": "No weigh-ins recorded yet. Log your weight to track your body composition trend.",
+  "weightDelta": "Change",
+  "sinceStart": "since start",
+  "weighInDate": "Weigh-in Date",
+  "weighInNotes": "Notes (optional)",
+  "weighInSaved": "Weigh-in successfully logged",
+  "deleteWeighIn": "Delete Weigh-in",
+  "deleteWeighInConfirm": "Are you sure you want to delete this weigh-in?",
+  "onboardingPreferencesTitle": "Language & Appearance",
+  "onboardingPreferencesSubtitle": "Select your preferences or keep your device system settings",
+  "chooseLanguage": "Application Language",
+  "chooseTheme": "Visual Theme",
+  "systemDefault": "System (Default)"
 }

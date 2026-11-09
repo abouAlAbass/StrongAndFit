@@ -694,4 +694,57 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get linkWithNext => 'ربط مع التمرين التالي';
+
+  @override
+  String get weightProgression => 'متابعة وزن الجسم';
+
+  @override
+  String get weightProgressionSubtitle => 'منحنى تطور الوزن وسجل القياسات';
+
+  @override
+  String get logWeight => 'تسجيل وزن جديد';
+
+  @override
+  String get weightHistory => 'سجل الأوزان';
+
+  @override
+  String get noWeightHistory =>
+      'لا توجد قياسات مسجلة بعد. سجّل وزنك لمتابعة تطور تكوين جسمك.';
+
+  @override
+  String get weightDelta => 'التغيير';
+
+  @override
+  String get sinceStart => 'منذ البداية';
+
+  @override
+  String get weighInDate => 'تاريخ القياس';
+
+  @override
+  String get weighInNotes => 'ملاحظات (اختياري)';
+
+  @override
+  String get weighInSaved => 'تم حفظ الوزن بنجاح';
+
+  @override
+  String get deleteWeighIn => 'حذف القياس';
+
+  @override
+  String get deleteWeighInConfirm => 'هل أنت متأكد من رغبتك في حذف هذا القياس؟';
+
+  @override
+  String get onboardingPreferencesTitle => 'اللغة والمظهر';
+
+  @override
+  String get onboardingPreferencesSubtitle =>
+      'اختر لغة ومظهر التطبيق أو احتفظ بإعدادات جهازك';
+
+  @override
+  String get chooseLanguage => 'لغة التطبيق';
+
+  @override
+  String get chooseTheme => 'المظهر البصري';
+
+  @override
+  String get systemDefault => 'النظام (افتراضي)';
 }

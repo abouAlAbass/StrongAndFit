@@ -28,4 +28,16 @@ abstract class ProfileRepository {
 
   /// Completely deletes all profile and workout data, resetting to clean initial state.
   Future<void> deleteProfileAndData();
+
+  /// Reactive stream of body weight logs ordered by date descending.
+  Stream<List<BodyWeightLog>> watchWeightLogs();
+
+  /// Retrieve all body weight logs ordered chronologically.
+  Future<List<BodyWeightLog>> getWeightLogs();
+
+  /// Log a body weight weigh-in and sync current weight with profile.
+  Future<int> logBodyWeight(double weightKg, {DateTime? date, String? notes});
+
+  /// Delete a historical weigh-in and recalculate profile weight.
+  Future<int> deleteWeightLog(int id);
 }

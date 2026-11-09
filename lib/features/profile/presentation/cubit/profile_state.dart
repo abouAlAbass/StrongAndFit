@@ -11,6 +11,7 @@ class ProfileState extends Equatable {
   final int weeklyCompletedCount;
   final AthleteLifetimeStats? lifetimeStats;
   final Map<MuscleGroup, int> muscleDistribution;
+  final List<BodyWeightLog> weightLogs;
   final String? errorMessage;
 
   const ProfileState({
@@ -19,6 +20,7 @@ class ProfileState extends Equatable {
     this.weeklyCompletedCount = 0,
     this.lifetimeStats,
     this.muscleDistribution = const {},
+    this.weightLogs = const [],
     this.errorMessage,
   });
 
@@ -39,12 +41,22 @@ class ProfileState extends Equatable {
     return (weeklyCompletedCount / goal).clamp(0.0, 1.0);
   }
 
+  /// Weight delta between the latest entry and the earliest recorded entry.
+  double? get weightDeltaFromStart {
+    if (weightLogs.length < 2) return null;
+    // weightLogs is sorted newest first
+    final latest = weightLogs.first.weightKg;
+    final initial = weightLogs.last.weightKg;
+    return latest - initial;
+  }
+
   ProfileState copyWith({
     ProfileStatus? status,
     UserProfile? profile,
     int? weeklyCompletedCount,
     AthleteLifetimeStats? lifetimeStats,
     Map<MuscleGroup, int>? muscleDistribution,
+    List<BodyWeightLog>? weightLogs,
     String? errorMessage,
   }) {
     return ProfileState(
@@ -53,6 +65,7 @@ class ProfileState extends Equatable {
       weeklyCompletedCount: weeklyCompletedCount ?? this.weeklyCompletedCount,
       lifetimeStats: lifetimeStats ?? this.lifetimeStats,
       muscleDistribution: muscleDistribution ?? this.muscleDistribution,
+      weightLogs: weightLogs ?? this.weightLogs,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
@@ -64,6 +77,7 @@ class ProfileState extends Equatable {
     weeklyCompletedCount,
     lifetimeStats,
     muscleDistribution,
+    weightLogs,
     errorMessage,
   ];
 }

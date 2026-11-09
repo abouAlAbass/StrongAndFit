@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import '../../enums/experience_level.dart';
 import '../../enums/muscle_group.dart';
 import '../app_database.dart';
+import '../tables/body_weight_logs_table.dart';
 import '../tables/set_logs_table.dart';
 import '../tables/user_profiles_table.dart';
 import '../tables/workout_exercises_table.dart';
@@ -24,7 +25,13 @@ class AthleteLifetimeStats {
 
 /// Data Access Object managing user profile, biometric data, and weekly consistency metrics.
 @DriftAccessor(
-  tables: [UserProfiles, WorkoutSessions, WorkoutExercises, SetLogs],
+  tables: [
+    UserProfiles,
+    WorkoutSessions,
+    WorkoutExercises,
+    SetLogs,
+    BodyWeightLogs,
+  ],
 )
 class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
   ProfileDao(super.db);
@@ -77,8 +84,10 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
     await delete(setLogs).go();
     await delete(workoutExercises).go();
     await delete(workoutSessions).go();
+    await delete(bodyWeightLogs).go();
     await delete(userProfiles).go();
 
+    final now = DateTime.now();
     // Re-insert pristine default profile record so stream listeners stay stable
     await into(userProfiles).insert(
       UserProfilesCompanion.insert(
@@ -87,8 +96,83 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
         heightCm: const Value(178.0),
         weeklyWorkoutGoal: const Value(4),
         experienceLevel: const Value(ExperienceLevel.intermediate),
+        updatedAt: Value(now),
       ),
     );
+    await into(bodyWeightLogs).insert(
+      BodyWeightLogsCompanion.insert(
+        weightKg: 75.0,
+        loggedAt: Value(now),
+        notes: const Value('Poids initial'),
+      ),
+    );
+  }
+
+  /// Streams historical body weight logs ordered by date descending (newest first).
+  Stream<List<BodyWeightLog>> watchWeightLogs() {
+    return (select(
+      bodyWeightLogs,
+    )..orderBy([(t) => OrderingTerm.desc(t.loggedAt)])).watch();
+  }
+
+  /// Retrieves all body weight logs ordered chronologically (oldest to newest) for charting.
+  Future<List<BodyWeightLog>> getWeightLogs() {
+    return (select(
+      bodyWeightLogs,
+    )..orderBy([(t) => OrderingTerm.asc(t.loggedAt)])).get();
+  }
+
+  /// Inserts a new weight entry, and automatically updates the active profile weightKg.
+  Future<int> insertWeightLog({
+    required double weightKg,
+    DateTime? loggedAt,
+    String? notes,
+  }) async {
+    final entryDate = loggedAt ?? DateTime.now();
+    final id = await into(bodyWeightLogs).insert(
+      BodyWeightLogsCompanion.insert(
+        weightKg: weightKg,
+        loggedAt: Value(entryDate),
+        notes: Value(notes),
+      ),
+    );
+
+    // Keep profile current weight in sync with the latest weigh-in
+    final profile = await getOrCreateProfile();
+    await (update(userProfiles)..where((t) => t.id.equals(profile.id))).write(
+      UserProfilesCompanion(
+        weightKg: Value(weightKg),
+        updatedAt: Value(DateTime.now()),
+      ),
+    );
+
+    return id;
+  }
+
+  /// Deletes a specific weigh-in and recalibrates profile weightKg to the latest remaining log.
+  Future<int> deleteWeightLog(int id) async {
+    final count = await (delete(
+      bodyWeightLogs,
+    )..where((t) => t.id.equals(id))).go();
+
+    // Recalibrate profile weight to latest remaining weigh-in if available
+    final latest =
+        await (select(bodyWeightLogs)
+              ..orderBy([(t) => OrderingTerm.desc(t.loggedAt)])
+              ..limit(1))
+            .getSingleOrNull();
+
+    if (latest != null) {
+      final profile = await getOrCreateProfile();
+      await (update(userProfiles)..where((t) => t.id.equals(profile.id))).write(
+        UserProfilesCompanion(
+          weightKg: Value(latest.weightKg),
+          updatedAt: Value(DateTime.now()),
+        ),
+      );
+    }
+
+    return count;
   }
 
   /// Calculates how many workouts have been completed during the current calendar week.

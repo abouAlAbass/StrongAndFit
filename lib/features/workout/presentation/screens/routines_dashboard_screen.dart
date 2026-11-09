@@ -62,6 +62,7 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
     final chosen = await AthleteOnboardingDialog.show(
       context,
       onRoutineStarted: () => _navigateToActiveWorkout(context),
+      onLocaleChanged: widget.onLocaleChanged,
     );
     if (chosen != null && mounted) {
       setState(() {

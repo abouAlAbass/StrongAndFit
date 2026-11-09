@@ -696,4 +696,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get linkWithNext => 'Link with next exercise';
+
+  @override
+  String get weightProgression => 'Body Weight Tracking';
+
+  @override
+  String get weightProgressionSubtitle =>
+      'Weight progression curve & weigh-in logs';
+
+  @override
+  String get logWeight => 'New Weigh-in';
+
+  @override
+  String get weightHistory => 'Weigh-in History';
+
+  @override
+  String get noWeightHistory =>
+      'No weigh-ins recorded yet. Log your weight to track your body composition trend.';
+
+  @override
+  String get weightDelta => 'Change';
+
+  @override
+  String get sinceStart => 'since start';
+
+  @override
+  String get weighInDate => 'Weigh-in Date';
+
+  @override
+  String get weighInNotes => 'Notes (optional)';
+
+  @override
+  String get weighInSaved => 'Weigh-in successfully logged';
+
+  @override
+  String get deleteWeighIn => 'Delete Weigh-in';
+
+  @override
+  String get deleteWeighInConfirm =>
+      'Are you sure you want to delete this weigh-in?';
+
+  @override
+  String get onboardingPreferencesTitle => 'Language & Appearance';
+
+  @override
+  String get onboardingPreferencesSubtitle =>
+      'Select your preferences or keep your device system settings';
+
+  @override
+  String get chooseLanguage => 'Application Language';
+
+  @override
+  String get chooseTheme => 'Visual Theme';
+
+  @override
+  String get systemDefault => 'System (Default)';
 }

@@ -12,6 +12,7 @@ import 'daos/workout_dao.dart';
 import 'seeds/initial_exercises.dart';
 import 'seeds/initial_templates.dart';
 import 'tables/exercises_table.dart';
+import 'tables/body_weight_logs_table.dart';
 import 'tables/rest_settings_table.dart';
 import 'tables/set_logs_table.dart';
 import 'tables/template_exercises_table.dart';
@@ -33,6 +34,7 @@ part 'app_database.g.dart';
     TemplateExercises,
     UserProfiles,
     RestSettings,
+    BodyWeightLogs,
   ],
   daos: [ExerciseDao, WorkoutDao, TemplateDao, ProfileDao, SettingsDao],
 )
@@ -40,7 +42,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? openConnection());
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -84,6 +86,19 @@ class AppDatabase extends _$AppDatabase {
       }
       if (from < 4) {
         await m.addColumn(workoutExercises, workoutExercises.supersetGroupId);
+      }
+      if (from < 5) {
+        await m.createTable(bodyWeightLogs);
+        final profiles = await select(userProfiles).get();
+        if (profiles.isNotEmpty && profiles.first.weightKg != null) {
+          await into(bodyWeightLogs).insert(
+            BodyWeightLogsCompanion.insert(
+              weightKg: profiles.first.weightKg!,
+              loggedAt: Value(profiles.first.updatedAt),
+              notes: const Value('Poids initial'),
+            ),
+          );
+        }
       }
     },
     beforeOpen: (details) async {
@@ -129,6 +144,7 @@ class AppDatabase extends _$AppDatabase {
   static Future<void> _seedDefaultProfile(AppDatabase db) async {
     final existing = await db.select(db.userProfiles).get();
     if (existing.isEmpty) {
+      final now = DateTime.now();
       await db
           .into(db.userProfiles)
           .insert(
@@ -138,6 +154,16 @@ class AppDatabase extends _$AppDatabase {
               heightCm: const Value(178.0),
               weeklyWorkoutGoal: const Value(4),
               experienceLevel: const Value(ExperienceLevel.intermediate),
+              updatedAt: Value(now),
+            ),
+          );
+      await db
+          .into(db.bodyWeightLogs)
+          .insert(
+            BodyWeightLogsCompanion.insert(
+              weightKg: 75.0,
+              loggedAt: Value(now),
+              notes: const Value('Poids initial'),
             ),
           );
     }

@@ -11,6 +11,7 @@ import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 import '../widgets/edit_profile_dialog.dart';
 import '../widgets/muscle_distribution_card.dart';
+import '../widgets/weight_progression_card.dart';
 
 /// Athlete Profile screen presenting body metrics, weekly consistency rings,
 /// BMI calculations, lifetime training volume, theme toggling, and language options.
@@ -94,7 +95,11 @@ class ProfileScreen extends StatelessWidget {
                 _buildMetricsGrid(context, state),
                 const SizedBox(height: 16),
 
-                // 4. Muscle Group Volume Distribution Card
+                // 4. Body Weight Tracking & Progression Chart
+                const WeightProgressionCard(),
+                const SizedBox(height: 16),
+
+                // 5. Muscle Group Volume Distribution Card
                 MuscleDistributionCard(distribution: state.muscleDistribution),
                 const SizedBox(height: 20),
 

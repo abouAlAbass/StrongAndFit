@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 import '../../../../core/database/app_database.dart';
 import '../../../../core/l10n/exercise_translation_helper.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
@@ -40,6 +41,20 @@ class WorkoutSessionScreen extends StatefulWidget {
 
 class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
   int? _selectedSetId;
+
+  @override
+  void initState() {
+    super.initState();
+    // Keep device display awake during active workout session (T02)
+    WakelockPlus.enable();
+  }
+
+  @override
+  void dispose() {
+    // Restore normal system sleep timeout when exiting session
+    WakelockPlus.disable();
+    super.dispose();
+  }
 
   ({WorkoutExerciseDetail exercise, SetLog set, SetLog? previousSet})?
   _findActiveSet(WorkoutSessionDetail detail, WorkoutSessionState state) {

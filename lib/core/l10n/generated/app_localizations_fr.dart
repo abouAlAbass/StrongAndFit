@@ -696,4 +696,59 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get linkWithNext => 'Lier avec l\'exercice suivant';
+
+  @override
+  String get weightProgression => 'Suivi du poids';
+
+  @override
+  String get weightProgressionSubtitle =>
+      'Évolution corporelle & historique des pesées';
+
+  @override
+  String get logWeight => 'Nouvelle pesée';
+
+  @override
+  String get weightHistory => 'Historique des pesées';
+
+  @override
+  String get noWeightHistory =>
+      'Aucune pesée enregistrée. Notez votre poids pour suivre votre progression.';
+
+  @override
+  String get weightDelta => 'Évolution';
+
+  @override
+  String get sinceStart => 'depuis le début';
+
+  @override
+  String get weighInDate => 'Date de la pesée';
+
+  @override
+  String get weighInNotes => 'Notes (facultatif)';
+
+  @override
+  String get weighInSaved => 'Pesée enregistrée avec succès';
+
+  @override
+  String get deleteWeighIn => 'Supprimer la pesée';
+
+  @override
+  String get deleteWeighInConfirm =>
+      'Êtes-vous sûr de vouloir supprimer cette pesée ?';
+
+  @override
+  String get onboardingPreferencesTitle => 'Langue & Apparence';
+
+  @override
+  String get onboardingPreferencesSubtitle =>
+      'Choisissez vos préférences d\'affichage ou conservez celles de votre système';
+
+  @override
+  String get chooseLanguage => 'Langue de l\'application';
+
+  @override
+  String get chooseTheme => 'Thème visuel';
+
+  @override
+  String get systemDefault => 'Système (Par défaut)';
 }

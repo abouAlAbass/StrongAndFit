@@ -10,6 +10,7 @@ mixin _$ProfileDaoMixin on DatabaseAccessor<AppDatabase> {
   $WorkoutExercisesTable get workoutExercises =>
       attachedDatabase.workoutExercises;
   $SetLogsTable get setLogs => attachedDatabase.setLogs;
+  $BodyWeightLogsTable get bodyWeightLogs => attachedDatabase.bodyWeightLogs;
   ProfileDaoManager get managers => ProfileDaoManager(this);
 }
 
@@ -32,4 +33,9 @@ class ProfileDaoManager {
       );
   $$SetLogsTableTableManager get setLogs =>
       $$SetLogsTableTableManager(_db.attachedDatabase, _db.setLogs);
+  $$BodyWeightLogsTableTableManager get bodyWeightLogs =>
+      $$BodyWeightLogsTableTableManager(
+        _db.attachedDatabase,
+        _db.bodyWeightLogs,
+      );
 }

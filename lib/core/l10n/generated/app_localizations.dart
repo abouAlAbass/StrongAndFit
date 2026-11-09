@@ -1401,6 +1401,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Link with next exercise'**
   String get linkWithNext;
+
+  /// No description provided for @weightProgression.
+  ///
+  /// In en, this message translates to:
+  /// **'Body Weight Tracking'**
+  String get weightProgression;
+
+  /// No description provided for @weightProgressionSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight progression curve & weigh-in logs'**
+  String get weightProgressionSubtitle;
+
+  /// No description provided for @logWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'New Weigh-in'**
+  String get logWeight;
+
+  /// No description provided for @weightHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Weigh-in History'**
+  String get weightHistory;
+
+  /// No description provided for @noWeightHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'No weigh-ins recorded yet. Log your weight to track your body composition trend.'**
+  String get noWeightHistory;
+
+  /// No description provided for @weightDelta.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get weightDelta;
+
+  /// No description provided for @sinceStart.
+  ///
+  /// In en, this message translates to:
+  /// **'since start'**
+  String get sinceStart;
+
+  /// No description provided for @weighInDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Weigh-in Date'**
+  String get weighInDate;
+
+  /// No description provided for @weighInNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get weighInNotes;
+
+  /// No description provided for @weighInSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Weigh-in successfully logged'**
+  String get weighInSaved;
+
+  /// No description provided for @deleteWeighIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Weigh-in'**
+  String get deleteWeighIn;
+
+  /// No description provided for @deleteWeighInConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this weigh-in?'**
+  String get deleteWeighInConfirm;
+
+  /// No description provided for @onboardingPreferencesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Language & Appearance'**
+  String get onboardingPreferencesTitle;
+
+  /// No description provided for @onboardingPreferencesSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select your preferences or keep your device system settings'**
+  String get onboardingPreferencesSubtitle;
+
+  /// No description provided for @chooseLanguage.
+  ///
+  /// In en, this message translates to:
+  /// **'Application Language'**
+  String get chooseLanguage;
+
+  /// No description provided for @chooseTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Visual Theme'**
+  String get chooseTheme;
+
+  /// No description provided for @systemDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'System (Default)'**
+  String get systemDefault;
 }
 
 class _AppLocalizationsDelegate

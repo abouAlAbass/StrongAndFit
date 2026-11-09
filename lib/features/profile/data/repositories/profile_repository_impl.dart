@@ -58,4 +58,28 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<void> deleteProfileAndData() {
     return _profileDao.deleteProfileAndData();
   }
+
+  @override
+  Stream<List<BodyWeightLog>> watchWeightLogs() {
+    return _profileDao.watchWeightLogs();
+  }
+
+  @override
+  Future<List<BodyWeightLog>> getWeightLogs() {
+    return _profileDao.getWeightLogs();
+  }
+
+  @override
+  Future<int> logBodyWeight(double weightKg, {DateTime? date, String? notes}) {
+    return _profileDao.insertWeightLog(
+      weightKg: weightKg,
+      loggedAt: date,
+      notes: notes,
+    );
+  }
+
+  @override
+  Future<int> deleteWeightLog(int id) {
+    return _profileDao.deleteWeightLog(id);
+  }
 }

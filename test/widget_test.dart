@@ -26,6 +26,9 @@ import 'package:strong/features/workout/domain/services/plate_calculator.dart';
 import 'package:strong/core/enums/set_type.dart';
 import 'package:strong/features/history/domain/services/workout_export_service.dart';
 import 'package:strong/features/workout/domain/models/workout_session_detail.dart';
+import 'package:strong/core/theme/theme_cubit.dart';
+import 'package:strong/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:strong/features/profile/presentation/widgets/athlete_onboarding_dialog.dart';
 import 'package:strong/features/workout/presentation/widgets/one_handed_quick_input_bar.dart';
 import 'package:strong/features/workout/presentation/widgets/rpe_picker_dialog.dart';
 import 'package:strong/features/workout/domain/services/warmup_calculator.dart';
@@ -1136,6 +1139,105 @@ void main() {
             updatedDetail.exercises[1].workoutExercise.supersetGroupId,
             isNull,
           );
+        },
+      );
+
+      test(
+        'Body weight tracking persists weigh-ins, syncs profile weight, and computes delta',
+        () async {
+          final cubit = ProfileCubit(profileRepo);
+
+          // Clear any initial seed logs for pristine assertion
+          await database.delete(database.bodyWeightLogs).go();
+
+          // Log two sequential weigh-ins
+          await profileRepo.logBodyWeight(
+            80.0,
+            date: DateTime(2026, 11, 1),
+            notes: 'Début sèche',
+          );
+          await profileRepo.logBodyWeight(
+            78.0,
+            date: DateTime(2026, 11, 9),
+            notes: 'Semaine 2',
+          );
+
+          final logs = await profileRepo.getWeightLogs();
+          expect(logs.length, 2);
+          expect(logs.first.weightKg, 80.0);
+          expect(logs.last.weightKg, 78.0);
+
+          // Check profile is kept in sync with latest weight
+          final updatedProfile = await profileRepo.watchProfile().first;
+          expect(updatedProfile.weightKg, 78.0);
+
+          // Test ProfileState weightDeltaFromStart
+          final state = cubit.state.copyWith(
+            weightLogs: [
+              logs.last, // newest first (78.0)
+              logs.first, // oldest last (80.0)
+            ],
+          );
+          expect(state.weightDeltaFromStart, closeTo(-2.0, 0.01));
+
+          // Delete latest log and verify
+          await profileRepo.deleteWeightLog(logs.last.id);
+          final logsAfterDelete = await profileRepo.getWeightLogs();
+          expect(logsAfterDelete.any((l) => l.id == logs.last.id), false);
+
+          await cubit.close();
+        },
+      );
+
+      testWidgets(
+        'AthleteOnboardingDialog Step 0 displays language and theme preferences',
+        (tester) async {
+          tester.view.physicalSize = const Size(1080, 2400);
+          tester.view.devicePixelRatio = 2.0;
+          addTearDown(() {
+            tester.view.resetPhysicalSize();
+            tester.view.resetDevicePixelRatio();
+          });
+
+          final themeCubit = ThemeCubit();
+          Locale? changedLocale;
+
+          await tester.pumpWidget(
+            BlocProvider<ThemeCubit>.value(
+              value: themeCubit,
+              child: MaterialApp(
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                locale: const Locale('fr'),
+                home: Scaffold(
+                  body: AthleteOnboardingDialog(
+                    onLocaleChanged: (locale) => changedLocale = locale,
+                  ),
+                ),
+              ),
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          // Step 0 must display language and theme selection
+          expect(find.text('Langue & Apparence'), findsOneWidget);
+          expect(find.text('Français 🇫🇷'), findsOneWidget);
+          expect(find.text('English 🇬🇧'), findsOneWidget);
+          expect(find.text('Mode Sombre'), findsOneWidget);
+          expect(find.text('Mode Clair'), findsOneWidget);
+
+          // Tap English
+          await tester.tap(find.text('English 🇬🇧'));
+          await tester.pumpAndSettle();
+          expect(changedLocale, const Locale('en'));
+
+          // Tap Mode Clair
+          await tester.tap(find.text('Mode Clair'));
+          await tester.pumpAndSettle();
+          expect(themeCubit.state, ThemeMode.light);
+
+          await themeCubit.close();
         },
       );
     });

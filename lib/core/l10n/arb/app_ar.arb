@@ -228,5 +228,22 @@
   "supersetLinked": "تم ربط المجموعة المركبة!",
   "supersetUnlinked": "تم فصل التمرين من المجموعة المركبة",
   "supersetLabel": "مجموعة مركبة",
-  "linkWithNext": "ربط مع التمرين التالي"
+  "linkWithNext": "ربط مع التمرين التالي",
+  "weightProgression": "متابعة وزن الجسم",
+  "weightProgressionSubtitle": "منحنى تطور الوزن وسجل القياسات",
+  "logWeight": "تسجيل وزن جديد",
+  "weightHistory": "سجل الأوزان",
+  "noWeightHistory": "لا توجد قياسات مسجلة بعد. سجّل وزنك لمتابعة تطور تكوين جسمك.",
+  "weightDelta": "التغيير",
+  "sinceStart": "منذ البداية",
+  "weighInDate": "تاريخ القياس",
+  "weighInNotes": "ملاحظات (اختياري)",
+  "weighInSaved": "تم حفظ الوزن بنجاح",
+  "deleteWeighIn": "حذف القياس",
+  "deleteWeighInConfirm": "هل أنت متأكد من رغبتك في حذف هذا القياس؟",
+  "onboardingPreferencesTitle": "اللغة والمظهر",
+  "onboardingPreferencesSubtitle": "اختر لغة ومظهر التطبيق أو احتفظ بإعدادات جهازك",
+  "chooseLanguage": "لغة التطبيق",
+  "chooseTheme": "المظهر البصري",
+  "systemDefault": "النظام (افتراضي)"
 }

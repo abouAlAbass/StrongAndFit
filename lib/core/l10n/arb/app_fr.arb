@@ -228,5 +228,22 @@
   "supersetLinked": "Superset associé !",
   "supersetUnlinked": "Exercice dissocié du superset",
   "supersetLabel": "SUPERSET",
-  "linkWithNext": "Lier avec l'exercice suivant"
+  "linkWithNext": "Lier avec l'exercice suivant",
+  "weightProgression": "Suivi du poids",
+  "weightProgressionSubtitle": "Évolution corporelle & historique des pesées",
+  "logWeight": "Nouvelle pesée",
+  "weightHistory": "Historique des pesées",
+  "noWeightHistory": "Aucune pesée enregistrée. Notez votre poids pour suivre votre progression.",
+  "weightDelta": "Évolution",
+  "sinceStart": "depuis le début",
+  "weighInDate": "Date de la pesée",
+  "weighInNotes": "Notes (facultatif)",
+  "weighInSaved": "Pesée enregistrée avec succès",
+  "deleteWeighIn": "Supprimer la pesée",
+  "deleteWeighInConfirm": "Êtes-vous sûr de vouloir supprimer cette pesée ?",
+  "onboardingPreferencesTitle": "Langue & Apparence",
+  "onboardingPreferencesSubtitle": "Choisissez vos préférences d'affichage ou conservez celles de votre système",
+  "chooseLanguage": "Langue de l'application",
+  "chooseTheme": "Thème visuel",
+  "systemDefault": "Système (Par défaut)"
 }

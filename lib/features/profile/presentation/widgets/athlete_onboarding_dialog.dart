@@ -1,26 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/database/daos/template_dao.dart';
 import '../../../../core/enums/experience_level.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
+import '../../../../core/theme/theme_cubit.dart';
 import '../../../workout/presentation/bloc/workout_session_bloc.dart';
 import '../../../workout/presentation/bloc/workout_session_event.dart';
 import '../../../workout/presentation/cubit/routines_cubit.dart';
 import '../../domain/routine_recommender.dart';
 import '../cubit/profile_cubit.dart';
 
-/// Interactive, 3-step onboarding wizard matching an athlete's goals,
-/// availability, and experience level with science-based pre-designed routines.
+/// Interactive, 4-step onboarding wizard matching an athlete's preferences
+/// (language & theme), goals, availability, and experience level with science-based routines.
 class AthleteOnboardingDialog extends StatefulWidget {
   final VoidCallback? onRoutineStarted;
+  final ValueChanged<Locale>? onLocaleChanged;
 
-  const AthleteOnboardingDialog({super.key, this.onRoutineStarted});
+  const AthleteOnboardingDialog({
+    super.key,
+    this.onRoutineStarted,
+    this.onLocaleChanged,
+  });
 
   static Future<TemplateDetail?> show(
     BuildContext context, {
     VoidCallback? onRoutineStarted,
+    ValueChanged<Locale>? onLocaleChanged,
   }) {
     return showModalBottomSheet<TemplateDetail>(
       context: context,
@@ -29,7 +37,10 @@ class AthleteOnboardingDialog extends StatefulWidget {
       builder: (ctx) => Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 580),
-          child: AthleteOnboardingDialog(onRoutineStarted: onRoutineStarted),
+          child: AthleteOnboardingDialog(
+            onRoutineStarted: onRoutineStarted,
+            onLocaleChanged: onLocaleChanged,
+          ),
         ),
       ),
     );
@@ -41,8 +52,10 @@ class AthleteOnboardingDialog extends StatefulWidget {
 }
 
 class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
-  int _currentStep = 0; // 0: Goal, 1: Days, 2: Level, 3: Result
+  int _currentStep =
+      0; // 0: Lang & Theme, 1: Goal, 2: Days, 3: Level, 4: Result
 
+  String _selectedLangCode = 'system';
   TrainingGoal _selectedGoal = TrainingGoal.hypertrophy;
   int _selectedDays = 4;
   ExperienceLevel _selectedLevel = ExperienceLevel.intermediate;
@@ -56,7 +69,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         daysPerWeek: _selectedDays,
         experienceLevel: _selectedLevel,
       );
-      _currentStep = 3;
+      _currentStep = 4;
     });
   }
 
@@ -118,7 +131,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
                       onPressed: () => setState(() => _currentStep--),
                     ),
                   Expanded(child: _buildProgressStepper(context, l10n)),
-                  if (_currentStep < 3)
+                  if (_currentStep < 4)
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
                       child: Text(
@@ -160,10 +173,10 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
   Widget _buildProgressStepper(BuildContext context, AppLocalizations l10n) {
     return Row(
       children: [
-        for (int i = 0; i < 3; i++) ...[
+        for (int i = 0; i < 4; i++) ...[
           Container(
-            width: 28,
-            height: 28,
+            width: 26,
+            height: 26,
             decoration: BoxDecoration(
               color: _currentStep > i
                   ? AppColors.secondary
@@ -180,11 +193,11 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
             ),
             alignment: Alignment.center,
             child: _currentStep > i
-                ? const Icon(Icons.check, size: 16, color: Colors.white)
+                ? const Icon(Icons.check, size: 14, color: Colors.white)
                 : Text(
                     '${i + 1}',
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: 11,
                       fontWeight: FontWeight.bold,
                       color: _currentStep == i
                           ? Colors.white
@@ -192,7 +205,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
                     ),
                   ),
           ),
-          if (i < 2)
+          if (i < 3)
             Expanded(
               child: Container(
                 height: 2,
@@ -209,15 +222,181 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
   Widget _buildStepContent(BuildContext context, AppLocalizations l10n) {
     switch (_currentStep) {
       case 0:
-        return _buildGoalStep(context, l10n);
+        return _buildPreferencesStep(context, l10n);
       case 1:
-        return _buildDaysStep(context, l10n);
+        return _buildGoalStep(context, l10n);
       case 2:
-        return _buildLevelStep(context, l10n);
+        return _buildDaysStep(context, l10n);
       case 3:
+        return _buildLevelStep(context, l10n);
+      case 4:
       default:
         return _buildResultStep(context, l10n);
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // STEP 0: LANGUAGE & THEME PREFERENCES
+  // ---------------------------------------------------------------------------
+  Widget _buildPreferencesStep(BuildContext context, AppLocalizations l10n) {
+    final themeCubit = context.watch<ThemeCubit>();
+    final currentThemeMode = themeCubit.state;
+
+    return ListView(
+      key: const ValueKey('step_0_prefs'),
+      padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 30),
+      children: [
+        Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.15),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                Icons.tune_rounded,
+                color: AppColors.primary,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.onboardingPreferencesTitle,
+                    style: AppTypography.ofTitleLarge(context),
+                  ),
+                  Text(
+                    l10n.onboardingPreferencesSubtitle,
+                    style: AppTypography.ofCaption(context),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+
+        // Section 1: Langue
+        Text(
+          l10n.chooseLanguage,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        const SizedBox(height: 8),
+        _buildChoiceCard(
+          context: context,
+          title: l10n.systemDefault,
+          description: 'Suit automatiquement les réglages de votre smartphone',
+          icon: Icons.phone_android_rounded,
+          isSelected: _selectedLangCode == 'system',
+          onTap: () {
+            setState(() => _selectedLangCode = 'system');
+            final sysLocale = View.of(context).platformDispatcher.locale;
+            final code = sysLocale.languageCode;
+            final target = code == 'ar'
+                ? const Locale('ar')
+                : (code == 'fr' ? const Locale('fr') : const Locale('en'));
+            widget.onLocaleChanged?.call(target);
+            HapticFeedback.selectionClick();
+          },
+        ),
+        const SizedBox(height: 8),
+        _buildChoiceCard(
+          context: context,
+          title: 'Français 🇫🇷',
+          description: 'Interface, exercices et métriques en français',
+          icon: Icons.language_rounded,
+          isSelected: _selectedLangCode == 'fr',
+          onTap: () {
+            setState(() => _selectedLangCode = 'fr');
+            widget.onLocaleChanged?.call(const Locale('fr'));
+            HapticFeedback.selectionClick();
+          },
+        ),
+        const SizedBox(height: 8),
+        _buildChoiceCard(
+          context: context,
+          title: 'English 🇬🇧',
+          description: 'English interface, exercise guides, and analytics',
+          icon: Icons.language_rounded,
+          isSelected: _selectedLangCode == 'en',
+          onTap: () {
+            setState(() => _selectedLangCode = 'en');
+            widget.onLocaleChanged?.call(const Locale('en'));
+            HapticFeedback.selectionClick();
+          },
+        ),
+        const SizedBox(height: 8),
+        _buildChoiceCard(
+          context: context,
+          title: 'العربية 🇸🇦',
+          description: 'واجهة وتدريبات باللغة العربية مع دعم RTL',
+          icon: Icons.language_rounded,
+          isSelected: _selectedLangCode == 'ar',
+          onTap: () {
+            setState(() => _selectedLangCode = 'ar');
+            widget.onLocaleChanged?.call(const Locale('ar'));
+            HapticFeedback.selectionClick();
+          },
+        ),
+        const SizedBox(height: 20),
+
+        // Section 2: Thème visuel
+        Text(
+          l10n.chooseTheme,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        const SizedBox(height: 8),
+        _buildChoiceCard(
+          context: context,
+          title: l10n.themeSystem,
+          description: 'Suit le mode clair/sombre de votre appareil',
+          icon: Icons.brightness_auto_rounded,
+          isSelected: currentThemeMode == ThemeMode.system,
+          onTap: () {
+            themeCubit.setThemeMode(ThemeMode.system);
+            HapticFeedback.selectionClick();
+          },
+        ),
+        const SizedBox(height: 8),
+        _buildChoiceCard(
+          context: context,
+          title: l10n.themeDark,
+          description: 'Contraste sombre optimal pour la salle de musculation',
+          icon: Icons.dark_mode_rounded,
+          isSelected: currentThemeMode == ThemeMode.dark,
+          onTap: () {
+            themeCubit.setThemeMode(ThemeMode.dark);
+            HapticFeedback.selectionClick();
+          },
+        ),
+        const SizedBox(height: 8),
+        _buildChoiceCard(
+          context: context,
+          title: l10n.themeLight,
+          description: 'Style clair et épuré',
+          icon: Icons.light_mode_rounded,
+          isSelected: currentThemeMode == ThemeMode.light,
+          onTap: () {
+            themeCubit.setThemeMode(ThemeMode.light);
+            HapticFeedback.selectionClick();
+          },
+        ),
+        const SizedBox(height: 24),
+
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () => setState(() => _currentStep = 1),
+            child: Text(l10n.next),
+          ),
+        ),
+      ],
+    );
   }
 
   // ---------------------------------------------------------------------------
@@ -225,7 +404,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
   // ---------------------------------------------------------------------------
   Widget _buildGoalStep(BuildContext context, AppLocalizations l10n) {
     return ListView(
-      key: const ValueKey('step_0'),
+      key: const ValueKey('step_1_goal'),
       padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 30),
       children: [
         Text(l10n.stepTrainingGoal, style: AppTypography.ofTitleLarge(context)),
@@ -254,18 +433,27 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
           context: context,
           title: l10n.goalFitness,
           description: l10n.goalFitnessDesc,
-          icon: Icons.favorite_rounded,
+          icon: Icons.health_and_safety_rounded,
           isSelected: _selectedGoal == TrainingGoal.fitness,
           onTap: () => setState(() => _selectedGoal = TrainingGoal.fitness),
         ),
         const SizedBox(height: 28),
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: () => setState(() => _currentStep = 1),
-            child: Text(l10n.next),
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => setState(() => _currentStep = 0),
+                child: Text(l10n.back),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => setState(() => _currentStep = 2),
+                child: Text(l10n.next),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -276,7 +464,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
   // ---------------------------------------------------------------------------
   Widget _buildDaysStep(BuildContext context, AppLocalizations l10n) {
     return ListView(
-      key: const ValueKey('step_1'),
+      key: const ValueKey('step_2_days'),
       padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 30),
       children: [
         Text(
@@ -325,14 +513,14 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
           children: [
             Expanded(
               child: OutlinedButton(
-                onPressed: () => setState(() => _currentStep = 0),
+                onPressed: () => setState(() => _currentStep = 1),
                 child: Text(l10n.back),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: ElevatedButton(
-                onPressed: () => setState(() => _currentStep = 2),
+                onPressed: () => setState(() => _currentStep = 3),
                 child: Text(l10n.next),
               ),
             ),
@@ -347,7 +535,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
   // ---------------------------------------------------------------------------
   Widget _buildLevelStep(BuildContext context, AppLocalizations l10n) {
     return ListView(
-      key: const ValueKey('step_2'),
+      key: const ValueKey('step_3_level'),
       padding: const EdgeInsetsDirectional.fromSTEB(20, 20, 20, 30),
       children: [
         Text(
@@ -391,7 +579,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
           children: [
             Expanded(
               child: OutlinedButton(
-                onPressed: () => setState(() => _currentStep = 1),
+                onPressed: () => setState(() => _currentStep = 2),
                 child: Text(l10n.back),
               ),
             ),
