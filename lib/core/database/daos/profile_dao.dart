@@ -23,7 +23,9 @@ class AthleteLifetimeStats {
 }
 
 /// Data Access Object managing user profile, biometric data, and weekly consistency metrics.
-@DriftAccessor(tables: [UserProfiles, WorkoutSessions, WorkoutExercises, SetLogs])
+@DriftAccessor(
+  tables: [UserProfiles, WorkoutSessions, WorkoutExercises, SetLogs],
+)
 class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
   ProfileDao(super.db);
 
@@ -102,7 +104,9 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
       ..where(workoutSessions.completedAt.isNotNull())
       ..where(workoutSessions.completedAt.isBiggerOrEqualValue(startOfWeek));
 
-    final result = await query.map((row) => row.read(countExpression)).getSingleOrNull();
+    final result = await query
+        .map((row) => row.read(countExpression))
+        .getSingleOrNull();
     return result ?? 0;
   }
 
@@ -126,14 +130,19 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
 
   /// Computes lifetime stats: total completed workouts, total volume lifted (kg), total seconds.
   Future<AthleteLifetimeStats> getLifetimeStats() async {
-    final completedSessions = await (select(workoutSessions)
-          ..where((t) => t.completedAt.isNotNull()))
-        .get();
+    final completedSessions = await (select(
+      workoutSessions,
+    )..where((t) => t.completedAt.isNotNull())).get();
 
-    final totalDuration = completedSessions.fold(0, (acc, s) => acc + s.durationSeconds);
+    final totalDuration = completedSessions.fold(
+      0,
+      (acc, s) => acc + s.durationSeconds,
+    );
 
     // Calculate total completed volume
-    final completedSets = await (select(setLogs)..where((t) => t.isCompleted.equals(true))).get();
+    final completedSets = await (select(
+      setLogs,
+    )..where((t) => t.isCompleted.equals(true))).get();
     final totalVolume = completedSets.fold(
       0.0,
       (acc, s) => acc + ((s.weightKg ?? 0.0) * (s.reps ?? 0)),
@@ -148,22 +157,23 @@ class ProfileDao extends DatabaseAccessor<AppDatabase> with _$ProfileDaoMixin {
 
   /// Computes completed set counts grouped by primary [MuscleGroup].
   Future<Map<MuscleGroup, int>> getMuscleGroupSetDistribution() async {
-    final query = select(setLogs).join([
-      innerJoin(
-        workoutExercises,
-        workoutExercises.id.equalsExp(setLogs.workoutExerciseId),
-      ),
-      innerJoin(
-        exercises,
-        exercises.id.equalsExp(workoutExercises.exerciseId),
-      ),
-      innerJoin(
-        workoutSessions,
-        workoutSessions.id.equalsExp(workoutExercises.sessionId),
-      ),
-    ])
-      ..where(setLogs.isCompleted.equals(true))
-      ..where(workoutSessions.completedAt.isNotNull());
+    final query =
+        select(setLogs).join([
+            innerJoin(
+              workoutExercises,
+              workoutExercises.id.equalsExp(setLogs.workoutExerciseId),
+            ),
+            innerJoin(
+              exercises,
+              exercises.id.equalsExp(workoutExercises.exerciseId),
+            ),
+            innerJoin(
+              workoutSessions,
+              workoutSessions.id.equalsExp(workoutExercises.sessionId),
+            ),
+          ])
+          ..where(setLogs.isCompleted.equals(true))
+          ..where(workoutSessions.completedAt.isNotNull());
 
     final rows = await query.get();
     final counts = <MuscleGroup, int>{

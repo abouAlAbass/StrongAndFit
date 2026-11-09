@@ -18,10 +18,7 @@ class RoutinesCubit extends Cubit<RoutinesState> {
     _subscription = _templateRepository.watchAllTemplatesWithDetails().listen(
       (templates) {
         emit(
-          state.copyWith(
-            status: RoutinesStatus.loaded,
-            templates: templates,
-          ),
+          state.copyWith(status: RoutinesStatus.loaded, templates: templates),
         );
       },
       onError: (err) {

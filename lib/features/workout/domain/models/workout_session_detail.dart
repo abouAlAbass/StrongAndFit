@@ -34,29 +34,26 @@ class WorkoutSessionDetail extends Equatable {
   final WorkoutSession session;
   final List<WorkoutExerciseDetail> exercises;
 
-  const WorkoutSessionDetail({
-    required this.session,
-    required this.exercises,
-  });
+  const WorkoutSessionDetail({required this.session, required this.exercises});
 
   /// Total number of completed sets across all exercises in this session.
   int get completedSetsCount => exercises.fold(
-        0,
-        (acc, item) =>
-            acc + item.sets.where((s) => s.isCompleted).length,
-      );
+    0,
+    (acc, item) => acc + item.sets.where((s) => s.isCompleted).length,
+  );
 
   /// Total volume lifted in kilograms (weight * reps for completed sets).
   double get totalVolumeKg => exercises.fold(
-        0.0,
-        (acc, item) =>
-            acc +
-            item.sets.where((s) => s.isCompleted).fold(
-                  0.0,
-                  (setAcc, s) =>
-                      setAcc + ((s.weightKg ?? 0.0) * (s.reps ?? 0)),
-                ),
-      );
+    0.0,
+    (acc, item) =>
+        acc +
+        item.sets
+            .where((s) => s.isCompleted)
+            .fold(
+              0.0,
+              (setAcc, s) => setAcc + ((s.weightKg ?? 0.0) * (s.reps ?? 0)),
+            ),
+  );
 
   WorkoutSessionDetail copyWith({
     WorkoutSession? session,

@@ -23,7 +23,9 @@ class ExerciseRestChip extends StatelessWidget {
     );
     final custom = exercise.restSeconds;
     final seconds = custom ?? defaultSeconds;
-    final color = custom != null ? AppColors.secondary : AppColors.ofTextSecondary(context);
+    final color = custom != null
+        ? AppColors.secondary
+        : AppColors.ofTextSecondary(context);
     final l10n = AppLocalizations.of(context)!;
 
     return Tooltip(
@@ -41,7 +43,10 @@ class ExerciseRestChip extends StatelessWidget {
             padding: const EdgeInsetsDirectional.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: color.withValues(alpha: 0.4), width: 0.8),
+              border: Border.all(
+                color: color.withValues(alpha: 0.4),
+                width: 0.8,
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -85,7 +90,10 @@ class ExerciseRestChip extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(l10n.exerciseRest, style: AppTypography.ofTitleLarge(context)),
+              Text(
+                l10n.exerciseRest,
+                style: AppTypography.ofTitleLarge(context),
+              ),
               const SizedBox(height: 4),
               Text(
                 exercise.localizedName(context),
@@ -97,9 +105,11 @@ class ExerciseRestChip extends StatelessWidget {
                 runSpacing: 8,
                 children: [
                   ChoiceChip(
-                    label: Text(l10n.useDefaultRest(
-                      RestTimerState.formatSeconds(defaultSeconds),
-                    )),
+                    label: Text(
+                      l10n.useDefaultRest(
+                        RestTimerState.formatSeconds(defaultSeconds),
+                      ),
+                    ),
                     selected: exercise.restSeconds == null,
                     showCheckmark: false,
                     selectedColor: AppColors.ofPrimaryContainer(context),
@@ -119,11 +129,15 @@ class ExerciseRestChip extends StatelessWidget {
                       selectedColor: AppColors.secondary.withValues(alpha: 0.2),
                       backgroundColor: AppColors.ofSurface(context),
                       side: BorderSide(
-                        color: selected ? AppColors.secondary : AppColors.ofBorder(context),
+                        color: selected
+                            ? AppColors.secondary
+                            : AppColors.ofBorder(context),
                       ),
                       labelStyle: TextStyle(
                         fontWeight: FontWeight.w700,
-                        color: selected ? AppColors.secondary : AppColors.ofTextPrimary(context),
+                        color: selected
+                            ? AppColors.secondary
+                            : AppColors.ofTextPrimary(context),
                       ),
                       onSelected: (_) {
                         cubit.setExerciseRest(exercise.id, sec);

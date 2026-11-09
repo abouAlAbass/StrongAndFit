@@ -13,10 +13,7 @@ import '../../domain/models/exercise_guide.dart';
 class ExerciseGuideSheet extends StatelessWidget {
   final ExerciseGuide guide;
 
-  const ExerciseGuideSheet({
-    super.key,
-    required this.guide,
-  });
+  const ExerciseGuideSheet({super.key, required this.guide});
 
   /// Displays the guide bottom sheet responsively with tablet/desktop centering.
   static Future<void> show(
@@ -69,7 +66,10 @@ class ExerciseGuideSheet extends StatelessWidget {
 
           // Header: Exercise Title & Close Button
           Padding(
-            padding: const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 8),
+            padding: const EdgeInsetsDirectional.symmetric(
+              horizontal: 20,
+              vertical: 8,
+            ),
             child: Row(
               children: [
                 Container(
@@ -78,7 +78,11 @@ class ExerciseGuideSheet extends StatelessWidget {
                     color: AppColors.ofPrimaryContainer(context),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.menu_book_rounded, color: AppColors.primary, size: 22),
+                  child: const Icon(
+                    Icons.menu_book_rounded,
+                    color: AppColors.primary,
+                    size: 22,
+                  ),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -93,13 +97,18 @@ class ExerciseGuideSheet extends StatelessWidget {
                       ),
                       Text(
                         l10n.techniqueGuide,
-                        style: AppTypography.ofCaption(context).copyWith(color: AppColors.primary),
+                        style: AppTypography.ofCaption(
+                          context,
+                        ).copyWith(color: AppColors.primary),
                       ),
                     ],
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
+                  icon: Icon(
+                    Icons.close_rounded,
+                    color: AppColors.ofTextSecondary(context),
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -138,7 +147,11 @@ class ExerciseGuideSheet extends StatelessWidget {
                   iconColor: AppColors.secondary,
                 ),
                 const SizedBox(height: 10),
-                _buildStepList(context, guide.setupInstructions, stepColor: AppColors.secondary),
+                _buildStepList(
+                  context,
+                  guide.setupInstructions,
+                  stepColor: AppColors.secondary,
+                ),
                 const SizedBox(height: 20),
 
                 // 4. Execution & Movement Path
@@ -149,7 +162,11 @@ class ExerciseGuideSheet extends StatelessWidget {
                   iconColor: AppColors.primary,
                 ),
                 const SizedBox(height: 10),
-                _buildStepList(context, guide.executionInstructions, stepColor: AppColors.primary),
+                _buildStepList(
+                  context,
+                  guide.executionInstructions,
+                  stepColor: AppColors.primary,
+                ),
                 const SizedBox(height: 20),
 
                 // 5. Breathing Protocol
@@ -285,7 +302,10 @@ class ExerciseGuideSheet extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 8,
+                  vertical: 3,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.ofPrimaryContainer(context),
                   borderRadius: BorderRadius.circular(6),
@@ -306,11 +326,18 @@ class ExerciseGuideSheet extends StatelessWidget {
                   runSpacing: 6,
                   children: guide.primaryMuscles.map((m) {
                     return Container(
-                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 10, vertical: 4),
+                      padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE2E8F0),
+                        color: isDark
+                            ? const Color(0xFF1E293B)
+                            : const Color(0xFFE2E8F0),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: AppColors.primary.withAlpha(80)),
+                        border: Border.all(
+                          color: AppColors.primary.withAlpha(80),
+                        ),
                       ),
                       child: Text(
                         m,
@@ -334,9 +361,14 @@ class ExerciseGuideSheet extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF132E27) : const Color(0xFFDCF8E3),
+                    color: isDark
+                        ? const Color(0xFF132E27)
+                        : const Color(0xFFDCF8E3),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: const Text(
@@ -355,11 +387,16 @@ class ExerciseGuideSheet extends StatelessWidget {
                     runSpacing: 6,
                     children: guide.secondaryMuscles.map((m) {
                       return Container(
-                        padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsetsDirectional.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.ofSurfaceElevated(context),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: AppColors.ofBorder(context)),
+                          border: Border.all(
+                            color: AppColors.ofBorder(context),
+                          ),
                         ),
                         child: Text(
                           m,
@@ -380,7 +417,11 @@ class ExerciseGuideSheet extends StatelessWidget {
     );
   }
 
-  Widget _buildStepList(BuildContext context, List<String> steps, {required Color stepColor}) {
+  Widget _buildStepList(
+    BuildContext context,
+    List<String> steps, {
+    required Color stepColor,
+  }) {
     return Column(
       children: steps.asMap().entries.map((entry) {
         final index = entry.key + 1;
@@ -489,7 +530,11 @@ class ExerciseGuideSheet extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 20),
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: AppColors.error,
+                size: 20,
+              ),
               const SizedBox(width: 8),
               Text(
                 l10n.commonMistakes,
@@ -508,7 +553,10 @@ class ExerciseGuideSheet extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('• ', style: TextStyle(color: AppColors.error, fontSize: 16)),
+                  const Text(
+                    '• ',
+                    style: TextStyle(color: AppColors.error, fontSize: 16),
+                  ),
                   Expanded(
                     child: Text(
                       mistake,
@@ -549,7 +597,11 @@ class ExerciseGuideSheet extends StatelessWidget {
               color: AppColors.primary,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.lightbulb_rounded, color: Colors.white, size: 16),
+            child: const Icon(
+              Icons.lightbulb_rounded,
+              color: Colors.white,
+              size: 16,
+            ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -607,7 +659,10 @@ class ExerciseGuideSheet extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.ofSurface(context),
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+              border: Border.all(
+                color: AppColors.ofBorder(context),
+                width: 0.8,
+              ),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -91,7 +91,9 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
         ],
         border: Border(
           top: BorderSide(
-            color: widget.isPr ? const Color(0xFFFFD700) : AppColors.primary.withAlpha(120),
+            color: widget.isPr
+                ? const Color(0xFFFFD700)
+                : AppColors.primary.withAlpha(120),
             width: 1.5,
           ),
         ),
@@ -111,7 +113,10 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.primary.withAlpha(35),
                       borderRadius: BorderRadius.circular(6),
@@ -129,21 +134,31 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                   Expanded(
                     child: Text(
                       widget.exerciseItem.exercise.localizedName(context),
-                      style: AppTypography.ofTitleMedium(context).copyWith(fontSize: 14),
+                      style: AppTypography.ofTitleMedium(
+                        context,
+                      ).copyWith(fontSize: 14),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   // Previous ghost performance pill (1-tap copy)
                   if (widget.previousSetLog != null &&
-                      (widget.previousSetLog!.weightKg != null || widget.previousSetLog!.reps != null))
+                      (widget.previousSetLog!.weightKg != null ||
+                          widget.previousSetLog!.reps != null))
                     Padding(
                       padding: const EdgeInsetsDirectional.only(end: 6),
                       child: ActionChip(
-                        avatar: const Icon(Icons.copy_rounded, size: 13, color: AppColors.secondary),
+                        avatar: const Icon(
+                          Icons.copy_rounded,
+                          size: 13,
+                          color: AppColors.secondary,
+                        ),
                         label: Text(
                           '${widget.previousSetLog!.weightKg ?? 0}kg × ${widget.previousSetLog!.reps ?? 0}',
-                          style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         backgroundColor: AppColors.ofSurface(context),
                         visualDensity: VisualDensity.compact,
@@ -164,7 +179,9 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                             : AppColors.ofTextTertiary(context),
                       ),
                       label: Text(
-                        widget.setLog.rpe != null ? '@${widget.setLog.rpe}' : 'RPE',
+                        widget.setLog.rpe != null
+                            ? '@${widget.setLog.rpe}'
+                            : 'RPE',
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w700,
@@ -193,7 +210,9 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                     ),
                   ),
                   Icon(
-                    _isExpanded ? Icons.keyboard_arrow_down_rounded : Icons.keyboard_arrow_up_rounded,
+                    _isExpanded
+                        ? Icons.keyboard_arrow_down_rounded
+                        : Icons.keyboard_arrow_up_rounded,
                     color: AppColors.ofTextSecondary(context),
                     size: 22,
                   ),
@@ -220,13 +239,17 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                           decoration: BoxDecoration(
                             color: AppColors.ofInputBackground(context),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+                            border: Border.all(
+                              color: AppColors.ofBorder(context),
+                              width: 0.8,
+                            ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     l10n.quickAdjustWeight.toUpperCase(),
@@ -242,13 +265,22 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                                         context,
                                         initialWeight: _currentWeight,
                                         onWeightApplied: (applied) {
-                                          widget.onUpdateValues(applied, widget.setLog.reps);
+                                          widget.onUpdateValues(
+                                            applied,
+                                            widget.setLog.reps,
+                                          );
                                         },
                                       );
                                     },
                                     child: const Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 4),
-                                      child: Icon(Icons.calculate_outlined, size: 15, color: AppColors.primary),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                      ),
+                                      child: Icon(
+                                        Icons.calculate_outlined,
+                                        size: 15,
+                                        color: AppColors.primary,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -257,22 +289,42 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                               Center(
                                 child: Text(
                                   '${_currentWeight % 1 == 0 ? _currentWeight.toInt() : _currentWeight} kg',
-                                  style: AppTypography.ofTitleLarge(context).copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 20,
-                                  ),
+                                  style: AppTypography.ofTitleLarge(context)
+                                      .copyWith(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 20,
+                                      ),
                                 ),
                               ),
                               const SizedBox(height: 6),
                               // Fast weight chips
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildStepperButton(label: '-5', onTap: () => _adjustWeight(-5.0)),
-                                  _buildStepperButton(label: '-2.5', onTap: () => _adjustWeight(-2.5)),
-                                  _buildStepperButton(label: '+2.5', onTap: () => _adjustWeight(2.5), isPositive: true),
-                                  _buildStepperButton(label: '+5', onTap: () => _adjustWeight(5.0), isPositive: true),
-                                  _buildStepperButton(label: '+10', onTap: () => _adjustWeight(10.0), isPositive: true),
+                                  _buildStepperButton(
+                                    label: '-5',
+                                    onTap: () => _adjustWeight(-5.0),
+                                  ),
+                                  _buildStepperButton(
+                                    label: '-2.5',
+                                    onTap: () => _adjustWeight(-2.5),
+                                  ),
+                                  _buildStepperButton(
+                                    label: '+2.5',
+                                    onTap: () => _adjustWeight(2.5),
+                                    isPositive: true,
+                                  ),
+                                  _buildStepperButton(
+                                    label: '+5',
+                                    onTap: () => _adjustWeight(5.0),
+                                    isPositive: true,
+                                  ),
+                                  _buildStepperButton(
+                                    label: '+10',
+                                    onTap: () => _adjustWeight(10.0),
+                                    isPositive: true,
+                                  ),
                                 ],
                               ),
                             ],
@@ -289,7 +341,10 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                           decoration: BoxDecoration(
                             color: AppColors.ofInputBackground(context),
                             borderRadius: BorderRadius.circular(12),
-                            border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+                            border: Border.all(
+                              color: AppColors.ofBorder(context),
+                              width: 0.8,
+                            ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,20 +361,33 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                               Center(
                                 child: Text(
                                   '$_currentReps reps',
-                                  style: AppTypography.ofTitleLarge(context).copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 20,
-                                  ),
+                                  style: AppTypography.ofTitleLarge(context)
+                                      .copyWith(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 20,
+                                      ),
                                 ),
                               ),
                               const SizedBox(height: 6),
                               // Fast rep chips
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildStepperButton(label: '-1', onTap: () => _adjustReps(-1)),
-                                  _buildStepperButton(label: '+1', onTap: () => _adjustReps(1), isPositive: true),
-                                  _buildStepperButton(label: '+2', onTap: () => _adjustReps(2), isPositive: true),
+                                  _buildStepperButton(
+                                    label: '-1',
+                                    onTap: () => _adjustReps(-1),
+                                  ),
+                                  _buildStepperButton(
+                                    label: '+1',
+                                    onTap: () => _adjustReps(1),
+                                    isPositive: true,
+                                  ),
+                                  _buildStepperButton(
+                                    label: '+2',
+                                    onTap: () => _adjustReps(2),
+                                    isPositive: true,
+                                  ),
                                 ],
                               ),
                             ],
@@ -336,12 +404,16 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                     height: 48,
                     child: ElevatedButton.icon(
                       icon: Icon(
-                        isCompleted ? Icons.check_circle_rounded : Icons.check_rounded,
+                        isCompleted
+                            ? Icons.check_circle_rounded
+                            : Icons.check_rounded,
                         size: 22,
                         color: Colors.white,
                       ),
                       label: Text(
-                        isCompleted ? '${l10n.validateSet} ✓' : l10n.validateSet,
+                        isCompleted
+                            ? '${l10n.validateSet} ✓'
+                            : l10n.validateSet,
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w800,
@@ -350,10 +422,14 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: isCompleted
-                            ? (widget.isPr ? const Color(0xFFD4AF37) : AppColors.completed)
+                            ? (widget.isPr
+                                  ? const Color(0xFFD4AF37)
+                                  : AppColors.completed)
                             : AppColors.primary,
                         elevation: 2,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
                       ),
                       onPressed: () {
                         final target = !isCompleted;
@@ -389,13 +465,20 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),
         child: Container(
-          padding: const EdgeInsetsDirectional.symmetric(horizontal: 6, vertical: 6),
+          padding: const EdgeInsetsDirectional.symmetric(
+            horizontal: 6,
+            vertical: 6,
+          ),
           constraints: const BoxConstraints(minWidth: 32),
           decoration: BoxDecoration(
-            color: isPositive ? AppColors.primary.withAlpha(25) : AppColors.ofSurface(context),
+            color: isPositive
+                ? AppColors.primary.withAlpha(25)
+                : AppColors.ofSurface(context),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isPositive ? AppColors.primary.withAlpha(80) : AppColors.ofBorder(context),
+              color: isPositive
+                  ? AppColors.primary.withAlpha(80)
+                  : AppColors.ofBorder(context),
               width: 0.8,
             ),
           ),
@@ -405,7 +488,9 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w700,
-              color: isPositive ? AppColors.primary : AppColors.ofTextPrimary(context),
+              color: isPositive
+                  ? AppColors.primary
+                  : AppColors.ofTextPrimary(context),
             ),
           ),
         ),

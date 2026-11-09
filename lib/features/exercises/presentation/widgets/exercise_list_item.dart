@@ -44,7 +44,9 @@ class ExerciseListItem extends StatelessWidget {
               width: 4,
               height: 42,
               decoration: BoxDecoration(
-                color: exercise.isCustom ? AppColors.secondary : AppColors.primary,
+                color: exercise.isCustom
+                    ? AppColors.secondary
+                    : AppColors.primary,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -96,7 +98,11 @@ class ExerciseListItem extends StatelessWidget {
             ),
 
             IconButton(
-              icon: Icon(Icons.info_outline_rounded, size: 20, color: AppColors.ofTextSecondary(context)),
+              icon: Icon(
+                Icons.info_outline_rounded,
+                size: 20,
+                color: AppColors.ofTextSecondary(context),
+              ),
               tooltip: l10n.exerciseGuide,
               onPressed: () {
                 ExerciseGuideSheet.show(

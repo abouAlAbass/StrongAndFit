@@ -34,13 +34,7 @@ part 'app_database.g.dart';
     UserProfiles,
     RestSettings,
   ],
-  daos: [
-    ExerciseDao,
-    WorkoutDao,
-    TemplateDao,
-    ProfileDao,
-    SettingsDao,
-  ],
+  daos: [ExerciseDao, WorkoutDao, TemplateDao, ProfileDao, SettingsDao],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? openConnection());
@@ -50,79 +44,83 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
-        onCreate: (m) async {
-          // Initialize table structures
-          await m.createAll();
+    onCreate: (m) async {
+      // Initialize table structures
+      await m.createAll();
 
-          // 1. Seed foundational exercises
-          await batch((b) {
-            b.insertAll(
-              exercises,
-              kInitialExercises.map(
-                (seed) => ExercisesCompanion.insert(
-                  slug: seed.slug,
-                  muscleGroup: seed.muscleGroup,
-                  equipment: seed.equipment,
-                  isCustom: const Value(false),
-                ),
-              ),
-            );
-          });
+      // 1. Seed foundational exercises
+      await batch((b) {
+        b.insertAll(
+          exercises,
+          kInitialExercises.map(
+            (seed) => ExercisesCompanion.insert(
+              slug: seed.slug,
+              muscleGroup: seed.muscleGroup,
+              equipment: seed.equipment,
+              isCustom: const Value(false),
+            ),
+          ),
+        );
+      });
 
-          // 2. Seed initial pre-designed workout routines
+      // 2. Seed initial pre-designed workout routines
+      await _seedDefaultTemplates(this);
+
+      // 3. Seed initial user profile
+      await _seedDefaultProfile(this);
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.createTable(userProfiles);
+        final templatesCount = await (select(templates).get());
+        if (templatesCount.isEmpty) {
           await _seedDefaultTemplates(this);
-
-          // 3. Seed initial user profile
-          await _seedDefaultProfile(this);
-        },
-        onUpgrade: (m, from, to) async {
-          if (from < 2) {
-            await m.createTable(userProfiles);
-            final templatesCount = await (select(templates).get());
-            if (templatesCount.isEmpty) {
-              await _seedDefaultTemplates(this);
-            }
-            await _seedDefaultProfile(this);
-          }
-          if (from < 3) {
-            await m.addColumn(exercises, exercises.restSeconds);
-            await m.createTable(restSettings);
-          }
-          if (from < 4) {
-            await m.addColumn(workoutExercises, workoutExercises.supersetGroupId);
-          }
-        },
-        beforeOpen: (details) async {
-          // Enforce foreign key constraints at SQLite level
-          await customStatement('PRAGMA foreign_keys = ON;');
-        },
-      );
+        }
+        await _seedDefaultProfile(this);
+      }
+      if (from < 3) {
+        await m.addColumn(exercises, exercises.restSeconds);
+        await m.createTable(restSettings);
+      }
+      if (from < 4) {
+        await m.addColumn(workoutExercises, workoutExercises.supersetGroupId);
+      }
+    },
+    beforeOpen: (details) async {
+      // Enforce foreign key constraints at SQLite level
+      await customStatement('PRAGMA foreign_keys = ON;');
+    },
+  );
 
   static Future<void> _seedDefaultTemplates(AppDatabase db) async {
     final allExercises = await db.select(db.exercises).get();
     final exerciseMap = {for (final e in allExercises) e.slug: e.id};
 
     for (final seed in kInitialTemplates) {
-      final templateId = await db.into(db.templates).insert(
-        TemplatesCompanion.insert(
-          name: seed.name,
-          notes: Value(seed.notes),
-        ),
-      );
+      final templateId = await db
+          .into(db.templates)
+          .insert(
+            TemplatesCompanion.insert(
+              name: seed.name,
+              notes: Value(seed.notes),
+            ),
+          );
 
       for (var i = 0; i < seed.exercises.length; i++) {
         final item = seed.exercises[i];
         final exId = exerciseMap[item.exerciseSlug];
         if (exId != null) {
-          await db.into(db.templateExercises).insert(
-            TemplateExercisesCompanion.insert(
-              templateId: templateId,
-              exerciseId: exId,
-              orderIndex: Value(i),
-              targetSets: Value(item.targetSets),
-              notes: Value(item.notes),
-            ),
-          );
+          await db
+              .into(db.templateExercises)
+              .insert(
+                TemplateExercisesCompanion.insert(
+                  templateId: templateId,
+                  exerciseId: exId,
+                  orderIndex: Value(i),
+                  targetSets: Value(item.targetSets),
+                  notes: Value(item.notes),
+                ),
+              );
         }
       }
     }
@@ -131,15 +129,17 @@ class AppDatabase extends _$AppDatabase {
   static Future<void> _seedDefaultProfile(AppDatabase db) async {
     final existing = await db.select(db.userProfiles).get();
     if (existing.isEmpty) {
-      await db.into(db.userProfiles).insert(
-        UserProfilesCompanion.insert(
-          name: const Value('Athlete'),
-          weightKg: const Value(75.0),
-          heightCm: const Value(178.0),
-          weeklyWorkoutGoal: const Value(4),
-          experienceLevel: const Value(ExperienceLevel.intermediate),
-        ),
-      );
+      await db
+          .into(db.userProfiles)
+          .insert(
+            UserProfilesCompanion.insert(
+              name: const Value('Athlete'),
+              weightKg: const Value(75.0),
+              heightCm: const Value(178.0),
+              weeklyWorkoutGoal: const Value(4),
+              experienceLevel: const Value(ExperienceLevel.intermediate),
+            ),
+          );
     }
   }
 }

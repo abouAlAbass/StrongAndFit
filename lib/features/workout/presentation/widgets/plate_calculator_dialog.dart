@@ -86,7 +86,10 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.fitness_center_rounded, color: AppColors.primary),
+                  const Icon(
+                    Icons.fitness_center_rounded,
+                    color: AppColors.primary,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     l10n.plateCalculator,
@@ -95,7 +98,10 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
                 ],
               ),
               IconButton(
-                icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
+                icon: Icon(
+                  Icons.close_rounded,
+                  color: AppColors.ofTextSecondary(context),
+                ),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -108,7 +114,10 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
             decoration: BoxDecoration(
               color: AppColors.ofSurface(context),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+              border: Border.all(
+                color: AppColors.ofBorder(context),
+                width: 0.8,
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,36 +127,31 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
                   children: [
                     Text(
                       l10n.weight.toUpperCase(),
-                      style: AppTypography.ofCaption(context).copyWith(letterSpacing: 1.1),
+                      style: AppTypography.ofCaption(
+                        context,
+                      ).copyWith(letterSpacing: 1.1),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       '${result.actualTotalWeight.toStringAsFixed(1)} kg',
-                      style: AppTypography.ofMetricLarge(context).copyWith(fontSize: 28),
+                      style: AppTypography.ofMetricLarge(
+                        context,
+                      ).copyWith(fontSize: 28),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    _StepButton(
-                      label: '-5',
-                      onTap: () => _adjustWeight(-5),
-                    ),
+                    _StepButton(label: '-5', onTap: () => _adjustWeight(-5)),
                     const SizedBox(width: 6),
                     _StepButton(
                       label: '-2.5',
                       onTap: () => _adjustWeight(-2.5),
                     ),
                     const SizedBox(width: 6),
-                    _StepButton(
-                      label: '+2.5',
-                      onTap: () => _adjustWeight(2.5),
-                    ),
+                    _StepButton(label: '+2.5', onTap: () => _adjustWeight(2.5)),
                     const SizedBox(width: 6),
-                    _StepButton(
-                      label: '+5',
-                      onTap: () => _adjustWeight(5),
-                    ),
+                    _StepButton(label: '+5', onTap: () => _adjustWeight(5)),
                   ],
                 ),
               ],
@@ -174,11 +178,15 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
                     selectedColor: AppColors.ofPrimaryContainer(context),
                     backgroundColor: AppColors.ofSurface(context),
                     side: BorderSide(
-                      color: isSelected ? AppColors.primary : AppColors.ofBorder(context),
+                      color: isSelected
+                          ? AppColors.primary
+                          : AppColors.ofBorder(context),
                     ),
                     labelStyle: TextStyle(
                       fontWeight: FontWeight.w700,
-                      color: isSelected ? AppColors.primary : AppColors.ofTextPrimary(context),
+                      color: isSelected
+                          ? AppColors.primary
+                          : AppColors.ofTextPrimary(context),
                     ),
                     onSelected: (_) => setState(() => _barWeight = bar),
                   ),
@@ -206,11 +214,15 @@ class _PlateCalculatorDialogState extends State<PlateCalculatorDialog> {
               height: 48,
               child: ElevatedButton.icon(
                 icon: const Icon(Icons.check_rounded, size: 20),
-                label: Text('Apply ${result.actualTotalWeight.toStringAsFixed(1)} kg to Set'),
+                label: Text(
+                  'Apply ${result.actualTotalWeight.toStringAsFixed(1)} kg to Set',
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
                 onPressed: () {
                   widget.onWeightApplied!(result.actualTotalWeight);
@@ -312,7 +324,9 @@ class _BarbellSleeveVisual extends StatelessWidget {
                       height: 14,
                       decoration: BoxDecoration(
                         color: Colors.grey.shade600,
-                        borderRadius: const BorderRadius.horizontal(left: Radius.circular(4)),
+                        borderRadius: const BorderRadius.horizontal(
+                          left: Radius.circular(4),
+                        ),
                       ),
                     ),
                     // Collar Ring
@@ -327,10 +341,7 @@ class _BarbellSleeveVisual extends StatelessWidget {
                     ),
                     // Outer Sleeve
                     Expanded(
-                      child: Container(
-                        height: 20,
-                        color: Colors.grey.shade500,
-                      ),
+                      child: Container(height: 20, color: Colors.grey.shade500),
                     ),
                   ],
                 ),
@@ -339,9 +350,14 @@ class _BarbellSleeveVisual extends StatelessWidget {
                   start: 46,
                   child: Row(
                     children: plates.map((plate) {
-                      final heightRatio = (plate.weightKg / 25.0).clamp(0.4, 1.0);
+                      final heightRatio = (plate.weightKg / 25.0).clamp(
+                        0.4,
+                        1.0,
+                      );
                       final plateHeight = 68.0 * heightRatio;
-                      final plateWidth = plate.weightKg >= 15.0 ? 16.0 : (plate.weightKg >= 5 ? 12.0 : 8.0);
+                      final plateWidth = plate.weightKg >= 15.0
+                          ? 16.0
+                          : (plate.weightKg >= 5 ? 12.0 : 8.0);
 
                       return Container(
                         width: plateWidth,
@@ -364,7 +380,9 @@ class _BarbellSleeveVisual extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 8,
                               fontWeight: FontWeight.w900,
-                              color: plate.weightKg == 5.0 ? Colors.black87 : Colors.white,
+                              color: plate.weightKg == 5.0
+                                  ? Colors.black87
+                                  : Colors.white,
                             ),
                           ),
                         ),

@@ -11,10 +11,7 @@ class TemplateDetail {
   final Template template;
   final List<TemplateExerciseItem> exercises;
 
-  const TemplateDetail({
-    required this.template,
-    required this.exercises,
-  });
+  const TemplateDetail({required this.template, required this.exercises});
 }
 
 class TemplateExerciseItem {
@@ -29,29 +26,33 @@ class TemplateExerciseItem {
 
 /// Data Access Object managing recurring workout templates and routine presets.
 @DriftAccessor(tables: [Templates, TemplateExercises, Exercises])
-class TemplateDao extends DatabaseAccessor<AppDatabase> with _$TemplateDaoMixin {
+class TemplateDao extends DatabaseAccessor<AppDatabase>
+    with _$TemplateDaoMixin {
   TemplateDao(super.db);
 
   /// Watch all templates headers.
   Stream<List<Template>> watchAllTemplates() {
-    return (select(templates)..orderBy([(t) => OrderingTerm.asc(t.name)])).watch();
+    return (select(
+      templates,
+    )..orderBy([(t) => OrderingTerm.asc(t.name)])).watch();
   }
 
   /// Watch all routine templates joined with their constituent exercises.
   Stream<List<TemplateDetail>> watchAllTemplatesWithDetails() {
-    final query = select(templates).join([
-      leftOuterJoin(
-        templateExercises,
-        templateExercises.templateId.equalsExp(templates.id),
-      ),
-      leftOuterJoin(
-        exercises,
-        exercises.id.equalsExp(templateExercises.exerciseId),
-      ),
-    ])..orderBy([
-        OrderingTerm.asc(templates.id),
-        OrderingTerm.asc(templateExercises.orderIndex),
-      ]);
+    final query =
+        select(templates).join([
+          leftOuterJoin(
+            templateExercises,
+            templateExercises.templateId.equalsExp(templates.id),
+          ),
+          leftOuterJoin(
+            exercises,
+            exercises.id.equalsExp(templateExercises.exerciseId),
+          ),
+        ])..orderBy([
+          OrderingTerm.asc(templates.id),
+          OrderingTerm.asc(templateExercises.orderIndex),
+        ]);
 
     return query.watch().map((rows) {
       final map = <int, TemplateDetail>{};
@@ -64,7 +65,9 @@ class TemplateDao extends DatabaseAccessor<AppDatabase> with _$TemplateDaoMixin 
         final te = row.readTableOrNull(templateExercises);
         final ex = row.readTableOrNull(exercises);
         if (te != null && ex != null) {
-          if (!detail.exercises.any((item) => item.templateExercise.id == te.id)) {
+          if (!detail.exercises.any(
+            (item) => item.templateExercise.id == te.id,
+          )) {
             detail.exercises.add(
               TemplateExerciseItem(templateExercise: te, exercise: ex),
             );
@@ -77,18 +80,19 @@ class TemplateDao extends DatabaseAccessor<AppDatabase> with _$TemplateDaoMixin 
 
   /// Watch a specific template with its constituent exercises.
   Stream<TemplateDetail?> watchTemplateDetail(int templateId) {
-    final query = select(templates).join([
-      leftOuterJoin(
-        templateExercises,
-        templateExercises.templateId.equalsExp(templates.id),
-      ),
-      leftOuterJoin(
-        exercises,
-        exercises.id.equalsExp(templateExercises.exerciseId),
-      ),
-    ])
-      ..where(templates.id.equals(templateId))
-      ..orderBy([OrderingTerm.asc(templateExercises.orderIndex)]);
+    final query =
+        select(templates).join([
+            leftOuterJoin(
+              templateExercises,
+              templateExercises.templateId.equalsExp(templates.id),
+            ),
+            leftOuterJoin(
+              exercises,
+              exercises.id.equalsExp(templateExercises.exerciseId),
+            ),
+          ])
+          ..where(templates.id.equals(templateId))
+          ..orderBy([OrderingTerm.asc(templateExercises.orderIndex)]);
 
     return query.watch().map((rows) {
       if (rows.isEmpty) return null;

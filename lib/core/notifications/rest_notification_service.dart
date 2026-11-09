@@ -52,7 +52,7 @@ class LocalRestNotificationService implements RestNotificationService {
   bool _exactAllowed = false;
 
   LocalRestNotificationService([FlutterLocalNotificationsPlugin? plugin])
-      : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
+    : _plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
   @override
   Future<void> init() async {
@@ -77,8 +77,10 @@ class LocalRestNotificationService implements RestNotificationService {
       );
       await _plugin.initialize(settings: settings);
 
-      final android = _plugin.resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>();
+      final android = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       if (android != null) {
         await android.requestNotificationsPermission();
         _exactAllowed = await android.canScheduleExactNotifications() ?? false;

@@ -16,10 +16,7 @@ import '../../../workout/presentation/cubit/routines_cubit.dart';
 class WorkoutHistoryDetailScreen extends StatelessWidget {
   final int sessionId;
 
-  const WorkoutHistoryDetailScreen({
-    super.key,
-    required this.sessionId,
-  });
+  const WorkoutHistoryDetailScreen({super.key, required this.sessionId});
 
   @override
   Widget build(BuildContext context) {
@@ -75,15 +72,24 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
               tooltip: MaterialLocalizations.of(context).backButtonTooltip,
               onPressed: () => Navigator.of(context).maybePop(),
             ),
-            title: Text(detail.session.title, style: AppTypography.ofTitleLarge(context)),
+            title: Text(
+              detail.session.title,
+              style: AppTypography.ofTitleLarge(context),
+            ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.bookmark_add_outlined, color: AppColors.primary),
+                icon: const Icon(
+                  Icons.bookmark_add_outlined,
+                  color: AppColors.primary,
+                ),
                 tooltip: l10n.saveAsRoutine,
                 onPressed: () => _saveAsRoutine(context, detail),
               ),
               IconButton(
-                icon: const Icon(Icons.delete_outline, color: AppColors.failure),
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: AppColors.failure,
+                ),
                 tooltip: l10n.delete,
                 onPressed: () => _confirmDelete(context, detail.session.id),
               ),
@@ -100,7 +106,10 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: AppColors.ofSurface(context),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+                    border: Border.all(
+                      color: AppColors.ofBorder(context),
+                      width: 0.8,
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,17 +140,26 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                             label: l10n.duration,
                             value: '$durationMins min',
                           ),
-                          Container(width: 1, height: 32, color: AppColors.ofBorder(context)),
+                          Container(
+                            width: 1,
+                            height: 32,
+                            color: AppColors.ofBorder(context),
+                          ),
                           _buildSummaryMetric(
                             context: context,
                             label: l10n.sets,
                             value: '${detail.completedSetsCount}',
                           ),
-                          Container(width: 1, height: 32, color: AppColors.ofBorder(context)),
+                          Container(
+                            width: 1,
+                            height: 32,
+                            color: AppColors.ofBorder(context),
+                          ),
                           _buildSummaryMetric(
                             context: context,
                             label: l10n.weightKg,
-                            value: '${detail.totalVolumeKg.toStringAsFixed(0)} kg',
+                            value:
+                                '${detail.totalVolumeKg.toStringAsFixed(0)} kg',
                           ),
                         ],
                       ),
@@ -165,7 +183,9 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                 ],
 
                 // Exercise Cards
-                ...detail.exercises.map((item) => _buildExerciseCard(context, item)),
+                ...detail.exercises.map(
+                  (item) => _buildExerciseCard(context, item),
+                ),
               ],
             ),
           ),
@@ -250,9 +270,9 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
                   Expanded(
                     child: Text(
                       '${weight.toStringAsFixed(weight % 1 == 0 ? 0 : 1)} kg × $reps ${l10n.reps.toLowerCase()}',
-                      style: AppTypography.ofBody(context).copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: AppTypography.ofBody(
+                        context,
+                      ).copyWith(fontWeight: FontWeight.w600),
                     ),
                   ),
                   if (oneRm != null)
@@ -301,10 +321,10 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
         .toList();
 
     await context.read<RoutinesCubit>().createRoutine(
-          name: detail.session.title,
-          notes: detail.session.notes,
-          exercises: exercises,
-        );
+      name: detail.session.title,
+      notes: detail.session.notes,
+      exercises: exercises,
+    );
 
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

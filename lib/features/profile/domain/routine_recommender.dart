@@ -1,11 +1,7 @@
 import '../../../../core/enums/experience_level.dart';
 
 /// Athlete's primary training goal.
-enum TrainingGoal {
-  hypertrophy,
-  strength,
-  fitness,
-}
+enum TrainingGoal { hypertrophy, strength, fitness }
 
 /// Algorithmic match result linking athlete availability and level to the optimal routine.
 class RoutineRecommendation {

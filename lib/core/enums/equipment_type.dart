@@ -1,7 +1,1 @@
-enum EquipmentType {
-  barbell,
-  dumbbell,
-  machine,
-  bodyweight,
-  cables,
-}
+enum EquipmentType { barbell, dumbbell, machine, bodyweight, cables }

@@ -20,12 +20,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     _profileSubscription?.cancel();
     _profileSubscription = _profileRepository.watchProfile().listen(
       (profile) {
-        emit(
-          state.copyWith(
-            status: ProfileStatus.loaded,
-            profile: profile,
-          ),
-        );
+        emit(state.copyWith(status: ProfileStatus.loaded, profile: profile));
         refreshLifetimeStats();
       },
       onError: (err) {
@@ -39,23 +34,22 @@ class ProfileCubit extends Cubit<ProfileState> {
     );
 
     _weeklyCountSubscription?.cancel();
-    _weeklyCountSubscription =
-        _profileRepository.watchWeeklyCompletedWorkoutsCount().listen(
-      (count) {
-        emit(state.copyWith(weeklyCompletedCount: count));
-        refreshLifetimeStats();
-      },
-    );
+    _weeklyCountSubscription = _profileRepository
+        .watchWeeklyCompletedWorkoutsCount()
+        .listen((count) {
+          emit(state.copyWith(weeklyCompletedCount: count));
+          refreshLifetimeStats();
+        });
   }
 
   Future<void> refreshLifetimeStats() async {
     try {
       final stats = await _profileRepository.getLifetimeStats();
-      final distribution = await _profileRepository.getMuscleGroupSetDistribution();
-      emit(state.copyWith(
-        lifetimeStats: stats,
-        muscleDistribution: distribution,
-      ));
+      final distribution = await _profileRepository
+          .getMuscleGroupSetDistribution();
+      emit(
+        state.copyWith(lifetimeStats: stats, muscleDistribution: distribution),
+      );
     } catch (_) {}
   }
 

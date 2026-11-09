@@ -70,20 +70,21 @@ class RestTimerState extends Equatable {
       remainingSeconds: remainingSeconds ?? this.remainingSeconds,
       endsAt: clearEndsAt ? null : (endsAt ?? this.endsAt),
       kind: kind ?? this.kind,
-      nextExerciseName:
-          clearNextExercise ? null : (nextExerciseName ?? this.nextExerciseName),
+      nextExerciseName: clearNextExercise
+          ? null
+          : (nextExerciseName ?? this.nextExerciseName),
       preferences: preferences ?? this.preferences,
     );
   }
 
   @override
   List<Object?> get props => [
-        status,
-        totalDuration,
-        remainingSeconds,
-        endsAt,
-        kind,
-        nextExerciseName,
-        preferences,
-      ];
+    status,
+    totalDuration,
+    remainingSeconds,
+    endsAt,
+    kind,
+    nextExerciseName,
+    preferences,
+  ];
 }

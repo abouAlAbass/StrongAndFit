@@ -43,21 +43,22 @@ class ProfileScreen extends StatelessWidget {
                   EditProfileDialog.show(
                     context,
                     profile: profile,
-                    onSave: ({
-                      required name,
-                      required weightKg,
-                      required heightCm,
-                      required weeklyGoal,
-                      required experienceLevel,
-                    }) {
-                      context.read<ProfileCubit>().updateProfileMetrics(
+                    onSave:
+                        ({
+                          required name,
+                          required weightKg,
+                          required heightCm,
+                          required weeklyGoal,
+                          required experienceLevel,
+                        }) {
+                          context.read<ProfileCubit>().updateProfileMetrics(
                             name: name,
                             weightKg: weightKg,
                             heightCm: heightCm,
                             weeklyWorkoutGoal: weeklyGoal,
                             experienceLevel: experienceLevel,
                           );
-                    },
+                        },
                   );
                 },
               );
@@ -153,11 +154,16 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Text(
                   profile.name,
-                  style: AppTypography.ofDisplay(context).copyWith(fontSize: 22),
+                  style: AppTypography.ofDisplay(
+                    context,
+                  ).copyWith(fontSize: 22),
                 ),
                 const SizedBox(height: 4),
                 Container(
-                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 10, vertical: 3),
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 10,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.ofPrimaryContainer(context),
                     borderRadius: BorderRadius.circular(6),
@@ -198,7 +204,10 @@ class ProfileScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(l10n.consistencyScore, style: AppTypography.ofTitleMedium(context)),
+              Text(
+                l10n.consistencyScore,
+                style: AppTypography.ofTitleMedium(context),
+              ),
               Text(
                 '${(progress * 100).toInt()}%',
                 style: const TextStyle(
@@ -239,17 +248,23 @@ class ProfileScreen extends StatelessWidget {
                 width: 32,
                 height: 32,
                 decoration: BoxDecoration(
-                  color: isDone ? AppColors.ofCompletedContainer(context) : AppColors.ofSurfaceElevated(context),
+                  color: isDone
+                      ? AppColors.ofCompletedContainer(context)
+                      : AppColors.ofSurfaceElevated(context),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isDone ? AppColors.completed : AppColors.ofBorder(context),
+                    color: isDone
+                        ? AppColors.completed
+                        : AppColors.ofBorder(context),
                     width: 1.2,
                   ),
                 ),
                 child: Icon(
                   isDone ? Icons.check : Icons.fitness_center_outlined,
                   size: 16,
-                  color: isDone ? AppColors.completed : AppColors.ofTextTertiary(context),
+                  color: isDone
+                      ? AppColors.completed
+                      : AppColors.ofTextTertiary(context),
                 ),
               );
             }),
@@ -282,7 +297,9 @@ class ProfileScreen extends StatelessWidget {
             _buildMetricTile(
               context: context,
               label: l10n.weightKg,
-              value: profile.weightKg != null ? '${profile.weightKg!.toStringAsFixed(1)} kg' : '—',
+              value: profile.weightKg != null
+                  ? '${profile.weightKg!.toStringAsFixed(1)} kg'
+                  : '—',
               icon: Icons.monitor_weight_outlined,
               accentColor: AppColors.primary,
             ),
@@ -291,7 +308,9 @@ class ProfileScreen extends StatelessWidget {
             _buildMetricTile(
               context: context,
               label: l10n.heightCm,
-              value: profile.heightCm != null ? '${profile.heightCm!.toStringAsFixed(0)} cm' : '—',
+              value: profile.heightCm != null
+                  ? '${profile.heightCm!.toStringAsFixed(0)} cm'
+                  : '—',
               icon: Icons.straighten_outlined,
               accentColor: AppColors.secondary,
             ),
@@ -360,7 +379,9 @@ class ProfileScreen extends StatelessWidget {
             children: [
               Text(
                 value,
-                style: AppTypography.ofMetricLarge(context).copyWith(fontSize: 20),
+                style: AppTypography.ofMetricLarge(
+                  context,
+                ).copyWith(fontSize: 20),
               ),
               if (subtitle != null)
                 Text(
@@ -403,7 +424,9 @@ class ProfileScreen extends StatelessWidget {
               Row(
                 children: [
                   Icon(
-                    isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
+                    isDark
+                        ? Icons.dark_mode_outlined
+                        : Icons.light_mode_outlined,
                     color: AppColors.primary,
                     size: 20,
                   ),
@@ -445,9 +468,16 @@ class ProfileScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.language, color: AppColors.primary, size: 20),
+                  const Icon(
+                    Icons.language,
+                    color: AppColors.primary,
+                    size: 20,
+                  ),
                   const SizedBox(width: 10),
-                  Text(l10n.languageSelection, style: AppTypography.ofBody(context)),
+                  Text(
+                    l10n.languageSelection,
+                    style: AppTypography.ofBody(context),
+                  ),
                 ],
               ),
               DropdownButton<String>(
@@ -457,7 +487,10 @@ class ProfileScreen extends StatelessWidget {
                 items: const [
                   DropdownMenuItem(value: 'en', child: Text('English (EN)')),
                   DropdownMenuItem(value: 'fr', child: Text('Français (FR)')),
-                  DropdownMenuItem(value: 'ar', child: Text('العربية (AR - RTL)')),
+                  DropdownMenuItem(
+                    value: 'ar',
+                    child: Text('العربية (AR - RTL)'),
+                  ),
                 ],
                 onChanged: (code) {
                   if (code != null) {
@@ -472,7 +505,10 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  String _getExperienceLevelLabel(ExperienceLevel level, AppLocalizations l10n) {
+  String _getExperienceLevelLabel(
+    ExperienceLevel level,
+    AppLocalizations l10n,
+  ) {
     switch (level) {
       case ExperienceLevel.beginner:
         return l10n.beginner;
@@ -509,7 +545,11 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.download_rounded, color: AppColors.secondary, size: 22),
+              const Icon(
+                Icons.download_rounded,
+                color: AppColors.secondary,
+                size: 22,
+              ),
               const SizedBox(width: 8),
               Text(
                 l10n.exportSectionTitle,
@@ -533,9 +573,9 @@ class ProfileScreen extends StatelessWidget {
                 await exportService.shareCsv();
               } catch (e) {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Export error: $e')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Export error: $e')));
                 }
               }
             },
@@ -545,7 +585,10 @@ class ProfileScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.ofSurface(context),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.ofBorder(context), width: 0.6),
+                border: Border.all(
+                  color: AppColors.ofBorder(context),
+                  width: 0.6,
+                ),
               ),
               child: Row(
                 children: [
@@ -556,7 +599,11 @@ class ProfileScreen extends StatelessWidget {
                       color: AppColors.primary.withAlpha(25),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.table_chart_outlined, color: AppColors.primary, size: 22),
+                    child: const Icon(
+                      Icons.table_chart_outlined,
+                      color: AppColors.primary,
+                      size: 22,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -565,7 +612,10 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           l10n.exportCsvTitle,
-                          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13.5),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13.5,
+                          ),
                         ),
                         const SizedBox(height: 2),
                         Text(
@@ -575,7 +625,11 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Icon(Icons.ios_share_rounded, size: 20, color: AppColors.primary),
+                  const Icon(
+                    Icons.ios_share_rounded,
+                    size: 20,
+                    color: AppColors.primary,
+                  ),
                 ],
               ),
             ),
@@ -596,9 +650,9 @@ class ProfileScreen extends StatelessWidget {
                 await exportService.shareJson();
               } catch (e) {
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Backup error: $e')),
-                  );
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('Backup error: $e')));
                 }
               }
             },
@@ -608,7 +662,10 @@ class ProfileScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.ofSurface(context),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.ofBorder(context), width: 0.6),
+                border: Border.all(
+                  color: AppColors.ofBorder(context),
+                  width: 0.6,
+                ),
               ),
               child: Row(
                 children: [
@@ -619,7 +676,11 @@ class ProfileScreen extends StatelessWidget {
                       color: AppColors.secondary.withAlpha(25),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Icon(Icons.data_object_rounded, color: AppColors.secondary, size: 22),
+                    child: const Icon(
+                      Icons.data_object_rounded,
+                      color: AppColors.secondary,
+                      size: 22,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -628,7 +689,10 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         Text(
                           l10n.exportJsonTitle,
-                          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13.5),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 13.5,
+                          ),
                         ),
                         const SizedBox(height: 2),
                         Text(
@@ -638,7 +702,11 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Icon(Icons.backup_outlined, size: 20, color: AppColors.secondary),
+                  const Icon(
+                    Icons.backup_outlined,
+                    size: 20,
+                    color: AppColors.secondary,
+                  ),
                 ],
               ),
             ),
@@ -666,7 +734,11 @@ class ProfileScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.warning_amber_rounded, color: AppColors.failure, size: 20),
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: AppColors.failure,
+                size: 20,
+              ),
               const SizedBox(width: 8),
               Text(
                 l10n.dangerZone,
@@ -678,10 +750,7 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            l10n.deleteProfileDesc,
-            style: AppTypography.ofCaption(context),
-          ),
+          Text(l10n.deleteProfileDesc, style: AppTypography.ofCaption(context)),
           const SizedBox(height: 14),
           SizedBox(
             width: double.infinity,
@@ -692,7 +761,9 @@ class ProfileScreen extends StatelessWidget {
                 foregroundColor: AppColors.failure,
                 side: const BorderSide(color: AppColors.failure),
                 padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               onPressed: () => _confirmDeleteProfile(context),
             ),
@@ -713,7 +784,10 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const Icon(Icons.warning_amber_rounded, color: AppColors.failure),
             const SizedBox(width: 8),
-            Text(l10n.deleteProfileConfirmTitle, style: AppTypography.ofTitleLarge(context)),
+            Text(
+              l10n.deleteProfileConfirmTitle,
+              style: AppTypography.ofTitleLarge(context),
+            ),
           ],
         ),
         content: Text(

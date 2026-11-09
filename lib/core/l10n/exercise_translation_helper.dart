@@ -11,7 +11,10 @@ class ExerciseTranslationHelper {
   ExerciseTranslationHelper._();
 
   /// Maps a canonical exercise slug (e.g., 'bench_press') to its localized translation.
-  static String? resolveDefaultExerciseName(String slug, AppLocalizations l10n) {
+  static String? resolveDefaultExerciseName(
+    String slug,
+    AppLocalizations l10n,
+  ) {
     switch (slug) {
       case 'bench_press':
         return l10n.exercise_bench_press;
@@ -55,7 +58,9 @@ class ExerciseTranslationHelper {
   /// - Otherwise resolves the active locale's string via [slug].
   /// - Falls back gracefully if an unmapped slug is encountered.
   static String resolveExerciseName(Exercise exercise, AppLocalizations l10n) {
-    if (exercise.isCustom && exercise.customName != null && exercise.customName!.trim().isNotEmpty) {
+    if (exercise.isCustom &&
+        exercise.customName != null &&
+        exercise.customName!.trim().isNotEmpty) {
       return exercise.customName!;
     }
     return resolveDefaultExerciseName(exercise.slug, l10n) ??
@@ -82,7 +87,10 @@ class ExerciseTranslationHelper {
   }
 
   /// Resolves the localized display label for an [EquipmentType].
-  static String resolveEquipment(EquipmentType equipment, AppLocalizations l10n) {
+  static String resolveEquipment(
+    EquipmentType equipment,
+    AppLocalizations l10n,
+  ) {
     switch (equipment) {
       case EquipmentType.barbell:
         return l10n.equipmentBarbell;
@@ -150,4 +158,3 @@ extension SetTypeLocalizationExtension on SetType {
     return ExerciseTranslationHelper.resolveSetType(this, l10n);
   }
 }
-

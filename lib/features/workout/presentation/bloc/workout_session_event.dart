@@ -91,15 +91,15 @@ class UpdateSetRequested extends WorkoutSessionEvent {
 
   @override
   List<Object?> get props => [
-        setId,
-        workoutExerciseId,
-        setNumber,
-        setType,
-        weightKg,
-        reps,
-        rpe,
-        isCompleted,
-      ];
+    setId,
+    workoutExerciseId,
+    setNumber,
+    setType,
+    weightKg,
+    reps,
+    rpe,
+    isCompleted,
+  ];
 }
 
 class ToggleSetCompletionRequested extends WorkoutSessionEvent {

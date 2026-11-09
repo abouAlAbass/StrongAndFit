@@ -76,5 +76,7 @@ abstract class WorkoutRepository {
   Future<int> discardSession(int sessionId);
 
   /// Queries chronological 1RM progression points for a given exercise slug.
-  Future<List<ExerciseProgressionPoint>> fetchExerciseProgressionBySlug(String slug);
+  Future<List<ExerciseProgressionPoint>> fetchExerciseProgressionBySlug(
+    String slug,
+  );
 }

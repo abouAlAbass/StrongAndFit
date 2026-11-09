@@ -9,9 +9,7 @@ LazyDatabase openConnection() {
   return LazyDatabase(() async {
     return driftDatabase(
       name: 'strong_app_database',
-      native: const DriftNativeOptions(
-        shareAcrossIsolates: true,
-      ),
+      native: const DriftNativeOptions(shareAcrossIsolates: true),
     );
   });
 }

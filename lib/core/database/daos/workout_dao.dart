@@ -25,38 +25,34 @@ class ExerciseProgressionPoint {
 }
 
 /// Data Access Object managing workout sessions, exercise groupings, and set logs.
-@DriftAccessor(tables: [
-  WorkoutSessions,
-  WorkoutExercises,
-  Exercises,
-  SetLogs,
-])
+@DriftAccessor(tables: [WorkoutSessions, WorkoutExercises, Exercises, SetLogs])
 class WorkoutDao extends DatabaseAccessor<AppDatabase> with _$WorkoutDaoMixin {
   WorkoutDao(super.db);
 
   /// Reactive stream yielding real-time updates of a session and all its nested
   /// exercises and completed/pending sets.
   Stream<WorkoutSessionDetail?> watchSessionWithSets(int sessionId) {
-    final query = select(workoutSessions).join([
-      leftOuterJoin(
-        workoutExercises,
-        workoutExercises.sessionId.equalsExp(workoutSessions.id),
-      ),
-      leftOuterJoin(
-        exercises,
-        exercises.id.equalsExp(workoutExercises.exerciseId),
-      ),
-      leftOuterJoin(
-        setLogs,
-        setLogs.workoutExerciseId.equalsExp(workoutExercises.id),
-      ),
-    ])
-      ..where(workoutSessions.id.equals(sessionId))
-      ..orderBy([
-        OrderingTerm.asc(workoutExercises.orderIndex),
-        OrderingTerm.asc(workoutExercises.id),
-        OrderingTerm.asc(setLogs.setNumber),
-      ]);
+    final query =
+        select(workoutSessions).join([
+            leftOuterJoin(
+              workoutExercises,
+              workoutExercises.sessionId.equalsExp(workoutSessions.id),
+            ),
+            leftOuterJoin(
+              exercises,
+              exercises.id.equalsExp(workoutExercises.exerciseId),
+            ),
+            leftOuterJoin(
+              setLogs,
+              setLogs.workoutExerciseId.equalsExp(workoutExercises.id),
+            ),
+          ])
+          ..where(workoutSessions.id.equals(sessionId))
+          ..orderBy([
+            OrderingTerm.asc(workoutExercises.orderIndex),
+            OrderingTerm.asc(workoutExercises.id),
+            OrderingTerm.asc(setLogs.setNumber),
+          ]);
 
     return query.watch().map((rows) {
       if (rows.isEmpty) return null;
@@ -107,8 +103,7 @@ class WorkoutDao extends DatabaseAccessor<AppDatabase> with _$WorkoutDaoMixin {
         workoutSessions,
         workoutSessions.id.equalsExp(workoutExercises.sessionId),
       ),
-    ])
-      ..where(workoutExercises.exerciseId.equals(exerciseId));
+    ])..where(workoutExercises.exerciseId.equals(exerciseId));
 
     if (excludeSessionId != null) {
       query.where(workoutSessions.id.isNotValue(excludeSessionId));
@@ -145,8 +140,7 @@ class WorkoutDao extends DatabaseAccessor<AppDatabase> with _$WorkoutDaoMixin {
         setLogs,
         setLogs.workoutExerciseId.equalsExp(workoutExercises.id),
       ),
-    ])
-      ..where(setLogs.isCompleted.equals(true));
+    ])..where(setLogs.isCompleted.equals(true));
 
     if (excludeSessionId != null) {
       query.where(workoutSessions.id.isNotValue(excludeSessionId));
@@ -198,7 +192,9 @@ class WorkoutDao extends DatabaseAccessor<AppDatabase> with _$WorkoutDaoMixin {
 
   /// Fetch a workout session by id.
   Future<WorkoutSession?> getSessionById(int id) {
-    return (select(workoutSessions)..where((t) => t.id.equals(id))).getSingleOrNull();
+    return (select(
+      workoutSessions,
+    )..where((t) => t.id.equals(id))).getSingleOrNull();
   }
 
   /// Finds the most recent unfinished workout session (where completedAt is null).
@@ -221,7 +217,8 @@ class WorkoutDao extends DatabaseAccessor<AppDatabase> with _$WorkoutDaoMixin {
     required int exerciseId,
     int? orderIndex,
   }) async {
-    final int effectiveOrder = orderIndex ??
+    final int effectiveOrder =
+        orderIndex ??
         await (select(workoutExercises)
               ..where((t) => t.sessionId.equals(sessionId)))
             .get()
@@ -277,12 +274,16 @@ class WorkoutDao extends DatabaseAccessor<AppDatabase> with _$WorkoutDaoMixin {
 
   /// Removes an exercise (and its cascading sets) from a session.
   Future<int> deleteWorkoutExercise(int workoutExerciseId) {
-    return (delete(workoutExercises)..where((t) => t.id.equals(workoutExerciseId))).go();
+    return (delete(
+      workoutExercises,
+    )..where((t) => t.id.equals(workoutExerciseId))).go();
   }
 
   /// Sets or clears the superset group ID for a specific workout exercise.
   Future<int> setExerciseSuperset(int workoutExerciseId, int? supersetGroupId) {
-    return (update(workoutExercises)..where((t) => t.id.equals(workoutExerciseId))).write(
+    return (update(
+      workoutExercises,
+    )..where((t) => t.id.equals(workoutExerciseId))).write(
       WorkoutExercisesCompanion(supersetGroupId: Value(supersetGroupId)),
     );
   }
@@ -293,7 +294,9 @@ class WorkoutDao extends DatabaseAccessor<AppDatabase> with _$WorkoutDaoMixin {
     required int durationSeconds,
     DateTime? completedAt,
   }) {
-    return (update(workoutSessions)..where((t) => t.id.equals(sessionId))).write(
+    return (update(
+      workoutSessions,
+    )..where((t) => t.id.equals(sessionId))).write(
       WorkoutSessionsCompanion(
         completedAt: Value(completedAt ?? DateTime.now()),
         durationSeconds: Value(durationSeconds),
@@ -307,25 +310,28 @@ class WorkoutDao extends DatabaseAccessor<AppDatabase> with _$WorkoutDaoMixin {
   }
 
   /// Queries historical 1RM progression points for a specific exercise slug across completed sessions.
-  Future<List<ExerciseProgressionPoint>> fetchExerciseProgressionBySlug(String slug) async {
-    final query = select(setLogs).join([
-      innerJoin(
-        workoutExercises,
-        workoutExercises.id.equalsExp(setLogs.workoutExerciseId),
-      ),
-      innerJoin(
-        exercises,
-        exercises.id.equalsExp(workoutExercises.exerciseId),
-      ),
-      innerJoin(
-        workoutSessions,
-        workoutSessions.id.equalsExp(workoutExercises.sessionId),
-      ),
-    ])
-      ..where(exercises.slug.equals(slug))
-      ..where(setLogs.isCompleted.equals(true))
-      ..where(workoutSessions.completedAt.isNotNull())
-      ..orderBy([OrderingTerm.asc(workoutSessions.startedAt)]);
+  Future<List<ExerciseProgressionPoint>> fetchExerciseProgressionBySlug(
+    String slug,
+  ) async {
+    final query =
+        select(setLogs).join([
+            innerJoin(
+              workoutExercises,
+              workoutExercises.id.equalsExp(setLogs.workoutExerciseId),
+            ),
+            innerJoin(
+              exercises,
+              exercises.id.equalsExp(workoutExercises.exerciseId),
+            ),
+            innerJoin(
+              workoutSessions,
+              workoutSessions.id.equalsExp(workoutExercises.sessionId),
+            ),
+          ])
+          ..where(exercises.slug.equals(slug))
+          ..where(setLogs.isCompleted.equals(true))
+          ..where(workoutSessions.completedAt.isNotNull())
+          ..orderBy([OrderingTerm.asc(workoutSessions.startedAt)]);
 
     final rows = await query.get();
     final sessionPoints = <int, ExerciseProgressionPoint>{};

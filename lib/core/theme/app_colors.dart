@@ -56,19 +56,25 @@ class AppColors {
 
   // Dynamic Theme Resolvers
   static Color ofBackground(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark ? background : lightBackground;
+      Theme.of(context).brightness == Brightness.dark
+      ? background
+      : lightBackground;
 
   static Color ofSurface(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark ? surface : lightSurface;
 
   static Color ofSurfaceElevated(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark ? surfaceElevated : lightSurfaceElevated;
+      Theme.of(context).brightness == Brightness.dark
+      ? surfaceElevated
+      : lightSurfaceElevated;
 
   static Color ofCard(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark ? card : lightCard;
 
   static Color ofInputBackground(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark ? inputBackground : lightInputBackground;
+      Theme.of(context).brightness == Brightness.dark
+      ? inputBackground
+      : lightInputBackground;
 
   static Color ofBorder(BuildContext context) =>
       Theme.of(context).brightness == Brightness.dark ? border : lightBorder;
@@ -77,20 +83,32 @@ class AppColors {
       Theme.of(context).brightness == Brightness.dark ? divider : lightDivider;
 
   static Color ofPrimaryContainer(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark ? primaryContainer : lightPrimaryContainer;
+      Theme.of(context).brightness == Brightness.dark
+      ? primaryContainer
+      : lightPrimaryContainer;
 
   static Color ofCompletedContainer(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark ? completedContainer : lightCompletedContainer;
+      Theme.of(context).brightness == Brightness.dark
+      ? completedContainer
+      : lightCompletedContainer;
 
   static Color ofTextPrimary(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark ? textPrimary : lightTextPrimary;
+      Theme.of(context).brightness == Brightness.dark
+      ? textPrimary
+      : lightTextPrimary;
 
   static Color ofTextSecondary(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark ? textSecondary : lightTextSecondary;
+      Theme.of(context).brightness == Brightness.dark
+      ? textSecondary
+      : lightTextSecondary;
 
   static Color ofTextTertiary(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark ? textTertiary : lightTextTertiary;
+      Theme.of(context).brightness == Brightness.dark
+      ? textTertiary
+      : lightTextTertiary;
 
   static Color ofTextPlaceholder(BuildContext context) =>
-      Theme.of(context).brightness == Brightness.dark ? textPlaceholder : lightTextPlaceholder;
+      Theme.of(context).brightness == Brightness.dark
+      ? textPlaceholder
+      : lightTextPlaceholder;
 }

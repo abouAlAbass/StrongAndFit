@@ -16,7 +16,7 @@ class WorkoutSessionBloc
   Timer? _timer;
 
   WorkoutSessionBloc(this._workoutRepository)
-      : super(const WorkoutSessionState()) {
+    : super(const WorkoutSessionState()) {
     on<StartSessionRequested>(_onStartSessionRequested);
     on<StartSessionFromTemplateRequested>(_onStartSessionFromTemplateRequested);
     on<LoadSessionRequested>(_onLoadSessionRequested);
@@ -31,7 +31,10 @@ class WorkoutSessionBloc
     on<CompleteSessionRequested>(_onCompleteSessionRequested);
     on<DiscardSessionRequested>(_onDiscardSessionRequested);
     on<TimerTicked>(_onTimerTicked);
-    on<TimerReset>((event, emit) => emit(state.copyWith(elapsedSeconds: event.initialSeconds)));
+    on<TimerReset>(
+      (event, emit) =>
+          emit(state.copyWith(elapsedSeconds: event.initialSeconds)),
+    );
     on<SessionStreamUpdated>(_onSessionStreamUpdated);
   }
 
@@ -41,14 +44,18 @@ class WorkoutSessionBloc
   ) async {
     emit(state.copyWith(status: WorkoutSessionStatus.loading));
     try {
-      final sessionId = await _workoutRepository.startNewSession(title: event.title);
+      final sessionId = await _workoutRepository.startNewSession(
+        title: event.title,
+      );
       _startTimer(0);
       _subscribeToSession(sessionId);
     } catch (e) {
-      emit(state.copyWith(
-        status: WorkoutSessionStatus.error,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: WorkoutSessionStatus.error,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -71,10 +78,11 @@ class WorkoutSessionBloc
           exerciseId: item.exercise.id,
         );
 
-        final lastSets = await _workoutRepository.fetchLastLoggedSetsForExercise(
-          item.exercise.id,
-          excludeSessionId: sessionId,
-        );
+        final lastSets = await _workoutRepository
+            .fetchLastLoggedSetsForExercise(
+              item.exercise.id,
+              excludeSessionId: sessionId,
+            );
         previousMap[item.exercise.id] = lastSets;
 
         final targetSets = item.templateExercise.targetSets;
@@ -99,17 +107,18 @@ class WorkoutSessionBloc
         excludeSessionId: sessionId,
       );
 
-      emit(state.copyWith(
-        previousExerciseSets: previousMap,
-        personalRecords: prs,
-      ));
+      emit(
+        state.copyWith(previousExerciseSets: previousMap, personalRecords: prs),
+      );
       _startTimer(0);
       _subscribeToSession(sessionId);
     } catch (e) {
-      emit(state.copyWith(
-        status: WorkoutSessionStatus.error,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: WorkoutSessionStatus.error,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
@@ -126,7 +135,8 @@ class WorkoutSessionBloc
     Emitter<WorkoutSessionState> emit,
   ) async {
     try {
-      final activeSession = await _workoutRepository.getActiveUnfinishedSession();
+      final activeSession = await _workoutRepository
+          .getActiveUnfinishedSession();
       if (activeSession != null) {
         _subscribeToSession(activeSession.id);
       }
@@ -140,8 +150,8 @@ class WorkoutSessionBloc
     _sessionSubscription = _workoutRepository
         .watchSessionWithSets(sessionId)
         .listen((detail) {
-      add(SessionStreamUpdated(detail));
-    });
+          add(SessionStreamUpdated(detail));
+        });
   }
 
   Future<void> _onSessionStreamUpdated(
@@ -150,48 +160,53 @@ class WorkoutSessionBloc
   ) async {
     final detail = event.detail;
     if (detail == null) {
-      emit(state.copyWith(
-        status: WorkoutSessionStatus.initial,
-        detail: null,
-      ));
+      emit(state.copyWith(status: WorkoutSessionStatus.initial, detail: null));
       return;
     }
 
     // Determine elapsed time based on session start
-    final elapsed = DateTime.now().difference(detail.session.startedAt).inSeconds;
+    final elapsed = DateTime.now()
+        .difference(detail.session.startedAt)
+        .inSeconds;
     if (_timer == null || !_timer!.isActive) {
       _startTimer(elapsed > 0 ? elapsed : 0);
     }
 
     // Fetch previous sets for any exercise not yet in previousExerciseSets cache
-    final updatedPreviousMap = Map<int, List<SetLog>>.from(state.previousExerciseSets);
-    final updatedPrMap = Map<int, ExercisePersonalRecords>.from(state.personalRecords);
+    final updatedPreviousMap = Map<int, List<SetLog>>.from(
+      state.previousExerciseSets,
+    );
+    final updatedPrMap = Map<int, ExercisePersonalRecords>.from(
+      state.personalRecords,
+    );
     for (final exerciseItem in detail.exercises) {
       final exerciseId = exerciseItem.exercise.id;
       if (!updatedPreviousMap.containsKey(exerciseId)) {
-        final lastSets = await _workoutRepository.fetchLastLoggedSetsForExercise(
-          exerciseId,
-          excludeSessionId: detail.session.id,
-        );
+        final lastSets = await _workoutRepository
+            .fetchLastLoggedSetsForExercise(
+              exerciseId,
+              excludeSessionId: detail.session.id,
+            );
         updatedPreviousMap[exerciseId] = lastSets;
       }
     }
 
     if (updatedPrMap.isEmpty && detail.exercises.isNotEmpty) {
-      final historicalPrs = await _workoutRepository.fetchHistoricalPersonalRecords(
-        excludeSessionId: detail.session.id,
-      );
+      final historicalPrs = await _workoutRepository
+          .fetchHistoricalPersonalRecords(excludeSessionId: detail.session.id);
       updatedPrMap.addAll(historicalPrs);
     }
 
-    emit(state.copyWith(
-      status: detail.session.completedAt == null
-          ? WorkoutSessionStatus.active
-          : WorkoutSessionStatus.completed,
-      detail: detail,
-      previousExerciseSets: updatedPreviousMap,
-      personalRecords: updatedPrMap,
-    ));
+    emit(
+      state.copyWith(
+        status: detail.session.completedAt == null
+            ? WorkoutSessionStatus.active
+            : WorkoutSessionStatus.completed,
+        detail: detail,
+        previousExerciseSets: updatedPreviousMap,
+        personalRecords: updatedPrMap,
+      ),
+    );
   }
 
   Future<void> _onAddExerciseRequested(
@@ -214,7 +229,9 @@ class WorkoutSessionBloc
       );
 
       // Pre-fill Set 1 using the first set of the previous workout, or sensible defaults
-      final defaultWeight = lastSets.isNotEmpty ? lastSets.first.weightKg : null;
+      final defaultWeight = lastSets.isNotEmpty
+          ? lastSets.first.weightKg
+          : null;
       final defaultReps = lastSets.isNotEmpty ? lastSets.first.reps : null;
 
       await _workoutRepository.addSet(
@@ -225,7 +242,9 @@ class WorkoutSessionBloc
         reps: defaultReps,
       );
 
-      final updatedPreviousMap = Map<int, List<SetLog>>.from(state.previousExerciseSets);
+      final updatedPreviousMap = Map<int, List<SetLog>>.from(
+        state.previousExerciseSets,
+      );
       updatedPreviousMap[event.exerciseId] = lastSets;
       emit(state.copyWith(previousExerciseSets: updatedPreviousMap));
     } catch (e) {
@@ -249,7 +268,8 @@ class WorkoutSessionBloc
     final nextSetNumber = exerciseItem.sets.length + 1;
 
     // Check if previous session had a matching set number for ghost hints
-    final previousSets = state.previousExerciseSets[exerciseItem.exercise.id] ?? [];
+    final previousSets =
+        state.previousExerciseSets[exerciseItem.exercise.id] ?? [];
     double? prefillWeight;
     int? prefillReps;
 
@@ -353,10 +373,7 @@ class WorkoutSessionBloc
     emit(const WorkoutSessionState(status: WorkoutSessionStatus.discarded));
   }
 
-  void _onTimerTicked(
-    TimerTicked event,
-    Emitter<WorkoutSessionState> emit,
-  ) {
+  void _onTimerTicked(TimerTicked event, Emitter<WorkoutSessionState> emit) {
     emit(state.copyWith(elapsedSeconds: state.elapsedSeconds + 1));
   }
 

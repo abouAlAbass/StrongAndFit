@@ -7,7 +7,11 @@ import '../domain/models/exercise_guide.dart';
 class ExerciseGuidesData {
   ExerciseGuidesData._();
 
-  static ExerciseGuide getGuide(String slug, String languageCode, {String? displayName}) {
+  static ExerciseGuide getGuide(
+    String slug,
+    String languageCode, {
+    String? displayName,
+  }) {
     final lang = _normalizeLanguage(languageCode);
     final map = _guidesByLanguage[lang] ?? _guidesByLanguage['en']!;
 
@@ -25,7 +29,11 @@ class ExerciseGuidesData {
     return 'en';
   }
 
-  static ExerciseGuide _buildFallbackGuide(String slug, String name, String lang) {
+  static ExerciseGuide _buildFallbackGuide(
+    String slug,
+    String name,
+    String lang,
+  ) {
     switch (lang) {
       case 'fr':
         return ExerciseGuide(
@@ -42,12 +50,14 @@ class ExerciseGuidesData {
             'Marquez un l\u00e9ger point d\'arr\u00eat en bas de mouvement.',
             'Poussez ou tirez de mani\u00e8re explosive sans \u00e0-coups.',
           ],
-          breathingInstructions: 'Inspirez sur la descente (excentrique), bloquez ou expirez \u00e0 l\'effort maximal (concentrique).',
+          breathingInstructions:
+              'Inspirez sur la descente (excentrique), bloquez ou expirez \u00e0 l\'effort maximal (concentrique).',
           commonMistakes: [
             'Mettre trop lourd au d\u00e9triment de l\'amplitude compl\u00e8te.',
             'Utiliser l\'\u00e9lan et la vitesse plut\u00f4t que la tension musculaire continue.',
           ],
-          coachTip: 'Concentrez-vous sur la connexion esprit-muscle et contr\u00f4lez chaque millim\u00e8tre de la trajectoire.',
+          coachTip:
+              'Concentrez-vous sur la connexion esprit-muscle et contr\u00f4lez chaque millim\u00e8tre de la trajectoire.',
         );
       case 'ar':
         return ExerciseGuide(
@@ -64,12 +74,14 @@ class ExerciseGuidesData {
             'توقف جزءاً من الثانية عند أقصى استطالة دون إرخاء العضلة.',
             'ادفع أو اسحب بقوة وتركيز عبر المدى الحركي الكامل.',
           ],
-          breathingInstructions: 'خذ نفساً عميقاً أثناء مرحلة الهبوط (الانبساط)، وازفر بقوة مع دفع الوزن (الانقباض).',
+          breathingInstructions:
+              'خذ نفساً عميقاً أثناء مرحلة الهبوط (الانبساط)، وازفر بقوة مع دفع الوزن (الانقباض).',
           commonMistakes: [
             'استخدام أوزان مفرطة تقلل من المدى الحركي الكامل.',
             'الاعتماد على الدفع والاهتزاز بدلاً من السيطرة العضلية المستمرة.',
           ],
-          coachTip: 'ركز على الاتصال العضلي العصبي وتحكّم في الوزن بدلاً من أن يدع الوزن يتحكم بك.',
+          coachTip:
+              'ركز على الاتصال العضلي العصبي وتحكّم في الوزن بدلاً من أن يدع الوزن يتحكم بك.',
         );
       default:
         return ExerciseGuide(
@@ -86,12 +98,14 @@ class ExerciseGuidesData {
             'Pause momentarily at the deepest active range without losing tension.',
             'Drive concentrically with intent and smooth, continuous force.',
           ],
-          breathingInstructions: 'Inhale and brace during the eccentric descent; exhale through the sticking point.',
+          breathingInstructions:
+              'Inhale and brace during the eccentric descent; exhale through the sticking point.',
           commonMistakes: [
             'Sacrificing full active range of motion for excessive weight.',
             'Using ballistic momentum instead of isolated muscular tension.',
           ],
-          coachTip: 'Prioritize mind-muscle connection and control every inch of the bar path.',
+          coachTip:
+              'Prioritize mind-muscle connection and control every inch of the bar path.',
         );
     }
   }
@@ -114,7 +128,11 @@ class ExerciseGuidesData {
       slug: 'bench_press',
       title: 'D\u00e9velopp\u00e9 couch\u00e9 \u00e0 la barre',
       primaryMuscles: ['Grand pectoral (moyen et inf\u00e9rieur)'],
-      secondaryMuscles: ['Triceps brachial', 'Delto\u00efde ant\u00e9rieur', 'Dentel\u00e9 ant\u00e9rieur'],
+      secondaryMuscles: [
+        'Triceps brachial',
+        'Delto\u00efde ant\u00e9rieur',
+        'Dentel\u00e9 ant\u00e9rieur',
+      ],
       setupInstructions: [
         'Allongez-vous avec les yeux align\u00e9s sous la barre.',
         'Pieds fermement ancr\u00e9s \u00e0 plat au sol pour maximiser le leg drive.',
@@ -127,14 +145,16 @@ class ExerciseGuidesData {
         'Gardez les coudes \u00e0 un angle de 45\u00b0 \u00e0 70\u00b0 par rapport au buste (ne pas \u00e9carter \u00e0 90\u00b0).',
         'Effleurez l\u00e9g\u00e8rement le torse, puis poussez en trajectoire arqu\u00e9e vers le haut et l\'arri\u00e8re au-dessus des \u00e9paules.',
       ],
-      breathingInstructions: 'Grande inspiration thoracique et verrouillage abdominal (man\u0153uvre de Valsalva) avant la descente ; expirez pass\u00e9 le point de blocage en fin de remont\u00e9e.',
+      breathingInstructions:
+          'Grande inspiration thoracique et verrouillage abdominal (man\u0153uvre de Valsalva) avant la descente ; expirez pass\u00e9 le point de blocage en fin de remont\u00e9e.',
       commonMistakes: [
         'Laisser les \u00e9paules partir vers l\'avant (perte de r\u00e9traction des omoplates en bas).',
         'Rebondir avec \u00e9nergie sur la cage thoracique.',
         'Coudes trop ouverts \u00e0 90\u00b0 provoquant un pincement acromial.',
         'D\u00e9coller les fessiers du banc pendant la pouss\u00e9e.',
       ],
-      coachTip: 'Pensez \u00e0 \u00ab plier la barre en deux \u00bb pour activer vos dorsaux et verrouiller vos coudes dans l\'angle parfait.',
+      coachTip:
+          'Pensez \u00e0 \u00ab plier la barre en deux \u00bb pour activer vos dorsaux et verrouiller vos coudes dans l\'angle parfait.',
       hypertrophyRepRange: '8 - 12 reps (RPE 7-8)',
       strengthRepRange: '3 - 6 reps (RPE 8-9)',
       tempo: '3-1-1-0',
@@ -143,7 +163,12 @@ class ExerciseGuidesData {
       slug: 'squat',
       title: 'Squat \u00e0 la barre (Back Squat)',
       primaryMuscles: ['Quadriceps', 'Grand fessier'],
-      secondaryMuscles: ['Ischio-jambiers', 'Adducteurs', '\u00c9recteurs du rachis', 'Abdominaux'],
+      secondaryMuscles: [
+        'Ischio-jambiers',
+        'Adducteurs',
+        '\u00c9recteurs du rachis',
+        'Abdominaux',
+      ],
       setupInstructions: [
         'Placez la barre sur les trap\u00e8zes sup\u00e9rieurs (High Bar) ou l\u00e9g\u00e8rement plus bas sur les delto\u00efdes post\u00e9rieurs (Low Bar).',
         'Reculez de 2 ou 3 pas calcul\u00e9s, pieds \u00e0 largeur d\'\u00e9paules, pointes ouvertes \u00e0 15-30\u00b0.',
@@ -156,14 +181,16 @@ class ExerciseGuidesData {
         'Descendez jusqu\'\u00e0 ce que le pli de la hanche passe sous le haut du genou (profondeur parall\u00e8le valid\u00e9e).',
         'Poussez le sol \u00e0 travers le milieu du pied en gardant la cage thoracique haute et le buste solide.',
       ],
-      breathingInstructions: 'Inspiration profonde et gainage abdominal 360\u00b0 avant d\'entamer la descente ; retenez l\'air jusqu\'au franchissement de la parall\u00e8le, puis expirez en haut.',
+      breathingInstructions:
+          'Inspiration profonde et gainage abdominal 360\u00b0 avant d\'entamer la descente ; retenez l\'air jusqu\'au franchissement de la parall\u00e8le, puis expirez en haut.',
       commonMistakes: [
         'Genoux qui rentrent vers l\'int\u00e9rieur (valgus dynamique du genou).',
         'Talons qui d\u00e9collent du sol par manque de mobilit\u00e9 de cheville.',
         'Buste qui s\'effondre vers l\'avant (Good Morning squat involontaire).',
         'Arr\u00eat \u00e0 mi-hauteur sans amplitude compl\u00e8te.',
       ],
-      coachTip: 'Vissez vos pieds dans le sol vers l\'ext\u00e9rieur comme si vous vouliez fendre le plancher pour stabiliser vos hanches.',
+      coachTip:
+          'Vissez vos pieds dans le sol vers l\'ext\u00e9rieur comme si vous vouliez fendre le plancher pour stabiliser vos hanches.',
       hypertrophyRepRange: '6 - 10 reps (RPE 7-8)',
       strengthRepRange: '3 - 5 reps (RPE 8-9)',
       tempo: '3-0-1-0',
@@ -171,8 +198,16 @@ class ExerciseGuidesData {
     'deadlift': const ExerciseGuide(
       slug: 'deadlift',
       title: 'Soulev\u00e9 de terre conventionnel',
-      primaryMuscles: ['Cha\u00eene post\u00e9rieure (Ischio-jambiers, Fessiers)', '\u00c9recteurs du rachis'],
-      secondaryMuscles: ['Dorsaux', 'Trap\u00e8zes', 'Avant-bras / Poigne', 'Quadriceps'],
+      primaryMuscles: [
+        'Cha\u00eene post\u00e9rieure (Ischio-jambiers, Fessiers)',
+        '\u00c9recteurs du rachis',
+      ],
+      secondaryMuscles: [
+        'Dorsaux',
+        'Trap\u00e8zes',
+        'Avant-bras / Poigne',
+        'Quadriceps',
+      ],
       setupInstructions: [
         'Placez-vous pieds \u00e0 largeur de hanches, la barre coupant vos lacets en deux (2-3 cm des tibias).',
         'Penchez-vous en charni\u00e8re de hanche sans plier excessivement les genoux et saisissez la barre \u00e0 l\'ext\u00e9rieur des tibias.',
@@ -185,14 +220,16 @@ class ExerciseGuidesData {
         'Finissez debout bien droit, sans hyper-extension lombaire arri\u00e8re.',
         'Contr\u00f4lez la descente en charni\u00e8re de hanche avant de plier les genoux.',
       ],
-      breathingInstructions: 'Prenez votre pression intra-abdominale maximale en bas au d\u00e9part ; maintenez le blocage jusqu\'au verrouillage debout o\u00f9 vous expirez bross\u00e9.',
+      breathingInstructions:
+          'Prenez votre pression intra-abdominale maximale en bas au d\u00e9part ; maintenez le blocage jusqu\'au verrouillage debout o\u00f9 vous expirez bross\u00e9.',
       commonMistakes: [
         'Dos rond d\u00e8s le d\u00e9part (perte de neutralit\u00e9 de la colonne).',
         'Barre trop \u00e9loign\u00e9e du corps augmentant le bras de levier lombaire.',
         'Tirer avec les bras pli\u00e9s (risque de d\u00e9chirure du tendon du biceps).',
         'Sur-cambrer en arri\u00e8re au verrouillage final.',
       ],
-      coachTip: 'Ne tirez pas la barre vers le haut : repoussez le sol loin de vous avec les talons.',
+      coachTip:
+          'Ne tirez pas la barre vers le haut : repoussez le sol loin de vous avec les talons.',
       hypertrophyRepRange: '5 - 8 reps (RPE 7-8)',
       strengthRepRange: '1 - 5 reps (RPE 8-9)',
       tempo: '2-1-1-0',
@@ -200,8 +237,16 @@ class ExerciseGuidesData {
     'overhead_press': const ExerciseGuide(
       slug: 'overhead_press',
       title: 'D\u00e9velopp\u00e9 militaire \u00e0 la barre (OHP)',
-      primaryMuscles: ['Delto\u00efde ant\u00e9rieur', 'Delto\u00efde lat\u00e9ral'],
-      secondaryMuscles: ['Triceps brachial', 'Trap\u00e8zes sup\u00e9rieurs', 'Serratus', 'Abdominaux'],
+      primaryMuscles: [
+        'Delto\u00efde ant\u00e9rieur',
+        'Delto\u00efde lat\u00e9ral',
+      ],
+      secondaryMuscles: [
+        'Triceps brachial',
+        'Trap\u00e8zes sup\u00e9rieurs',
+        'Serratus',
+        'Abdominaux',
+      ],
       setupInstructions: [
         'Barre pos\u00e9e sur le haut des clavicules, coudes l\u00e9g\u00e8rement en avant de la barre.',
         'Prise de mains juste \u00e0 l\'ext\u00e9rieur des \u00e9paules, poignets verticaux.',
@@ -213,13 +258,15 @@ class ExerciseGuidesData {
         'D\u00e8s que la barre d\u00e9passe le sommet du cr\u00e2ne, engagez la t\u00eate \u00e0 travers la \u00ab fen\u00eatre \u00bb des bras.',
         'Verrouillez les coudes au-dessus de la t\u00eate en haussant l\u00e9g\u00e8rement les trap\u00e8zes pour stabiliser.',
       ],
-      breathingInstructions: 'Inspirez au niveau des clavicules, bloquez pendant la mont\u00e9e, expirez en haut au verrouillage complet.',
+      breathingInstructions:
+          'Inspirez au niveau des clavicules, bloquez pendant la mont\u00e9e, expirez en haut au verrouillage complet.',
       commonMistakes: [
         'Cambrer excessivement le bas du dos pour compenser un manque de mobilit\u00e9 d\'\u00e9paule.',
         'Pousser la barre en arc de cercle vers l\'avant.',
         'Utiliser un \u00e9lan de jambes (qui transforme l\'exercice en Push Press).',
       ],
-      coachTip: 'Serrez les fessiers aussi fort que possible : ils forment la fondation in\u00e9branlable de votre d\u00e9velopp\u00e9.',
+      coachTip:
+          'Serrez les fessiers aussi fort que possible : ils forment la fondation in\u00e9branlable de votre d\u00e9velopp\u00e9.',
       hypertrophyRepRange: '8 - 12 reps (RPE 7-8)',
       strengthRepRange: '3 - 6 reps (RPE 8-9)',
       tempo: '2-0-1-0',
@@ -228,7 +275,11 @@ class ExerciseGuidesData {
       slug: 'barbell_row',
       title: 'Rowing barre buste pench\u00e9',
       primaryMuscles: ['Grand dorsal', 'Rhombo\u00efdes', 'Trap\u00e8ze moyen'],
-      secondaryMuscles: ['Biceps brachial', 'Delto\u00efde post\u00e9rieur', '\u00c9recteurs lombaires'],
+      secondaryMuscles: [
+        'Biceps brachial',
+        'Delto\u00efde post\u00e9rieur',
+        '\u00c9recteurs lombaires',
+      ],
       setupInstructions: [
         'Pieds largeur d\'\u00e9paules, d\u00e9crochez la barre en prise pronation ou supination.',
         'Basculez le buste en charni\u00e8re de hanche \u00e0 environ 45 degr\u00e9s, dos parfaitement droit.',
@@ -240,13 +291,15 @@ class ExerciseGuidesData {
         'Resserrez fermement les omoplates l\'une contre l\'autre en fin de course.',
         'Descendez lentement en contr\u00f4lant l\'\u00e9tirement dorsal complet.',
       ],
-      breathingInstructions: 'Inspirez en position basse \u00e9tir\u00e9e ; expirez \u00e0 mesure que vous tirez la charge contre vous.',
+      breathingInstructions:
+          'Inspirez en position basse \u00e9tir\u00e9e ; expirez \u00e0 mesure que vous tirez la charge contre vous.',
       commonMistakes: [
         'Redresser le buste avec des secousses pour tricher avec l\'\u00e9lan.',
         'Tirer avec les poignets et les biceps plut\u00f4t qu\'avec les coudes et le dos.',
         'Arrondir la colonne lombaire sous la fatigue.',
       ],
-      coachTip: 'Imaginez que vos mains ne sont que des crochets : le mouvement provient exclusivement de vos coudes guid\u00e9s vers l\'arri\u00e8re.',
+      coachTip:
+          'Imaginez que vos mains ne sont que des crochets : le mouvement provient exclusivement de vos coudes guid\u00e9s vers l\'arri\u00e8re.',
       hypertrophyRepRange: '8 - 12 reps (RPE 7-8)',
       strengthRepRange: '5 - 8 reps (RPE 8-9)',
       tempo: '2-1-1-0',
@@ -255,7 +308,12 @@ class ExerciseGuidesData {
       slug: 'pull_up',
       title: 'Tractions en pronation (Pull-Up)',
       primaryMuscles: ['Grand dorsal', 'Grand rond'],
-      secondaryMuscles: ['Biceps brachial', 'Brachioradial', 'Rhombo\u00efdes', 'Trap\u00e8zes'],
+      secondaryMuscles: [
+        'Biceps brachial',
+        'Brachioradial',
+        'Rhombo\u00efdes',
+        'Trap\u00e8zes',
+      ],
       setupInstructions: [
         'Suspendez-vous \u00e0 la barre avec une prise l\u00e9g\u00e8rement plus large que les \u00e9paules, paumes vers l\'avant (pronation).',
         'D\u00e9marrez bras enti\u00e8rement tendus (dead hang) pour \u00e9tirer la fibre musculaire.',
@@ -267,13 +325,15 @@ class ExerciseGuidesData {
         'Marquez une seconde de contraction isom\u00e9trique en haut.',
         'Descendez avec retenue jusqu\'\u00e0 l\'extension compl\u00e8te des coudes.',
       ],
-      breathingInstructions: 'Inspirez en bas dans la phase d\'\u00e9tirement ; expirez puissamment pendant la mont\u00e9e.',
+      breathingInstructions:
+          'Inspirez en bas dans la phase d\'\u00e9tirement ; expirez puissamment pendant la mont\u00e9e.',
       commonMistakes: [
         'Balancement excessif des jambes (kipping) sans contr\u00f4le strict.',
         'Ne pas descendre jusqu\'au bout (r\u00e9p\u00e9titions partielles).',
         'Enrouler les \u00e9paules vers l\'avant en haut du mouvement.',
       ],
-      coachTip: 'Pensez \u00e0 enfoncer vos coudes dans le sol pour propulser votre torse vers le haut.',
+      coachTip:
+          'Pensez \u00e0 enfoncer vos coudes dans le sol pour propulser votre torse vers le haut.',
       hypertrophyRepRange: '6 - 10 reps au poids du corps ou lest\u00e9',
       strengthRepRange: '3 - 5 reps lest\u00e9es',
       tempo: '3-0-1-0',
@@ -293,13 +353,15 @@ class ExerciseGuidesData {
         'Orientez les halt\u00e8res avec un angle l\u00e9g\u00e8rement oblique (45\u00b0) pour pr\u00e9server les \u00e9paules.',
         'Sentez un \u00e9tirement net sur le haut des pectoraux, puis repoussez vers le haut sans cogner les halt\u00e8res.',
       ],
-      breathingInstructions: 'Inspirez profondément \u00e0 la descente pour ouvrir la cage thoracique ; expirez en poussant.',
+      breathingInstructions:
+          'Inspirez profondément \u00e0 la descente pour ouvrir la cage thoracique ; expirez en poussant.',
       commonMistakes: [
         'Inclinaison du banc trop \u00e9lev\u00e9e (60\u00b0) qui sollicite les delto\u00efdes plut\u00f4t que les pectoraux.',
         'Claquer les halt\u00e8res en haut, ce qui supprime la tension musculaire.',
         'Perdre la stabilit\u00e9 scapulaire au cours de la s\u00e9rie.',
       ],
-      coachTip: 'Arr\u00eatez les halt\u00e8res \u00e0 5 cm l\'un de l\'autre en haut pour maintenir une tension constante sur le haut des pectoraux.',
+      coachTip:
+          'Arr\u00eatez les halt\u00e8res \u00e0 5 cm l\'un de l\'autre en haut pour maintenir une tension constante sur le haut des pectoraux.',
       hypertrophyRepRange: '8 - 12 reps (RPE 7-8)',
       strengthRepRange: '6 - 8 reps',
       tempo: '3-1-1-0',
@@ -320,13 +382,15 @@ class ExerciseGuidesData {
         'Montez jusqu\'\u00e0 la hauteur des \u00e9paules, pas plus haut pour ne pas engager les trap\u00e8zes.',
         'Freinez la descente sur 3 secondes compl\u00e8tes.',
       ],
-      breathingInstructions: 'Inspirez avant le d\u00e9marrage ; expirez en \u00e9levant les bras, inspirez en contr\u00f4lant la redescente.',
+      breathingInstructions:
+          'Inspirez avant le d\u00e9marrage ; expirez en \u00e9levant les bras, inspirez en contr\u00f4lant la redescente.',
       commonMistakes: [
         'Utiliser l\'\u00e9lan du bassin ou des genoux pour balancer les poids.',
         'Prendre trop lourd et monter les mains au-dessus des coudes.',
         'Haisser excessivement les trap\u00e8zes sup\u00e9rieurs vers les oreilles.',
       ],
-      coachTip: 'Pensez \u00e0 pousser les murs de la pi\u00e8ce avec vos coudes plut\u00f4t que de simplement lever les halt\u00e8res.',
+      coachTip:
+          'Pensez \u00e0 pousser les murs de la pi\u00e8ce avec vos coudes plut\u00f4t que de simplement lever les halt\u00e8res.',
       hypertrophyRepRange: '12 - 18 reps (RPE 8-9)',
       strengthRepRange: '10 - 12 reps',
       tempo: '2-0-1-2',
@@ -347,13 +411,15 @@ class ExerciseGuidesData {
         'Descendez jusqu\'\u00e0 sentir l\'\u00e9tirement maximal des ischio-jambiers (mi-tibia en g\u00e9n\u00e9ral).',
         'Pressez le sol avec les talons et contractez puissamment les fessiers pour revenir \u00e0 la verticale.',
       ],
-      breathingInstructions: 'Grande inspiration thoracique avant d\'envoyer le bassin en arri\u00e8re ; expirez \u00e0 mi-remont\u00e9e lors de l\'extension de hanche.',
+      breathingInstructions:
+          'Grande inspiration thoracique avant d\'envoyer le bassin en arri\u00e8re ; expirez \u00e0 mi-remont\u00e9e lors de l\'extension de hanche.',
       commonMistakes: [
         'Plier les genoux comme sur un squat conventionnel.',
         'Arrondir le dos pour chercher \u00e0 toucher le sol avec la barre.',
         'Laisser la barre d\u00e9coller des jambes vers l\'avant.',
       ],
-      coachTip: 'Le RDL n\'est pas un mouvement de flexion vers le bas, mais un mouvement d\'envoi des fesses vers l\'arri\u00e8re.',
+      coachTip:
+          'Le RDL n\'est pas un mouvement de flexion vers le bas, mais un mouvement d\'envoi des fesses vers l\'arri\u00e8re.',
       hypertrophyRepRange: '8 - 12 reps (RPE 7-8)',
       strengthRepRange: '6 - 8 reps',
       tempo: '3-1-1-0',
@@ -374,13 +440,15 @@ class ExerciseGuidesData {
         'Stoppez la descente imm\u00e9diatement si votre bas du dos commence \u00e0 se d\u00e9coller du dossier.',
         'Repoussez le plateau \u00e0 travers l\'ensemble du pied sans jamais verrouiller les genoux en hyperextension.',
       ],
-      breathingInstructions: 'Inspirez \u00e0 la descente du plateau ; expirez pendant la pouss\u00e9e puissante.',
+      breathingInstructions:
+          'Inspirez \u00e0 la descente du plateau ; expirez pendant la pouss\u00e9e puissante.',
       commonMistakes: [
         'Verrouiller brutalement les articulations des genoux en haut (risque articulaire majeur).',
         'D\u00e9coller le bassin du si\u00e8ge (r\u00e9troversion du bassin destructrice pour les lombaires).',
         'Mettre les mains sur les genoux pour pousser.',
       ],
-      coachTip: 'Agrippez fermement les poign\u00e9es lat\u00e9rales pour vous plaquer activement dans le si\u00e8ge tout au long de la s\u00e9rie.',
+      coachTip:
+          'Agrippez fermement les poign\u00e9es lat\u00e9rales pour vous plaquer activement dans le si\u00e8ge tout au long de la s\u00e9rie.',
       hypertrophyRepRange: '10 - 15 reps (RPE 8)',
       strengthRepRange: '6 - 10 reps',
       tempo: '3-0-1-0',
@@ -401,13 +469,15 @@ class ExerciseGuidesData {
         'Effleurez la zone claviculaire, marquez 1 seconde de contraction maximale.',
         'Remontez en r\u00e9sistant jusqu\'\u00e0 l\'extension compl\u00e8te des bras.',
       ],
-      breathingInstructions: 'Inspirez lorsque la barre remonte en \u00e9tirant vos dorsaux ; expirez en tirant vers la poitrine.',
+      breathingInstructions:
+          'Inspirez lorsque la barre remonte en \u00e9tirant vos dorsaux ; expirez en tirant vers la poitrine.',
       commonMistakes: [
         'Se balancer excessivement en arri\u00e8re pour utiliser le poids du corps.',
         'Tirer la barre derri\u00e8re le cou (dangereux pour la coiffe des rotateurs).',
         'Remonter la barre \u00e0 toute vitesse sans contr\u00f4le.',
       ],
-      coachTip: 'Pensez \u00e0 rentrer vos coudes dans vos poches arri\u00e8re de pantalon pour engager pleinement le grand dorsal.',
+      coachTip:
+          'Pensez \u00e0 rentrer vos coudes dans vos poches arri\u00e8re de pantalon pour engager pleinement le grand dorsal.',
       hypertrophyRepRange: '8 - 12 reps (RPE 7-8)',
       strengthRepRange: '6 - 8 reps',
       tempo: '2-1-1-0',
@@ -427,12 +497,14 @@ class ExerciseGuidesData {
         'Pressez au sommet de la contraction pendant 1 seconde.',
         'Redescendez lentement jusqu\'\u00e0 extension compl\u00e8te.',
       ],
-      breathingInstructions: 'Inspirez \u00e0 la descente de la barre ; expirez en contractant les biceps vers le haut.',
+      breathingInstructions:
+          'Inspirez \u00e0 la descente de la barre ; expirez en contractant les biceps vers le haut.',
       commonMistakes: [
         'Donner une impulsion avec les lombaires et le bassin.',
         'Avancer les coudes vers l\'avant, ce qui transf\u00e8re l\'effort sur les delto\u00efdes.',
       ],
-      coachTip: 'Collez vos \u00e9paules et vos fessiers contre un mur pour vous entra\u00eener avec une forme 100% stricte.',
+      coachTip:
+          'Collez vos \u00e9paules et vos fessiers contre un mur pour vous entra\u00eener avec une forme 100% stricte.',
       hypertrophyRepRange: '8 - 12 reps (RPE 8)',
       strengthRepRange: '6 - 8 reps',
       tempo: '2-1-1-0',
@@ -451,12 +523,14 @@ class ExerciseGuidesData {
         'Verrouillez l\'articulation en bas en \u00e9cartant l\u00e9g\u00e8rement la corde ou en pressant la barre.',
         'Remontez avec contr\u00f4le jusqu\'\u00e0 un angle de 90\u00b0 aux coudes sans les d\u00e9coller du buste.',
       ],
-      breathingInstructions: 'Inspirez pendant que la barre remonte ; expirez vigoureusement en poussant vers le bas.',
+      breathingInstructions:
+          'Inspirez pendant que la barre remonte ; expirez vigoureusement en poussant vers le bas.',
       commonMistakes: [
         'Laisser les coudes monter et descendre au lieu de les garder fixes.',
         'Utiliser le poids de son buste pour \u00e9craser la poulie.',
       ],
-      coachTip: 'Imaginez que vos coudes sont viss\u00e9s dans vos hanches : seuls vos avant-bras doivent pivoter.',
+      coachTip:
+          'Imaginez que vos coudes sont viss\u00e9s dans vos hanches : seuls vos avant-bras doivent pivoter.',
       hypertrophyRepRange: '10 - 15 reps (RPE 8)',
       strengthRepRange: '8 - 10 reps',
       tempo: '2-1-1-0',
@@ -465,7 +539,10 @@ class ExerciseGuidesData {
       slug: 'push_up',
       title: 'Pompes classiques',
       primaryMuscles: ['Pectoraux', 'Triceps'],
-      secondaryMuscles: ['Delto\u00efde ant\u00e9rieur', 'Sangle abdominale (gainage)'],
+      secondaryMuscles: [
+        'Delto\u00efde ant\u00e9rieur',
+        'Sangle abdominale (gainage)',
+      ],
       setupInstructions: [
         'Mains pos\u00e9es au sol l\u00e9g\u00e8rement plus larges que les \u00e9paules.',
         'Corps align\u00e9 en planche parfaite de la nuque aux chevilles.',
@@ -475,12 +552,14 @@ class ExerciseGuidesData {
         'Effleurez le sol avec la poitrine sans cambrer.',
         'Repoussez fermement le sol pour revenir en extension compl\u00e8te.',
       ],
-      breathingInstructions: 'Inspirez \u00e0 la descente ; expirez en repoussant le sol.',
+      breathingInstructions:
+          'Inspirez \u00e0 la descente ; expirez en repoussant le sol.',
       commonMistakes: [
         'Bassin qui s\'affaisse vers le sol (manque de gainage).',
         '\u00c9carter les coudes \u00e0 90 degr\u00e9s fa\u00e7on T.',
       ],
-      coachTip: 'Serrez les fessiers et les abdominaux pour transformer votre corps en planche d\'acier.',
+      coachTip:
+          'Serrez les fessiers et les abdominaux pour transformer votre corps en planche d\'acier.',
       hypertrophyRepRange: '12 - 25 reps (au poids du corps)',
       strengthRepRange: 'Lest\u00e9 8 - 12 reps',
       tempo: '2-0-1-0',
@@ -499,12 +578,14 @@ class ExerciseGuidesData {
         'Contractez activement les abdominaux et les fessiers comme pour recevoir un coup.',
         'Maintenez la position sans bouger en respirant r\u00e9guli\u00e8rement.',
       ],
-      breathingInstructions: 'Respiration diaphragmatique r\u00e9guli\u00e8re et fluide sans rel\u00e2cher la sangle.',
+      breathingInstructions:
+          'Respiration diaphragmatique r\u00e9guli\u00e8re et fluide sans rel\u00e2cher la sangle.',
       commonMistakes: [
         'Hanches trop hautes ou au contraire dos qui creuse vers le sol.',
         'Bloquer sa respiration en apn\u00e9e.',
       ],
-      coachTip: 'Tirez vos coudes vers vos pieds sans bouger pour multiplier par trois la tension sur vos abdominaux.',
+      coachTip:
+          'Tirez vos coudes vers vos pieds sans bouger pour multiplier par trois la tension sur vos abdominaux.',
       hypertrophyRepRange: '3 s\u00e9ries de 45 \u00e0 90 secondes',
       strengthRepRange: 'Lest\u00e9 3 s\u00e9ries de 30 \u00e0 45 s',
       tempo: 'Statique',
@@ -524,12 +605,14 @@ class ExerciseGuidesData {
         'Marquez 1 seconde de contraction en haut.',
         'Redescendez sans \u00e0-coup sans vous servir de l\'\u00e9lan de balancement.',
       ],
-      breathingInstructions: 'Expirez en enroulant le bassin vers le haut ; inspirez \u00e0 la redescente contr\u00f4l\u00e9e.',
+      breathingInstructions:
+          'Expirez en enroulant le bassin vers le haut ; inspirez \u00e0 la redescente contr\u00f4l\u00e9e.',
       commonMistakes: [
         'Se balancer d\'avant en arri\u00e8re pour utiliser l\'inertie.',
         'Lever les jambes uniquement avec les fl\u00e9chisseurs sans enrouler le bassin.',
       ],
-      coachTip: 'Ce n\'est pas lever les pieds qui muscle les abdos, c\'est amener le bassin vers votre nombril.',
+      coachTip:
+          'Ce n\'est pas lever les pieds qui muscle les abdos, c\'est amener le bassin vers votre nombril.',
       hypertrophyRepRange: '10 - 15 reps',
       strengthRepRange: '12 - 20 reps',
       tempo: '2-1-1-0',
@@ -544,7 +627,11 @@ class ExerciseGuidesData {
       slug: 'bench_press',
       title: 'Barbell Bench Press',
       primaryMuscles: ['Pectoralis Major (Mid & Lower)'],
-      secondaryMuscles: ['Triceps Brachii', 'Anterior Deltoid', 'Serratus Anterior'],
+      secondaryMuscles: [
+        'Triceps Brachii',
+        'Anterior Deltoid',
+        'Serratus Anterior',
+      ],
       setupInstructions: [
         'Lie on the bench with eyes directly under the racked barbell.',
         'Plant feet firmly flat on the floor to engage leg drive.',
@@ -557,13 +644,15 @@ class ExerciseGuidesData {
         'Tuck elbows at a 45\u00b0 to 70\u00b0 angle relative to your torso (avoid 90\u00b0 flaring).',
         'Touch the chest lightly, then press forcefully back up and slightly back over the shoulders.',
       ],
-      breathingInstructions: 'Deep belly breath and Valsalva brace before descent; exhale as you pass the sticking point near lockout.',
+      breathingInstructions:
+          'Deep belly breath and Valsalva brace before descent; exhale as you pass the sticking point near lockout.',
       commonMistakes: [
         'Flaring elbows out to 90 degrees, stressing rotator cuffs.',
         'Bouncing the bar violently off the sternum.',
         'Lifting hips and glutes off the bench during the push.',
       ],
-      coachTip: 'Try to "bend the bar" in half with your hands to ignite lat stability and lock the elbows in place.',
+      coachTip:
+          'Try to "bend the bar" in half with your hands to ignite lat stability and lock the elbows in place.',
       hypertrophyRepRange: '8 - 12 reps (RPE 7-8)',
       strengthRepRange: '3 - 6 reps (RPE 8-9)',
       tempo: '3-1-1-0',
@@ -585,13 +674,15 @@ class ExerciseGuidesData {
         'Descend until the hip crease breaks parallel with the top of the knees.',
         'Drive through mid-foot with a proud chest to return to standing.',
       ],
-      breathingInstructions: 'Inhale deep into your gut and brace before descending; hold pressure through the hole and exhale past the sticking point.',
+      breathingInstructions:
+          'Inhale deep into your gut and brace before descending; hold pressure through the hole and exhale past the sticking point.',
       commonMistakes: [
         'Knees caving inward (dynamic valgus collapse).',
         'Heels lifting off the floor due to tight ankles.',
         'Rounding lower back into a "butt wink" at the bottom.',
       ],
-      coachTip: 'Screw your feet outward into the floor to open up the hips and generate instant torque.',
+      coachTip:
+          'Screw your feet outward into the floor to open up the hips and generate instant torque.',
       hypertrophyRepRange: '6 - 10 reps (RPE 7-8)',
       strengthRepRange: '3 - 5 reps (RPE 8-9)',
       tempo: '3-0-1-0',
@@ -599,7 +690,10 @@ class ExerciseGuidesData {
     'deadlift': const ExerciseGuide(
       slug: 'deadlift',
       title: 'Barbell Deadlift (Conventional)',
-      primaryMuscles: ['Posterior Chain (Glutes, Hamstrings)', 'Erector Spinae'],
+      primaryMuscles: [
+        'Posterior Chain (Glutes, Hamstrings)',
+        'Erector Spinae',
+      ],
       secondaryMuscles: ['Lats', 'Trapezius', 'Forearms / Grip', 'Quadriceps'],
       setupInstructions: [
         'Stand with feet hip-width apart, bar cutting directly over mid-foot (1 inch from shins).',
@@ -613,13 +707,15 @@ class ExerciseGuidesData {
         'Once past knees, forcefully snap your hips forward to lock out tall.',
         'Stand proud without hyperextending your lumbar spine at the top.',
       ],
-      breathingInstructions: 'Take maximum intra-abdominal air at the floor setup; maintain brace until standing tall, then breathe out.',
+      breathingInstructions:
+          'Take maximum intra-abdominal air at the floor setup; maintain brace until standing tall, then breathe out.',
       commonMistakes: [
         'Rounding the lower back off the floor.',
         'Letting the bar drift forward away from the body.',
         'Jerking the bar violently without taking the slack out first.',
       ],
-      coachTip: 'Don\'t think about pulling the bar up; think about driving the floor into the basement.',
+      coachTip:
+          'Don\'t think about pulling the bar up; think about driving the floor into the basement.',
       hypertrophyRepRange: '5 - 8 reps (RPE 7-8)',
       strengthRepRange: '1 - 5 reps (RPE 8-9)',
       tempo: '2-1-1-0',
@@ -639,12 +735,14 @@ class ExerciseGuidesData {
         'Once bar passes forehead, push head back forward through the arm "window".',
         'Lock elbows out overhead with slight trap shrug for joint stability.',
       ],
-      breathingInstructions: 'Inhale at the collarbones, hold brace during press, exhale at top lockout.',
+      breathingInstructions:
+          'Inhale at the collarbones, hold brace during press, exhale at top lockout.',
       commonMistakes: [
         'Excessively leaning back and hyperextending lumbar spine.',
         'Bending knees to initiate momentum (turning it into a push press).',
       ],
-      coachTip: 'Squeeze your glutes like you\'re holding a coin between them; it creates an unshakeable platform.',
+      coachTip:
+          'Squeeze your glutes like you\'re holding a coin between them; it creates an unshakeable platform.',
       hypertrophyRepRange: '8 - 12 reps (RPE 7-8)',
       strengthRepRange: '3 - 6 reps (RPE 8-9)',
       tempo: '2-0-1-0',
@@ -664,12 +762,14 @@ class ExerciseGuidesData {
         'Squeeze shoulder blades together forcefully at the peak.',
         'Lower with control for a full stretch without losing torso posture.',
       ],
-      breathingInstructions: 'Inhale on the stretch; exhale as you pull into your ribcage.',
+      breathingInstructions:
+          'Inhale on the stretch; exhale as you pull into your ribcage.',
       commonMistakes: [
         'Using jerky body swing to heave the weight up.',
         'Pulling to neck instead of abdomen.',
       ],
-      coachTip: 'Treat your hands like hooks; initiate and drive solely with your elbows.',
+      coachTip:
+          'Treat your hands like hooks; initiate and drive solely with your elbows.',
       hypertrophyRepRange: '8 - 12 reps',
       strengthRepRange: '5 - 8 reps',
       tempo: '2-1-1-0',
@@ -689,7 +789,8 @@ class ExerciseGuidesData {
         'Pull until chin completely clears the bar.',
         'Lower with eccentric control back to dead hang.',
       ],
-      breathingInstructions: 'Inhale at bottom stretch; exhale forcefully on the way up.',
+      breathingInstructions:
+          'Inhale at bottom stretch; exhale forcefully on the way up.',
       commonMistakes: [
         'Kicking legs or kipping without strict control.',
         'Doing half reps without full elbow extension.',
@@ -719,7 +820,8 @@ class ExerciseGuidesData {
         'Setting bench too steep (> 45\u00b0), shifting work to shoulders.',
         'Bouncing weights at bottom.',
       ],
-      coachTip: 'Keep dumbbells 2-3 inches apart at the top to keep constant tension on the chest fibers.',
+      coachTip:
+          'Keep dumbbells 2-3 inches apart at the top to keep constant tension on the chest fibers.',
       hypertrophyRepRange: '8 - 12 reps',
       strengthRepRange: '6 - 8 reps',
       tempo: '3-1-1-0',
@@ -738,12 +840,14 @@ class ExerciseGuidesData {
         'Lead with the elbows rather than the wrists.',
         'Stop at shoulder height and control the 3-second negative.',
       ],
-      breathingInstructions: 'Inhale before lift; exhale raising up, inhale lowering.',
+      breathingInstructions:
+          'Inhale before lift; exhale raising up, inhale lowering.',
       commonMistakes: [
         'Swinging torso and bouncing knees to generate momentum.',
         'Lifting wrists higher than elbows.',
       ],
-      coachTip: 'Pour out two pitchers of water at the top to maximally target the side delt.',
+      coachTip:
+          'Pour out two pitchers of water at the top to maximally target the side delt.',
       hypertrophyRepRange: '12 - 18 reps',
       strengthRepRange: '10 - 12 reps',
       tempo: '2-0-1-2',
@@ -763,12 +867,14 @@ class ExerciseGuidesData {
         'Descend until hamstrings are fully loaded (usually mid-shin).',
         'Drive hips forward to return tall.',
       ],
-      breathingInstructions: 'Inhale and brace before hip hinge; exhale snapping hips forward.',
+      breathingInstructions:
+          'Inhale and brace before hip hinge; exhale snapping hips forward.',
       commonMistakes: [
         'Bending knees into a squat.',
         'Letting bar drift away from shins.',
       ],
-      coachTip: 'It\'s not a forward bend; it\'s reaching your hips as far backward as humanly possible.',
+      coachTip:
+          'It\'s not a forward bend; it\'s reaching your hips as far backward as humanly possible.',
       hypertrophyRepRange: '8 - 12 reps',
       strengthRepRange: '6 - 8 reps',
       tempo: '3-1-1-0',
@@ -791,7 +897,8 @@ class ExerciseGuidesData {
         'Allowing lower back to curl off pad.',
         'Hyper-extending and jamming knees at lockout.',
       ],
-      coachTip: 'Pull yourself down into the seat by grabbing the side handles tightly.',
+      coachTip:
+          'Pull yourself down into the seat by grabbing the side handles tightly.',
       hypertrophyRepRange: '10 - 15 reps',
       strengthRepRange: '6 - 10 reps',
       tempo: '3-0-1-0',
@@ -812,7 +919,8 @@ class ExerciseGuidesData {
       ],
       breathingInstructions: 'Inhale reaching up; exhale pulling down.',
       commonMistakes: ['Excessive swinging backwards.'],
-      coachTip: 'Think about pulling your elbows straight into your back pockets.',
+      coachTip:
+          'Think about pulling your elbows straight into your back pockets.',
       hypertrophyRepRange: '8 - 12 reps',
       strengthRepRange: '6 - 8 reps',
       tempo: '2-1-1-0',
@@ -833,7 +941,8 @@ class ExerciseGuidesData {
       ],
       breathingInstructions: 'Inhale lowering; exhale curling up.',
       commonMistakes: ['Swinging torso or thrusting hips.'],
-      coachTip: 'Keep your elbows glued to your ribs throughout the entire set.',
+      coachTip:
+          'Keep your elbows glued to your ribs throughout the entire set.',
       hypertrophyRepRange: '8 - 12 reps',
       strengthRepRange: '6 - 8 reps',
       tempo: '2-1-1-0',
@@ -853,7 +962,8 @@ class ExerciseGuidesData {
       ],
       breathingInstructions: 'Inhale on the way up; exhale pushing down.',
       commonMistakes: ['Allowing elbows to flare and drift forward.'],
-      coachTip: 'Imagine your elbows are pinned on hinges attached to your sides.',
+      coachTip:
+          'Imagine your elbows are pinned on hinges attached to your sides.',
       hypertrophyRepRange: '10 - 15 reps',
       strengthRepRange: '8 - 10 reps',
       tempo: '2-1-1-0',
@@ -863,9 +973,7 @@ class ExerciseGuidesData {
       title: 'Push-Up',
       primaryMuscles: ['Pectorals', 'Triceps'],
       secondaryMuscles: ['Anterior Deltoids', 'Core'],
-      setupInstructions: [
-        'Hands just outside shoulders, rigid plank posture.',
-      ],
+      setupInstructions: ['Hands just outside shoulders, rigid plank posture.'],
       executionInstructions: [
         'Lower chest to graze floor with elbows at 45 degrees.',
         'Push floor away back to lockout.',
@@ -889,9 +997,11 @@ class ExerciseGuidesData {
         'Tuck pelvis into posterior tilt to flatten lower back.',
         'Hold with max tension while breathing steadily.',
       ],
-      breathingInstructions: 'Steady diaphragmatic breathing without dropping tension.',
+      breathingInstructions:
+          'Steady diaphragmatic breathing without dropping tension.',
       commonMistakes: ['Hips sagging or hiking too high.'],
-      coachTip: 'Actively pull your elbows toward your toes to spike core activation.',
+      coachTip:
+          'Actively pull your elbows toward your toes to spike core activation.',
       hypertrophyRepRange: '3 sets of 45-90 seconds',
       strengthRepRange: 'Weighted 3 sets of 30-45s',
       tempo: 'Static',
@@ -939,13 +1049,15 @@ class ExerciseGuidesData {
         'حافظ على زاوية الكوعين بين 45 و 70 درجة (لا تفتح الكوعين بزاوية 90 درجة).',
         'المس الصدر بخفة ثم ادفع بقوة للأعلى وللخلف قليلاً فوق الكتفين.',
       ],
-      breathingInstructions: 'خذ نفساً عميقاً في البطن والصدر واحبسه قبل النزول، وازفر بعد تجاوز أصعب نقطة عند الصعود.',
+      breathingInstructions:
+          'خذ نفساً عميقاً في البطن والصدر واحبسه قبل النزول، وازفر بعد تجاوز أصعب نقطة عند الصعود.',
       commonMistakes: [
         'فتح الكوعين بزاوية 90 درجة مما يسبب ضغطاً خطيراً على مفصل الكتف.',
         'ارتطام البار بالصدر بقوة لارتداده بالسرعة.',
         'رفع المؤخرة عن المقعد أثناء الدفع بالأوزان الثقيلة.',
       ],
-      coachTip: 'تخيل أنك تحاول ثني البار إلى نصفين بيديك لتفعيل الظهر وتثبيت الكوعين في الزاوية المثالية.',
+      coachTip:
+          'تخيل أنك تحاول ثني البار إلى نصفين بيديك لتفعيل الظهر وتثبيت الكوعين في الزاوية المثالية.',
       hypertrophyRepRange: '8 - 12 تكرار (مستوى الجهد 7-8)',
       strengthRepRange: '3 - 6 تكرارات (مستوى الجهد 8-9)',
       tempo: '3-1-1-0',
@@ -953,7 +1065,10 @@ class ExerciseGuidesData {
     'squat': const ExerciseGuide(
       slug: 'squat',
       title: 'سكوات خلفي بالبار (Back Squat)',
-      primaryMuscles: ['عضلات الفخذ الأمامية (الكوادس)', 'عضلات المؤخرة (الجلوتس)'],
+      primaryMuscles: [
+        'عضلات الفخذ الأمامية (الكوادس)',
+        'عضلات المؤخرة (الجلوتس)',
+      ],
       secondaryMuscles: ['الفخذ الخلفي', 'عضلات الجذع والبطن', 'أسفل الظهر'],
       setupInstructions: [
         'ضع البار على عضلات الترابيز العلوية أو أخفض قليلاً على الكتف الخلفي.',
@@ -967,13 +1082,15 @@ class ExerciseGuidesData {
         'انزل حتى ينكسر مستوى الورك تحت مستوى أعلى الركبة (العمق الصحيح).',
         'ادفع الأرض بقوة من منتصف القدم مع إبقاء الصدر مرفوعاً للأعلى.',
       ],
-      breathingInstructions: 'تنفس بعمق واشد عضلات بطنك 360 درجة قبل الهبوط، وازفر بعد الصعود وتجاوز منتصف الحركة.',
+      breathingInstructions:
+          'تنفس بعمق واشد عضلات بطنك 360 درجة قبل الهبوط، وازفر بعد الصعود وتجاوز منتصف الحركة.',
       commonMistakes: [
         'دخول الركبتين للداخل أثناء الدفع.',
         'ارتفاع الكعبين عن الأرض بسبب قلة مرونة الكاحل.',
         'انحناء الظهر الشديد للأمام وفقدان الاستقامة.',
       ],
-      coachTip: 'تخيل أنك تدير قدميك للخارج لفتح الأرض بين قدميك لتوليد قوة ثبات هائلة في الحوض.',
+      coachTip:
+          'تخيل أنك تدير قدميك للخارج لفتح الأرض بين قدميك لتوليد قوة ثبات هائلة في الحوض.',
       hypertrophyRepRange: '6 - 10 تكرارات',
       strengthRepRange: '3 - 5 تكرارات',
       tempo: '3-0-1-0',
@@ -981,8 +1098,16 @@ class ExerciseGuidesData {
     'deadlift': const ExerciseGuide(
       slug: 'deadlift',
       title: 'ديدليفت بالبار (النمط الكلاسيكي)',
-      primaryMuscles: ['السلسلة الخلفية (الفخذ الخلفي، الجلوتس)', 'عضلات الظهر الممتدة'],
-      secondaryMuscles: ['المجنص (اللاتس)', 'الترابيز', 'القبضة والساعد', 'الكوادس'],
+      primaryMuscles: [
+        'السلسلة الخلفية (الفخذ الخلفي، الجلوتس)',
+        'عضلات الظهر الممتدة',
+      ],
+      secondaryMuscles: [
+        'المجنص (اللاتس)',
+        'الترابيز',
+        'القبضة والساعد',
+        'الكوادس',
+      ],
       setupInstructions: [
         'قف بمسافة اتساع الحوض بين القدمين، بحيث يمر البار فوق منتصف مشط القدم.',
         'انحنِ من مفصل الحوض وأمسك البار من خارج مستوى الساقين مباشرة.',
@@ -995,13 +1120,15 @@ class ExerciseGuidesData {
         'بمجرد تجاوز الركبتين، ادفع الحوض للأمام بقوة للوصول للوقوف الكامل.',
         'قف باستقامة كاملة دون إمالة الظهر للخلف بشكل مفرط.',
       ],
-      breathingInstructions: 'احبس النفس والضغط البطني عند الانطلاق من الأرض، وازفر عند الوقوف الكامل.',
+      breathingInstructions:
+          'احبس النفس والضغط البطني عند الانطلاق من الأرض، وازفر عند الوقوف الكامل.',
       commonMistakes: [
         'تقوس أسفل الظهر عند الانطلاق من الأرض.',
         'ابتعاد البار عن الساقين مما يضاعف العبء على الفقرات القطنية.',
         'سحب البار بذراعين مثنيتين (خطر على أوتار البايسبس).',
       ],
-      coachTip: 'لا تفكر في سحب البار لأعلى، بل فكّر في دفع كوكب الأرض بعيداً عنك بقدميك.',
+      coachTip:
+          'لا تفكر في سحب البار لأعلى، بل فكّر في دفع كوكب الأرض بعيداً عنك بقدميك.',
       hypertrophyRepRange: '5 - 8 تكرارات',
       strengthRepRange: '1 - 5 تكرارات',
       tempo: '2-1-1-0',
@@ -1021,12 +1148,14 @@ class ExerciseGuidesData {
         'بمجرد تجاوز البار للجبهة، مرر الرأس للأمام بين الذراعين.',
         'اقفل الكوعين في الأعلى مع رفع خفيف للترابيز لتأمين المفصل.',
       ],
-      breathingInstructions: 'استنشق عند الصدر، احبس النفس أثناء الدفع، وازفر في القفل بالأعلى.',
+      breathingInstructions:
+          'استنشق عند الصدر، احبس النفس أثناء الدفع، وازفر في القفل بالأعلى.',
       commonMistakes: [
         'تقوس مفرط في أسفل الظهر لتعويض نقص مرونة الكتفين.',
         'استخدام دفع الركبتين لتحويله إلى Push Press بدلاً من تمرين عسكري نقي.',
       ],
-      coachTip: 'شد عضلات المؤخرة بأقصى قوة أثناء الدفع لمنع الظهر من الانحناء نهائياً.',
+      coachTip:
+          'شد عضلات المؤخرة بأقصى قوة أثناء الدفع لمنع الظهر من الانحناء نهائياً.',
       hypertrophyRepRange: '8 - 12 تكرار',
       strengthRepRange: '3 - 6 تكرارات',
       tempo: '2-0-1-0',
@@ -1045,12 +1174,14 @@ class ExerciseGuidesData {
         'المس السرة أو أسفل الصدر بالبار مع عصر عضلات الظهر بقوة لمدة ثانية.',
         'انزل بالبار ببطء وتحكم حتى تستطيل ألياف الظهر تماماً.',
       ],
-      breathingInstructions: 'استنشق في وضعية التمدد بالأسفل، وازفر أثناء السحب وعصر الظهر.',
+      breathingInstructions:
+          'استنشق في وضعية التمدد بالأسفل، وازفر أثناء السحب وعصر الظهر.',
       commonMistakes: [
         'الاهتزاز بالجذع للأعلى لخداع الوزن بالدفع الحركي.',
         'السحب باتجاه الرقبة بدلاً من الحوض والبطن.',
       ],
-      coachTip: 'تخيل يديك مجرد خطافين، وأن القوة والسحب ينبعان بالكامل من كوعيك.',
+      coachTip:
+          'تخيل يديك مجرد خطافين، وأن القوة والسحب ينبعان بالكامل من كوعيك.',
       hypertrophyRepRange: '8 - 12 تكرار',
       strengthRepRange: '5 - 8 تكرارات',
       tempo: '2-1-1-0',
@@ -1069,7 +1200,8 @@ class ExerciseGuidesData {
         'استمر حتى يتجاوز ذقنك مستوى العارضة بالكامل.',
         'انزل ببطء وتحكم للتعلق الكامل من جديد.',
       ],
-      breathingInstructions: 'استنشق بالأسفل، وازفر بقوة أثناء سحب جسمك للأعلى.',
+      breathingInstructions:
+          'استنشق بالأسفل، وازفر بقوة أثناء سحب جسمك للأعلى.',
       commonMistakes: [
         'التأرجح بالقدمين واستخدام الاندفاع (الكيپينغ).',
         'عدم النزول للامتداد الكامل للكوعين.',
@@ -1097,7 +1229,8 @@ class ExerciseGuidesData {
         'رفع زاوية المقعد لأكثر من 45 درجة مما يركز التمرين على الكتف.',
         'صدم الدامبلز ببعضهما في الأعلى مما يلغي الشد العضلي.',
       ],
-      coachTip: 'أبقِ مسافة 5 سم بين الدامبلز في الأعلى للحفاظ على الشد المستمر.',
+      coachTip:
+          'أبقِ مسافة 5 سم بين الدامبلز في الأعلى للحفاظ على الشد المستمر.',
       hypertrophyRepRange: '8 - 12 تكرار',
       strengthRepRange: '6 - 8 تكرارات',
       tempo: '3-1-1-0',
@@ -1140,9 +1273,14 @@ class ExerciseGuidesData {
         'دع البار ينزلق ملاصقاً تماماً للفخذين والساقين.',
         'انزل حتى تشعر بتمدد قوي في الفخذ الخلفي ثم ارجع بدفع الحوض للأمام.',
       ],
-      breathingInstructions: 'شهيق عند دفع الحوض للخلف، وزفير عند العودة للأمام.',
-      commonMistakes: ['ثني الركبتين وتحويله إلى سكوات.', 'ابتعاد البار عن الساقين.'],
-      coachTip: 'الحركة ليست انحناء للأسفل، بل هي دفع المؤخرة إلى أقصى حد للخلف.',
+      breathingInstructions:
+          'شهيق عند دفع الحوض للخلف، وزفير عند العودة للأمام.',
+      commonMistakes: [
+        'ثني الركبتين وتحويله إلى سكوات.',
+        'ابتعاد البار عن الساقين.',
+      ],
+      coachTip:
+          'الحركة ليست انحناء للأسفل، بل هي دفع المؤخرة إلى أقصى حد للخلف.',
       hypertrophyRepRange: '8 - 12 تكرار',
       strengthRepRange: '6 - 8 تكرارات',
       tempo: '3-1-1-0',
@@ -1161,7 +1299,10 @@ class ExerciseGuidesData {
         'ادفع بقوة بكامل القدم دون قفل الركبتين بقسوة.',
       ],
       breathingInstructions: 'شهيق عند نزول اللوح وزفير مع الدفع.',
-      commonMistakes: ['قفل الركبتين بحركة مفرطة وخطيرة بالأعلى.', 'ارتفاع أسفل الظهر عن المسند.'],
+      commonMistakes: [
+        'قفل الركبتين بحركة مفرطة وخطيرة بالأعلى.',
+        'ارتفاع أسفل الظهر عن المسند.',
+      ],
       coachTip: 'أمسك المقابض الجانبية بقوة لشد جسمك وتثبيته في المقعد.',
       hypertrophyRepRange: '10 - 15 تكرار',
       strengthRepRange: '6 - 10 تكرارات',
@@ -1269,9 +1410,7 @@ class ExerciseGuidesData {
       title: 'رفع الأرجل معلقاً',
       primaryMuscles: ['أسفل البطن'],
       secondaryMuscles: ['عضلات الحوض', 'القبضة'],
-      setupInstructions: [
-        'تعلق على العارضة بذراعين ممدودتين وثبّت التأرجح.',
-      ],
+      setupInstructions: ['تعلق على العارضة بذراعين ممدودتين وثبّت التأرجح.'],
       executionInstructions: [
         'ابدأ بلف الحوض للأعلى وللأمام لرفع الساقين.',
         'ارفع حتى مستوى أفقي على الأقل واثبت ثانية.',
@@ -1279,7 +1418,8 @@ class ExerciseGuidesData {
       ],
       breathingInstructions: 'زفير عند الرفع وشهيق عند النزول.',
       commonMistakes: ['التأرجح بالجسد للأمام والخلف.'],
-      coachTip: 'السر في التمرين ليس مجرد رفع القدمين، بل تدوير الحوض للأعلى نحو سرتك.',
+      coachTip:
+          'السر في التمرين ليس مجرد رفع القدمين، بل تدوير الحوض للأعلى نحو سرتك.',
       hypertrophyRepRange: '10 - 15 تكرار',
       strengthRepRange: '12 - 20 تكرار',
       tempo: '2-1-1-0',

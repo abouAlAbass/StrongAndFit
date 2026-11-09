@@ -30,4 +30,3 @@ class ResponsiveContentWrapper extends StatelessWidget {
     return content;
   }
 }
-

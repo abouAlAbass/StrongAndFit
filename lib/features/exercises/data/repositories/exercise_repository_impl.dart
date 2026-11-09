@@ -40,7 +40,8 @@ class ExerciseRepositoryImpl implements ExerciseRepository {
     required EquipmentType equipment,
   }) {
     // Generate a sanitized slug for custom exercise identifier uniqueness
-    final sanitizedSlug = 'custom_${DateTime.now().millisecondsSinceEpoch}_${name.toLowerCase().replaceAll(RegExp(r'\s+'), '_')}';
+    final sanitizedSlug =
+        'custom_${DateTime.now().millisecondsSinceEpoch}_${name.toLowerCase().replaceAll(RegExp(r'\s+'), '_')}';
 
     return _exerciseDao.insertCustomExercise(
       ExercisesCompanion.insert(
@@ -59,6 +60,10 @@ class ExerciseRepositoryImpl implements ExerciseRepository {
     String languageCode, {
     String? displayName,
   }) {
-    return ExerciseGuidesData.getGuide(slug, languageCode, displayName: displayName);
+    return ExerciseGuidesData.getGuide(
+      slug,
+      languageCode,
+      displayName: displayName,
+    );
   }
 }

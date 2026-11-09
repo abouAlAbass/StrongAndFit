@@ -46,7 +46,9 @@ void main() async {
   final workoutRepository = WorkoutRepositoryImpl(database.workoutDao);
   final templateRepository = TemplateRepositoryImpl(database.templateDao);
   final profileRepository = ProfileRepositoryImpl(database.profileDao);
-  final restSettingsRepository = RestSettingsRepositoryImpl(database.settingsDao);
+  final restSettingsRepository = RestSettingsRepositoryImpl(
+    database.settingsDao,
+  );
   final exportService = WorkoutExportService(database);
 
   // OS-level alert when rest ends (works with the screen locked).
@@ -123,12 +125,11 @@ class _StrongAppState extends State<StrongApp> {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<ThemeCubit>(
-            create: (_) => ThemeCubit(),
-          ),
+          BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
           BlocProvider<WorkoutSessionBloc>(
-            create: (ctx) => WorkoutSessionBloc(widget.workoutRepository)
-              ..add(const ResumeActiveSessionRequested()),
+            create: (ctx) =>
+                WorkoutSessionBloc(widget.workoutRepository)
+                  ..add(const ResumeActiveSessionRequested()),
           ),
           BlocProvider<RoutinesCubit>(
             create: (ctx) => RoutinesCubit(widget.templateRepository),

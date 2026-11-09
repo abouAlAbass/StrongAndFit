@@ -21,10 +21,7 @@ class TemplateRepositoryImpl implements TemplateRepository {
     required List<({int exerciseId, int targetSets})> exercises,
   }) async {
     final templateId = await _templateDao.createTemplate(
-      TemplatesCompanion.insert(
-        name: name,
-        notes: Value(notes),
-      ),
+      TemplatesCompanion.insert(name: name, notes: Value(notes)),
     );
 
     for (var i = 0; i < exercises.length; i++) {

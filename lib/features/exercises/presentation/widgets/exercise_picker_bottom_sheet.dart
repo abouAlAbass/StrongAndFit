@@ -36,7 +36,9 @@ class ExercisePickerBottomSheet extends StatelessWidget {
       ),
       builder: (_) => BlocProvider(
         create: (_) => ExerciseListCubit(exerciseRepo),
-        child: ExercisePickerBottomSheet(onExerciseSelected: onExerciseSelected),
+        child: ExercisePickerBottomSheet(
+          onExerciseSelected: onExerciseSelected,
+        ),
       ),
     );
   }
@@ -81,12 +83,17 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                   children: [
                     IconButton(
                       icon: const Icon(Icons.close_rounded),
-                      tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+                      tooltip: MaterialLocalizations.of(
+                        context,
+                      ).closeButtonTooltip,
                       onPressed: () => Navigator.of(context).pop(),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: Text(l10n.exercises, style: AppTypography.ofTitleLarge(context)),
+                      child: Text(
+                        l10n.exercises,
+                        style: AppTypography.ofTitleLarge(context),
+                      ),
                     ),
                     TextButton.icon(
                       icon: const Icon(Icons.add, size: 18),
@@ -128,7 +135,8 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                         horizontal: 16,
                       ),
                       itemCount: MuscleGroup.values.length,
-                      separatorBuilder: (context, index) => const SizedBox(width: 8),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 8),
                       itemBuilder: (context, index) {
                         final group = MuscleGroup.values[index];
                         final isSelected = state.selectedMuscleGroup == group;
@@ -137,9 +145,9 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                           label: Text(group.localizedName(context)),
                           selected: isSelected,
                           onSelected: (_) {
-                            context
-                                .read<ExerciseListCubit>()
-                                .selectMuscleGroup(group);
+                            context.read<ExerciseListCubit>().selectMuscleGroup(
+                              group,
+                            );
                           },
                           backgroundColor: AppColors.ofSurface(context),
                           selectedColor: AppColors.ofPrimaryContainer(context),
@@ -175,7 +183,9 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                     final query = state.searchQuery.trim().toLowerCase();
                     final filtered = state.exercises.where((e) {
                       if (query.isEmpty) return true;
-                      final localizedName = e.localizedName(context).toLowerCase();
+                      final localizedName = e
+                          .localizedName(context)
+                          .toLowerCase();
                       final slug = e.slug.toLowerCase();
                       final customName = (e.customName ?? '').toLowerCase();
                       return localizedName.contains(query) ||
@@ -242,7 +252,10 @@ class ExercisePickerBottomSheet extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
-            title: Text(l10n.customExercise, style: AppTypography.ofTitleLarge(dialogCtx)),
+            title: Text(
+              l10n.customExercise,
+              style: AppTypography.ofTitleLarge(dialogCtx),
+            ),
             content: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -250,13 +263,14 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                 children: [
                   TextField(
                     controller: nameController,
-                    decoration: InputDecoration(
-                      hintText: l10n.customExercise,
-                    ),
+                    decoration: InputDecoration(hintText: l10n.customExercise),
                     autofocus: true,
                   ),
                   const SizedBox(height: 16),
-                  Text(l10n.muscleGroupChest, style: AppTypography.ofCaption(dialogCtx)),
+                  Text(
+                    l10n.muscleGroupChest,
+                    style: AppTypography.ofCaption(dialogCtx),
+                  ),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<MuscleGroup>(
                     initialValue: selectedGroup,
@@ -275,7 +289,10 @@ class ExercisePickerBottomSheet extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 16),
-                  Text(l10n.equipmentBarbell, style: AppTypography.ofCaption(dialogCtx)),
+                  Text(
+                    l10n.equipmentBarbell,
+                    style: AppTypography.ofCaption(dialogCtx),
+                  ),
                   const SizedBox(height: 6),
                   DropdownButtonFormField<EquipmentType>(
                     initialValue: selectedEquipment,

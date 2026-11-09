@@ -43,7 +43,10 @@ class ExercisesScreen extends StatelessWidget {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: l10n.searchExercises,
-                  prefixIcon: Icon(Icons.search, color: AppColors.ofTextTertiary(context)),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: AppColors.ofTextTertiary(context),
+                  ),
                 ),
                 onChanged: (val) {
                   context.read<ExerciseListCubit>().updateSearchQuery(val);
@@ -55,11 +58,14 @@ class ExercisesScreen extends StatelessWidget {
             SizedBox(
               height: 38,
               child: BlocBuilder<ExerciseListCubit, ExerciseListState>(
-                buildWhen: (p, c) => p.selectedMuscleGroup != c.selectedMuscleGroup,
+                buildWhen: (p, c) =>
+                    p.selectedMuscleGroup != c.selectedMuscleGroup,
                 builder: (context, state) {
                   return ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 16),
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 16,
+                    ),
                     itemCount: MuscleGroup.values.length,
                     separatorBuilder: (_, _) => const SizedBox(width: 8),
                     itemBuilder: (context, index) {
@@ -70,17 +76,23 @@ class ExercisesScreen extends StatelessWidget {
                         label: Text(group.localizedName(context)),
                         selected: isSelected,
                         onSelected: (_) {
-                          context.read<ExerciseListCubit>().selectMuscleGroup(group);
+                          context.read<ExerciseListCubit>().selectMuscleGroup(
+                            group,
+                          );
                         },
                         backgroundColor: AppColors.ofSurface(context),
                         selectedColor: AppColors.ofPrimaryContainer(context),
                         side: BorderSide(
-                          color: isSelected ? AppColors.primary : AppColors.ofBorder(context),
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.ofBorder(context),
                         ),
                         labelStyle: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
-                          color: isSelected ? AppColors.primary : AppColors.ofTextSecondary(context),
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.ofTextSecondary(context),
                         ),
                       );
                     },
@@ -101,7 +113,9 @@ class ExercisesScreen extends StatelessWidget {
                   final query = state.searchQuery.trim().toLowerCase();
                   final filtered = state.exercises.where((e) {
                     if (query.isEmpty) return true;
-                    final localizedName = e.localizedName(context).toLowerCase();
+                    final localizedName = e
+                        .localizedName(context)
+                        .toLowerCase();
                     final slug = e.slug.toLowerCase();
                     final customName = (e.customName ?? '').toLowerCase();
                     return localizedName.contains(query) ||
@@ -119,7 +133,10 @@ class ExercisesScreen extends StatelessWidget {
                   }
 
                   return ListView.builder(
-                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     itemCount: filtered.length,
                     itemBuilder: (context, index) {
                       final exercise = filtered[index];

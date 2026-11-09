@@ -135,7 +135,9 @@ class WorkoutRepositoryImpl implements WorkoutRepository {
   }
 
   @override
-  Future<List<ExerciseProgressionPoint>> fetchExerciseProgressionBySlug(String slug) {
+  Future<List<ExerciseProgressionPoint>> fetchExerciseProgressionBySlug(
+    String slug,
+  ) {
     return _workoutDao.fetchExerciseProgressionBySlug(slug);
   }
 }

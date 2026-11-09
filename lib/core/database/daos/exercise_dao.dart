@@ -7,14 +7,15 @@ part 'exercise_dao.g.dart';
 
 /// Data Access Object for querying and mutating exercise records.
 @DriftAccessor(tables: [Exercises])
-class ExerciseDao extends DatabaseAccessor<AppDatabase> with _$ExerciseDaoMixin {
+class ExerciseDao extends DatabaseAccessor<AppDatabase>
+    with _$ExerciseDaoMixin {
   ExerciseDao(super.db);
 
   /// Reactive stream of all exercises sorted alphabetically.
   Stream<List<Exercise>> watchAllExercises() {
-    return (select(exercises)
-          ..orderBy([(t) => OrderingTerm.asc(t.slug)]))
-        .watch();
+    return (select(
+      exercises,
+    )..orderBy([(t) => OrderingTerm.asc(t.slug)])).watch();
   }
 
   /// Reactive stream of exercises filtered by target muscle group.
@@ -29,7 +30,11 @@ class ExerciseDao extends DatabaseAccessor<AppDatabase> with _$ExerciseDaoMixin 
   Future<List<Exercise>> searchExercises(String query) {
     final pattern = '%${query.toLowerCase()}%';
     return (select(exercises)
-          ..where((t) => t.slug.lower().like(pattern) | t.customName.lower().like(pattern))
+          ..where(
+            (t) =>
+                t.slug.lower().like(pattern) |
+                t.customName.lower().like(pattern),
+          )
           ..orderBy([(t) => OrderingTerm.asc(t.slug)]))
         .get();
   }
@@ -41,7 +46,9 @@ class ExerciseDao extends DatabaseAccessor<AppDatabase> with _$ExerciseDaoMixin 
 
   /// Fetch a single exercise by unique slug identifier.
   Future<Exercise?> getExerciseBySlug(String slug) {
-    return (select(exercises)..where((t) => t.slug.equals(slug))).getSingleOrNull();
+    return (select(
+      exercises,
+    )..where((t) => t.slug.equals(slug))).getSingleOrNull();
   }
 
   /// Create a user-defined custom exercise.

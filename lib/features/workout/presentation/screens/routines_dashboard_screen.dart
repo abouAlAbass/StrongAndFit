@@ -29,7 +29,8 @@ class RoutinesDashboardScreen extends StatefulWidget {
   });
 
   @override
-  State<RoutinesDashboardScreen> createState() => _RoutinesDashboardScreenState();
+  State<RoutinesDashboardScreen> createState() =>
+      _RoutinesDashboardScreenState();
 }
 
 class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
@@ -110,12 +111,29 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
           PopupMenuButton<String>(
             icon: Icon(Icons.language, color: AppColors.ofTextPrimary(context)),
             color: AppColors.ofSurfaceElevated(context),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             onSelected: (code) => widget.onLocaleChanged(Locale(code)),
             itemBuilder: (ctx) => [
-              _buildPopupItem(context, 'en', 'English (EN)', widget.currentLocale.languageCode == 'en'),
-              _buildPopupItem(context, 'fr', 'Français (FR)', widget.currentLocale.languageCode == 'fr'),
-              _buildPopupItem(context, 'ar', 'العربية (AR - RTL)', widget.currentLocale.languageCode == 'ar'),
+              _buildPopupItem(
+                context,
+                'en',
+                'English (EN)',
+                widget.currentLocale.languageCode == 'en',
+              ),
+              _buildPopupItem(
+                context,
+                'fr',
+                'Français (FR)',
+                widget.currentLocale.languageCode == 'fr',
+              ),
+              _buildPopupItem(
+                context,
+                'ar',
+                'العربية (AR - RTL)',
+                widget.currentLocale.languageCode == 'ar',
+              ),
             ],
           ),
         ],
@@ -125,16 +143,19 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
         child: BlocBuilder<RoutinesCubit, RoutinesState>(
           builder: (context, routinesState) {
             TemplateDetail? userProgram;
-            if (_chosenProgramTemplateId != null && routinesState.templates.isNotEmpty) {
-              final matches = routinesState.templates
-                  .where((t) => t.template.id == _chosenProgramTemplateId);
+            if (_chosenProgramTemplateId != null &&
+                routinesState.templates.isNotEmpty) {
+              final matches = routinesState.templates.where(
+                (t) => t.template.id == _chosenProgramTemplateId,
+              );
               if (matches.isNotEmpty) {
                 userProgram = matches.first;
               }
             }
 
             final otherTemplates = routinesState.templates.where((t) {
-              return userProgram == null || t.template.id != userProgram.template.id;
+              return userProgram == null ||
+                  t.template.id != userProgram.template.id;
             }).toList();
 
             return ListView(
@@ -154,7 +175,10 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                           end: AlignmentDirectional.bottomEnd,
                         ),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppColors.primary, width: 1.2),
+                        border: Border.all(
+                          color: AppColors.primary,
+                          width: 1.2,
+                        ),
                       ),
                       child: Row(
                         children: [
@@ -165,7 +189,11 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                               color: AppColors.primary,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 26),
+                            child: const Icon(
+                              Icons.play_arrow_rounded,
+                              color: Colors.white,
+                              size: 26,
+                            ),
                           ),
                           const SizedBox(width: 14),
                           Expanded(
@@ -183,13 +211,17 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                                 const SizedBox(height: 2),
                                 Text(
                                   state.detail!.session.title,
-                                  style: AppTypography.titleMedium.copyWith(color: Colors.white),
+                                  style: AppTypography.titleMedium.copyWith(
+                                    color: Colors.white,
+                                  ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Text(
                                   state.formattedDuration,
-                                  style: AppTypography.caption.copyWith(color: Colors.white70),
+                                  style: AppTypography.caption.copyWith(
+                                    color: Colors.white70,
+                                  ),
                                 ),
                               ],
                             ),
@@ -198,7 +230,10 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
-                              padding: const EdgeInsetsDirectional.symmetric(horizontal: 14, vertical: 8),
+                              padding: const EdgeInsetsDirectional.symmetric(
+                                horizontal: 14,
+                                vertical: 8,
+                              ),
                             ),
                             onPressed: () {
                               _navigateToActiveWorkout(context);
@@ -215,7 +250,11 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                 if (userProgram != null) ...[
                   Row(
                     children: [
-                      const Icon(Icons.verified_rounded, color: AppColors.secondary, size: 20),
+                      const Icon(
+                        Icons.verified_rounded,
+                        color: AppColors.secondary,
+                        size: 20,
+                      ),
                       const SizedBox(width: 8),
                       Text(
                         l10n.yourProgram,
@@ -234,7 +273,10 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                   decoration: BoxDecoration(
                     color: AppColors.ofCard(context),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+                    border: Border.all(
+                      color: AppColors.ofBorder(context),
+                      width: 0.8,
+                    ),
                   ),
                   child: Row(
                     children: [
@@ -245,23 +287,35 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                           color: AppColors.ofPrimaryContainer(context),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Icon(Icons.add, color: AppColors.primary, size: 28),
+                        child: const Icon(
+                          Icons.add,
+                          color: AppColors.primary,
+                          size: 28,
+                        ),
                       ),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(l10n.customWorkoutTitle, style: AppTypography.ofTitleLarge(context)),
+                            Text(
+                              l10n.customWorkoutTitle,
+                              style: AppTypography.ofTitleLarge(context),
+                            ),
                             const SizedBox(height: 3),
-                            Text(l10n.customWorkoutSubtitle, style: AppTypography.ofCaption(context)),
+                            Text(
+                              l10n.customWorkoutSubtitle,
+                              style: AppTypography.ofCaption(context),
+                            ),
                           ],
                         ),
                       ),
                       const SizedBox(width: 8),
                       ElevatedButton(
                         onPressed: () {
-                          context.read<WorkoutSessionBloc>().add(const StartSessionRequested());
+                          context.read<WorkoutSessionBloc>().add(
+                            const StartSessionRequested(),
+                          );
                           _navigateToActiveWorkout(context);
                         },
                         child: Text(l10n.startWorkout),
@@ -284,7 +338,10 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                         end: AlignmentDirectional.bottomEnd,
                       ),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.primary.withAlpha(120), width: 1.2),
+                      border: Border.all(
+                        color: AppColors.primary.withAlpha(120),
+                        width: 1.2,
+                      ),
                     ),
                     child: Row(
                       children: [
@@ -295,7 +352,11 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                             color: AppColors.primary,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(Icons.auto_awesome, color: Colors.white, size: 24),
+                          child: const Icon(
+                            Icons.auto_awesome,
+                            color: Colors.white,
+                            size: 24,
+                          ),
                         ),
                         const SizedBox(width: 14),
                         Expanded(
@@ -304,12 +365,16 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                             children: [
                               Text(
                                 l10n.findIdealWorkoutTitle,
-                                style: AppTypography.titleMedium.copyWith(color: Colors.white),
+                                style: AppTypography.titleMedium.copyWith(
+                                  color: Colors.white,
+                                ),
                               ),
                               const SizedBox(height: 2),
                               Text(
                                 l10n.findIdealWorkoutSubtitle,
-                                style: AppTypography.caption.copyWith(color: Colors.white70),
+                                style: AppTypography.caption.copyWith(
+                                  color: Colors.white70,
+                                ),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -317,7 +382,11 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(Icons.chevron_right_rounded, color: Colors.white70, size: 24),
+                        const Icon(
+                          Icons.chevron_right_rounded,
+                          color: Colors.white70,
+                          size: 24,
+                        ),
                       ],
                     ),
                   ),
@@ -329,7 +398,10 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: Text(l10n.readyTemplates, style: AppTypography.ofTitleLarge(context)),
+                      child: Text(
+                        l10n.readyTemplates,
+                        style: AppTypography.ofTitleLarge(context),
+                      ),
                     ),
                     TextButton.icon(
                       icon: const Icon(Icons.add_rounded, size: 18),
@@ -341,7 +413,8 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                 const SizedBox(height: 12),
 
                 // 6. List of Routines / Templates
-                if (routinesState.status == RoutinesStatus.loading && routinesState.templates.isEmpty)
+                if (routinesState.status == RoutinesStatus.loading &&
+                    routinesState.templates.isEmpty)
                   const Center(
                     child: Padding(
                       padding: EdgeInsets.all(32.0),
@@ -413,7 +486,10 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
               const SizedBox(width: 8),
               if (isFeatured)
                 Container(
-                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsetsDirectional.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   margin: const EdgeInsetsDirectional.only(end: 6),
                   decoration: BoxDecoration(
                     color: AppColors.secondary.withAlpha(40),
@@ -430,7 +506,10 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                   ),
                 ),
               Container(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
+                padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 8,
+                  vertical: 3,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.ofSurfaceElevated(context),
                   borderRadius: BorderRadius.circular(6),
@@ -451,8 +530,14 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
           // Notes / Objective
           if (template.template.notes != null)
             Text(
-              _resolveTemplateDesc(template.template.name, template.template.notes!, l10n),
-              style: AppTypography.ofBodySecondary(context).copyWith(fontSize: 13),
+              _resolveTemplateDesc(
+                template.template.name,
+                template.template.notes!,
+                l10n,
+              ),
+              style: AppTypography.ofBodySecondary(
+                context,
+              ).copyWith(fontSize: 13),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -464,11 +549,17 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
             runSpacing: 6,
             children: template.exercises.take(5).map((item) {
               return Container(
-                padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsetsDirectional.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: AppColors.ofInputBackground(context),
                   borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: AppColors.ofBorder(context), width: 0.5),
+                  border: Border.all(
+                    color: AppColors.ofBorder(context),
+                    width: 0.5,
+                  ),
                 ),
                 child: Text(
                   '${item.exercise.localizedName(context)} (${item.templateExercise.targetSets}s)',
@@ -499,8 +590,8 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
               ),
               onPressed: () {
                 context.read<WorkoutSessionBloc>().add(
-                      StartSessionFromTemplateRequested(template),
-                    );
+                  StartSessionFromTemplateRequested(template),
+                );
                 _navigateToActiveWorkout(context);
               },
             ),
@@ -536,10 +627,13 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
             label,
             style: TextStyle(
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
-              color: isSelected ? AppColors.primary : AppColors.ofTextPrimary(context),
+              color: isSelected
+                  ? AppColors.primary
+                  : AppColors.ofTextPrimary(context),
             ),
           ),
-          if (isSelected) const Icon(Icons.check, size: 18, color: AppColors.primary),
+          if (isSelected)
+            const Icon(Icons.check, size: 18, color: AppColors.primary),
         ],
       ),
     );
@@ -554,7 +648,11 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
     return originalName;
   }
 
-  String _resolveTemplateDesc(String name, String fallback, AppLocalizations l10n) {
+  String _resolveTemplateDesc(
+    String name,
+    String fallback,
+    AppLocalizations l10n,
+  ) {
     if (name.contains('Full Body')) return l10n.templateFullBodyDesc;
     if (name.contains('Upper Body')) return l10n.templateUpperDesc;
     if (name.contains('Lower Body')) return l10n.templateLowerDesc;

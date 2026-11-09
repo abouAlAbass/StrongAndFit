@@ -18,19 +18,49 @@ class AppTheme {
       cardColor: AppColors.card,
       dividerColor: AppColors.divider,
       textTheme: const TextTheme(
-        displayLarge: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
-        displayMedium: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
-        displaySmall: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
-        headlineLarge: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w700),
-        headlineMedium: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
-        headlineSmall: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
-        titleLarge: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
-        titleMedium: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
-        titleSmall: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+        displayLarge: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+        displayMedium: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+        displaySmall: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+        headlineLarge: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+        headlineMedium: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        headlineSmall: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        titleLarge: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        titleMedium: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        titleSmall: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
         bodyLarge: TextStyle(color: AppColors.textPrimary),
         bodyMedium: TextStyle(color: AppColors.textPrimary),
         bodySmall: TextStyle(color: AppColors.textSecondary),
-        labelLarge: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+        labelLarge: TextStyle(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w600,
+        ),
         labelMedium: TextStyle(color: AppColors.textSecondary),
         labelSmall: TextStyle(color: AppColors.textTertiary),
       ),
@@ -100,10 +130,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -117,19 +144,13 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primary,
-          textStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
@@ -165,19 +186,49 @@ class AppTheme {
       cardColor: AppColors.lightCard,
       dividerColor: AppColors.lightDivider,
       textTheme: const TextTheme(
-        displayLarge: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w700),
-        displayMedium: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w700),
-        displaySmall: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w700),
-        headlineLarge: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w700),
-        headlineMedium: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w600),
-        headlineSmall: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w600),
-        titleLarge: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w600),
-        titleMedium: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w600),
-        titleSmall: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w600),
+        displayLarge: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+        displayMedium: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+        displaySmall: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+        headlineLarge: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+        headlineMedium: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        headlineSmall: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        titleLarge: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        titleMedium: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w600,
+        ),
+        titleSmall: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w600,
+        ),
         bodyLarge: TextStyle(color: AppColors.lightTextPrimary),
         bodyMedium: TextStyle(color: AppColors.lightTextPrimary),
         bodySmall: TextStyle(color: AppColors.lightTextSecondary),
-        labelLarge: TextStyle(color: AppColors.lightTextPrimary, fontWeight: FontWeight.w600),
+        labelLarge: TextStyle(
+          color: AppColors.lightTextPrimary,
+          fontWeight: FontWeight.w600,
+        ),
         labelMedium: TextStyle(color: AppColors.lightTextSecondary),
         labelSmall: TextStyle(color: AppColors.lightTextTertiary),
       ),
@@ -229,7 +280,10 @@ class AppTheme {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: AppColors.lightBorder, width: 0.8),
+          borderSide: const BorderSide(
+            color: AppColors.lightBorder,
+            width: 0.8,
+          ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -252,10 +306,7 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -269,19 +320,13 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
-          textStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColors.primary,
-          textStyle: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(

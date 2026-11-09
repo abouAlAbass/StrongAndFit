@@ -58,8 +58,7 @@ class WorkoutSessionState extends Equatable {
     return WorkoutSessionState(
       status: status ?? this.status,
       detail: detail ?? this.detail,
-      previousExerciseSets:
-          previousExerciseSets ?? this.previousExerciseSets,
+      previousExerciseSets: previousExerciseSets ?? this.previousExerciseSets,
       personalRecords: personalRecords ?? this.personalRecords,
       elapsedSeconds: elapsedSeconds ?? this.elapsedSeconds,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -68,11 +67,11 @@ class WorkoutSessionState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        detail,
-        previousExerciseSets,
-        personalRecords,
-        elapsedSeconds,
-        errorMessage,
-      ];
+    status,
+    detail,
+    previousExerciseSets,
+    personalRecords,
+    elapsedSeconds,
+    errorMessage,
+  ];
 }

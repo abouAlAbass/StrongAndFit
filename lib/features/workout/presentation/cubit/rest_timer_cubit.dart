@@ -31,10 +31,10 @@ class RestTimerCubit extends Cubit<RestTimerState> {
     RestSettingsRepository? settings,
     RestNotificationService notifications = const NoopRestNotificationService(),
     DateTime Function()? clock,
-  })  : _settings = settings ?? InMemoryRestSettingsRepository(),
-        _notifications = notifications,
-        _now = clock ?? DateTime.now,
-        super(const RestTimerState()) {
+  }) : _settings = settings ?? InMemoryRestSettingsRepository(),
+       _notifications = notifications,
+       _now = clock ?? DateTime.now,
+       super(const RestTimerState()) {
     _loadPreferences();
   }
 
@@ -63,8 +63,10 @@ class RestTimerCubit extends Cubit<RestTimerState> {
     RestKind kind = RestKind.manual,
     String? nextExerciseName,
   }) {
-    final duration =
-        (seconds ?? state.preferences.betweenSetsSeconds).clamp(minDuration, maxDuration);
+    final duration = (seconds ?? state.preferences.betweenSetsSeconds).clamp(
+      minDuration,
+      maxDuration,
+    );
     final endsAt = _now().add(Duration(seconds: duration));
 
     _haptic(HapticFeedback.mediumImpact);
@@ -155,15 +157,20 @@ class RestTimerCubit extends Cubit<RestTimerState> {
       return;
     }
     final clamped = newRemaining.clamp(1, maxDuration);
-    final newTotal = (state.totalDuration + deltaSeconds).clamp(clamped, maxDuration);
+    final newTotal = (state.totalDuration + deltaSeconds).clamp(
+      clamped,
+      maxDuration,
+    );
 
     if (state.isRunning) {
       final endsAt = _now().add(Duration(seconds: clamped));
-      emit(state.copyWith(
-        remainingSeconds: clamped,
-        totalDuration: newTotal,
-        endsAt: endsAt,
-      ));
+      emit(
+        state.copyWith(
+          remainingSeconds: clamped,
+          totalDuration: newTotal,
+          endsAt: endsAt,
+        ),
+      );
       _scheduleNotification(endsAt);
     } else {
       emit(state.copyWith(remainingSeconds: clamped, totalDuration: newTotal));
@@ -218,16 +225,16 @@ class RestTimerCubit extends Cubit<RestTimerState> {
   }
 
   void setBetweenSetsDuration(int seconds) => _savePrefs(
-        state.preferences.copyWith(
-          betweenSetsSeconds: seconds.clamp(minDuration, maxDuration),
-        ),
-      );
+    state.preferences.copyWith(
+      betweenSetsSeconds: seconds.clamp(minDuration, maxDuration),
+    ),
+  );
 
   void setBetweenExercisesDuration(int seconds) => _savePrefs(
-        state.preferences.copyWith(
-          betweenExercisesSeconds: seconds.clamp(minDuration, maxDuration),
-        ),
-      );
+    state.preferences.copyWith(
+      betweenExercisesSeconds: seconds.clamp(minDuration, maxDuration),
+    ),
+  );
 
   /// Kept for backwards compatibility with existing callers.
   void setDefaultDuration(int seconds) => setBetweenSetsDuration(seconds);

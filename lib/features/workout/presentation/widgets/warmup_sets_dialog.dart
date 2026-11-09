@@ -45,7 +45,9 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
   @override
   void initState() {
     super.initState();
-    _workingWeight = widget.initialWorkingWeight > 20.0 ? widget.initialWorkingWeight : 80.0;
+    _workingWeight = widget.initialWorkingWeight > 20.0
+        ? widget.initialWorkingWeight
+        : 80.0;
   }
 
   void _adjust(double delta) {
@@ -82,11 +84,17 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
                 children: [
                   const Icon(Icons.fireplace_rounded, color: AppColors.warmup),
                   const SizedBox(width: 8),
-                  Text('Warm-up Calculator', style: AppTypography.ofTitleLarge(context)),
+                  Text(
+                    'Warm-up Calculator',
+                    style: AppTypography.ofTitleLarge(context),
+                  ),
                 ],
               ),
               IconButton(
-                icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
+                icon: Icon(
+                  Icons.close_rounded,
+                  color: AppColors.ofTextSecondary(context),
+                ),
                 onPressed: () => Navigator.pop(context),
               ),
             ],
@@ -99,7 +107,10 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
             decoration: BoxDecoration(
               color: AppColors.ofSurface(context),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+              border: Border.all(
+                color: AppColors.ofBorder(context),
+                width: 0.8,
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,11 +118,16 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('TARGET WORK SET', style: AppTypography.ofCaption(context)),
+                    Text(
+                      'TARGET WORK SET',
+                      style: AppTypography.ofCaption(context),
+                    ),
                     const SizedBox(height: 2),
                     Text(
                       '${_workingWeight.toStringAsFixed(1)} kg',
-                      style: AppTypography.ofMetricLarge(context).copyWith(fontSize: 26),
+                      style: AppTypography.ofMetricLarge(
+                        context,
+                      ).copyWith(fontSize: 26),
                     ),
                   ],
                 ),
@@ -137,7 +153,10 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
               decoration: BoxDecoration(
                 color: AppColors.ofSurfaceElevated(context),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+                border: Border.all(
+                  color: AppColors.ofBorder(context),
+                  width: 0.8,
+                ),
               ),
               child: Row(
                 children: [
@@ -165,17 +184,24 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
                       children: [
                         Text(
                           '${step.weightKg} kg × ${step.reps} reps',
-                          style: AppTypography.ofMetricMedium(context).copyWith(fontSize: 15),
+                          style: AppTypography.ofMetricMedium(
+                            context,
+                          ).copyWith(fontSize: 15),
                         ),
                         Text(
                           step.label,
-                          style: AppTypography.ofCaption(context).copyWith(color: AppColors.ofTextSecondary(context)),
+                          style: AppTypography.ofCaption(
+                            context,
+                          ).copyWith(color: AppColors.ofTextSecondary(context)),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.ofSurface(context),
                       borderRadius: BorderRadius.circular(6),
@@ -205,7 +231,9 @@ class _WarmupSetsDialogState extends State<WarmupSetsDialog> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.warmup,
                 foregroundColor: Colors.black,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
               ),
               onPressed: () {
                 widget.onAddWarmupSets(steps);

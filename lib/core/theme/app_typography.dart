@@ -67,35 +67,27 @@ class AppTypography {
   );
 
   // Dynamic Theme Resolvers
-  static TextStyle ofDisplay(BuildContext context) => display.copyWith(
-        color: AppColors.ofTextPrimary(context),
-      );
+  static TextStyle ofDisplay(BuildContext context) =>
+      display.copyWith(color: AppColors.ofTextPrimary(context));
 
-  static TextStyle ofTitleLarge(BuildContext context) => titleLarge.copyWith(
-        color: AppColors.ofTextPrimary(context),
-      );
+  static TextStyle ofTitleLarge(BuildContext context) =>
+      titleLarge.copyWith(color: AppColors.ofTextPrimary(context));
 
-  static TextStyle ofTitleMedium(BuildContext context) => titleMedium.copyWith(
-        color: AppColors.ofTextPrimary(context),
-      );
+  static TextStyle ofTitleMedium(BuildContext context) =>
+      titleMedium.copyWith(color: AppColors.ofTextPrimary(context));
 
-  static TextStyle ofBody(BuildContext context) => body.copyWith(
-        color: AppColors.ofTextPrimary(context),
-      );
+  static TextStyle ofBody(BuildContext context) =>
+      body.copyWith(color: AppColors.ofTextPrimary(context));
 
-  static TextStyle ofBodySecondary(BuildContext context) => bodySecondary.copyWith(
-        color: AppColors.ofTextSecondary(context),
-      );
+  static TextStyle ofBodySecondary(BuildContext context) =>
+      bodySecondary.copyWith(color: AppColors.ofTextSecondary(context));
 
-  static TextStyle ofCaption(BuildContext context) => caption.copyWith(
-        color: AppColors.ofTextTertiary(context),
-      );
+  static TextStyle ofCaption(BuildContext context) =>
+      caption.copyWith(color: AppColors.ofTextTertiary(context));
 
-  static TextStyle ofMetricLarge(BuildContext context) => metricLarge.copyWith(
-        color: AppColors.ofTextPrimary(context),
-      );
+  static TextStyle ofMetricLarge(BuildContext context) =>
+      metricLarge.copyWith(color: AppColors.ofTextPrimary(context));
 
-  static TextStyle ofMetricMedium(BuildContext context) => metricMedium.copyWith(
-        color: AppColors.ofTextPrimary(context),
-      );
+  static TextStyle ofMetricMedium(BuildContext context) =>
+      metricMedium.copyWith(color: AppColors.ofTextPrimary(context));
 }

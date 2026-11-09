@@ -9,10 +9,7 @@ import '../../../../core/theme/app_typography.dart';
 class MuscleDistributionCard extends StatelessWidget {
   final Map<MuscleGroup, int> distribution;
 
-  const MuscleDistributionCard({
-    super.key,
-    required this.distribution,
-  });
+  const MuscleDistributionCard({super.key, required this.distribution});
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +45,9 @@ class MuscleDistributionCard extends StatelessWidget {
           const SizedBox(height: 14),
           ...MuscleGroup.values.map((group) {
             final count = distribution[group] ?? 0;
-            final ratio = totalSets > 0 ? (count / totalSets).clamp(0.0, 1.0) : 0.0;
+            final ratio = totalSets > 0
+                ? (count / totalSets).clamp(0.0, 1.0)
+                : 0.0;
             final percentage = (ratio * 100).round();
 
             return Padding(

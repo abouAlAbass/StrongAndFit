@@ -9,7 +9,8 @@ class ExerciseListCubit extends Cubit<ExerciseListState> {
   final ExerciseRepository _exerciseRepository;
   StreamSubscription? _subscription;
 
-  ExerciseListCubit(this._exerciseRepository) : super(const ExerciseListState()) {
+  ExerciseListCubit(this._exerciseRepository)
+    : super(const ExerciseListState()) {
     loadExercises();
   }
 
@@ -37,7 +38,9 @@ class ExerciseListCubit extends Cubit<ExerciseListState> {
 
     final stream = state.selectedMuscleGroup == null
         ? _exerciseRepository.watchAllExercises()
-        : _exerciseRepository.watchExercisesByMuscleGroup(state.selectedMuscleGroup!);
+        : _exerciseRepository.watchExercisesByMuscleGroup(
+            state.selectedMuscleGroup!,
+          );
 
     _subscription = stream.listen(
       (exercises) {

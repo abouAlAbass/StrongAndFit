@@ -20,7 +20,10 @@ class WorkoutHistoryScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.workoutHistory, style: AppTypography.ofTitleLarge(context)),
+        title: Text(
+          l10n.workoutHistory,
+          style: AppTypography.ofTitleLarge(context),
+        ),
       ),
       body: StreamBuilder<List<WorkoutSession>>(
         stream: repo.watchRecentSessions(),
@@ -30,7 +33,9 @@ class WorkoutHistoryScreen extends StatelessWidget {
           }
 
           final sessions = snapshot.data ?? [];
-          final completed = sessions.where((s) => s.completedAt != null).toList();
+          final completed = sessions
+              .where((s) => s.completedAt != null)
+              .toList();
 
           if (completed.isEmpty) {
             return Center(
@@ -39,7 +44,11 @@ class WorkoutHistoryScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.history_toggle_off, size: 64, color: AppColors.ofTextTertiary(context)),
+                    Icon(
+                      Icons.history_toggle_off,
+                      size: 64,
+                      color: AppColors.ofTextTertiary(context),
+                    ),
                     const SizedBox(height: 16),
                     Text(
                       l10n.emptyHistory,
@@ -52,12 +61,17 @@ class WorkoutHistoryScreen extends StatelessWidget {
             );
           }
 
-          final dateFormat = DateFormat.yMMMMd(Localizations.localeOf(context).toString());
+          final dateFormat = DateFormat.yMMMMd(
+            Localizations.localeOf(context).toString(),
+          );
 
           return ResponsiveContentWrapper(
             maxWidth: 780,
             child: ListView.separated(
-              padding: const EdgeInsetsDirectional.symmetric(horizontal: 16, vertical: 12),
+              padding: const EdgeInsetsDirectional.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
               itemCount: completed.length,
               separatorBuilder: (_, _) => const SizedBox(height: 10),
               itemBuilder: (context, index) {
@@ -69,9 +83,8 @@ class WorkoutHistoryScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (_) => WorkoutHistoryDetailScreen(
-                          sessionId: session.id,
-                        ),
+                        builder: (_) =>
+                            WorkoutHistoryDetailScreen(sessionId: session.id),
                       ),
                     );
                   },
@@ -80,7 +93,10 @@ class WorkoutHistoryScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.ofCard(context),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+                      border: Border.all(
+                        color: AppColors.ofBorder(context),
+                        width: 0.8,
+                      ),
                     ),
                     child: Row(
                       children: [
@@ -91,14 +107,21 @@ class WorkoutHistoryScreen extends StatelessWidget {
                             color: AppColors.ofCompletedContainer(context),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(Icons.done_all, color: AppColors.completed, size: 22),
+                          child: const Icon(
+                            Icons.done_all,
+                            color: AppColors.completed,
+                            size: 22,
+                          ),
                         ),
                         const SizedBox(width: 14),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(session.title, style: AppTypography.ofTitleMedium(context)),
+                              Text(
+                                session.title,
+                                style: AppTypography.ofTitleMedium(context),
+                              ),
                               const SizedBox(height: 4),
                               Text(
                                 dateFormat.format(session.startedAt),

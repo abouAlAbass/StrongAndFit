@@ -2,11 +2,7 @@ import 'package:equatable/equatable.dart';
 import '../services/one_rep_max_calculator.dart';
 
 /// Categories of Personal Records an athlete can break.
-enum PrType {
-  maxWeight,
-  maxOneRepMax,
-  maxVolume,
-}
+enum PrType { maxWeight, maxOneRepMax, maxVolume }
 
 /// Historical record bests achieved for a specific exercise.
 class ExercisePersonalRecords extends Equatable {

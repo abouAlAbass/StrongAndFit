@@ -40,10 +40,10 @@ class ExerciseListState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        exercises,
-        selectedMuscleGroup,
-        searchQuery,
-        errorMessage,
-      ];
+    status,
+    exercises,
+    selectedMuscleGroup,
+    searchQuery,
+    errorMessage,
+  ];
 }

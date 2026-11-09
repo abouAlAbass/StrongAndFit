@@ -35,10 +35,10 @@ class RestPreferences extends Equatable {
 
   @override
   List<Object?> get props => [
-        betweenSetsSeconds,
-        betweenExercisesSeconds,
-        autoStart,
-        notificationsEnabled,
-        vibrationEnabled,
-      ];
+    betweenSetsSeconds,
+    betweenExercisesSeconds,
+    autoStart,
+    notificationsEnabled,
+    vibrationEnabled,
+  ];
 }

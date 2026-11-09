@@ -35,6 +35,6 @@ class Exercises extends Table {
 
   @override
   List<Set<Column>> get uniqueKeys => [
-        {slug},
-      ];
+    {slug},
+  ];
 }

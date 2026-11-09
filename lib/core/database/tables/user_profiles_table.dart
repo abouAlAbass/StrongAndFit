@@ -7,7 +7,9 @@ class UserProfiles extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   /// Athlete's display name.
-  TextColumn get name => text().withLength(min: 1, max: 100).withDefault(const Constant('Athlete'))();
+  TextColumn get name => text()
+      .withLength(min: 1, max: 100)
+      .withDefault(const Constant('Athlete'))();
 
   /// Body weight in kilograms.
   RealColumn get weightKg => real().nullable()();
@@ -20,8 +22,8 @@ class UserProfiles extends Table {
 
   /// Athlete proficiency level: beginner, intermediate, or advanced (pro).
   TextColumn get experienceLevel => textEnum<ExperienceLevel>().withDefault(
-        Constant(ExperienceLevel.intermediate.name),
-      )();
+    Constant(ExperienceLevel.intermediate.name),
+  )();
 
   /// Last updated timestamp.
   DateTimeColumn get updatedAt => dateTime().withDefault(currentDateAndTime)();

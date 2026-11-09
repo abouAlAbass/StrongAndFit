@@ -9,18 +9,17 @@ class SetLogs extends Table {
 
   /// Foreign key linking this set to its parent workout exercise instance.
   IntColumn get workoutExerciseId => integer().references(
-        WorkoutExercises,
-        #id,
-        onDelete: KeyAction.cascade,
-      )();
+    WorkoutExercises,
+    #id,
+    onDelete: KeyAction.cascade,
+  )();
 
   /// Set order number within the exercise (1, 2, 3, ...).
   IntColumn get setNumber => integer()();
 
   /// Set category classification: warmup, normal, dropset, or failure.
-  TextColumn get setType => textEnum<SetType>().withDefault(
-        Constant(SetType.normal.name),
-      )();
+  TextColumn get setType =>
+      textEnum<SetType>().withDefault(Constant(SetType.normal.name))();
 
   /// Weight lifted in kilograms. Nullable for purely bodyweight reps.
   RealColumn get weightKg => real().nullable()();

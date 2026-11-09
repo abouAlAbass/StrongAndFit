@@ -1,6 +1,1 @@
-enum SetType {
-  normal,
-  warmup,
-  dropset,
-  failure,
-}
+enum SetType { normal, warmup, dropset, failure }

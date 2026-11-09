@@ -39,13 +39,13 @@ class PlateLoadResult extends Equatable {
 
   @override
   List<Object?> get props => [
-        targetWeight,
-        barWeight,
-        weightPerSide,
-        platesPerSide,
-        actualTotalWeight,
-        remainderWeight,
-      ];
+    targetWeight,
+    barWeight,
+    weightPerSide,
+    platesPerSide,
+    actualTotalWeight,
+    remainderWeight,
+  ];
 }
 
 /// Domain utility that calculates optimal plate loading for Olympic and standard barbells.
@@ -57,9 +57,13 @@ class PlateCalculator {
     PlateSpec(weightKg: 20.0, color: Color(0xFF1E88E5), label: '20'), // Blue
     PlateSpec(weightKg: 15.0, color: Color(0xFFFDD835), label: '15'), // Yellow
     PlateSpec(weightKg: 10.0, color: Color(0xFF43A047), label: '10'), // Green
-    PlateSpec(weightKg: 5.0, color: Color(0xFFECEFF1), label: '5'),   // White
+    PlateSpec(weightKg: 5.0, color: Color(0xFFECEFF1), label: '5'), // White
     PlateSpec(weightKg: 2.5, color: Color(0xFF37474F), label: '2.5'), // Black
-    PlateSpec(weightKg: 1.25, color: Color(0xFF90A4AE), label: '1.25'), // Silver
+    PlateSpec(
+      weightKg: 1.25,
+      color: Color(0xFF90A4AE),
+      label: '1.25',
+    ), // Silver
   ];
 
   /// Calculates plates needed per side of the barbell using a greedy algorithm.
@@ -68,8 +72,9 @@ class PlateCalculator {
     double barWeight = 20.0,
     List<PlateSpec>? availablePlates,
   }) {
-    final plates = List<PlateSpec>.from(availablePlates ?? standardOlympicPlates)
-      ..sort((a, b) => b.weightKg.compareTo(a.weightKg));
+    final plates = List<PlateSpec>.from(
+      availablePlates ?? standardOlympicPlates,
+    )..sort((a, b) => b.weightKg.compareTo(a.weightKg));
 
     if (targetWeight <= barWeight) {
       return PlateLoadResult(
@@ -78,7 +83,10 @@ class PlateCalculator {
         weightPerSide: 0.0,
         platesPerSide: const [],
         actualTotalWeight: barWeight,
-        remainderWeight: (targetWeight - barWeight).clamp(double.negativeInfinity, 0.0),
+        remainderWeight: (targetWeight - barWeight).clamp(
+          double.negativeInfinity,
+          0.0,
+        ),
       );
     }
 

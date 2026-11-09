@@ -34,9 +34,7 @@ class _DraftRoutineExercise {
   final Exercise exercise;
   int targetSets = 3;
 
-  _DraftRoutineExercise({
-    required this.exercise,
-  });
+  _DraftRoutineExercise({required this.exercise});
 }
 
 class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
@@ -58,12 +56,12 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
 
     final notes = _notesController.text.trim();
     await context.read<RoutinesCubit>().createRoutine(
-          name: name,
-          notes: notes.isEmpty ? null : notes,
-          exercises: _selectedExercises
-              .map((e) => (exerciseId: e.exercise.id, targetSets: e.targetSets))
-              .toList(),
-        );
+      name: name,
+      notes: notes.isEmpty ? null : notes,
+      exercises: _selectedExercises
+          .map((e) => (exerciseId: e.exercise.id, targetSets: e.targetSets))
+          .toList(),
+    );
 
     if (mounted) {
       Navigator.of(context).pop();
@@ -111,9 +109,15 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(l10n.createRoutine, style: AppTypography.ofTitleLarge(context)),
+                Text(
+                  l10n.createRoutine,
+                  style: AppTypography.ofTitleLarge(context),
+                ),
                 IconButton(
-                  icon: Icon(Icons.close_rounded, color: AppColors.ofTextSecondary(context)),
+                  icon: Icon(
+                    Icons.close_rounded,
+                    color: AppColors.ofTextSecondary(context),
+                  ),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -137,16 +141,17 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
                 const SizedBox(height: 12),
                 TextField(
                   controller: _notesController,
-                  decoration: InputDecoration(
-                    labelText: l10n.notes,
-                  ),
+                  decoration: InputDecoration(labelText: l10n.notes),
                 ),
                 const SizedBox(height: 20),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(l10n.exercises, style: AppTypography.ofTitleMedium(context)),
+                    Text(
+                      l10n.exercises,
+                      style: AppTypography.ofTitleMedium(context),
+                    ),
                     TextButton.icon(
                       icon: const Icon(Icons.add, size: 18),
                       label: Text(l10n.addExercise),
@@ -202,9 +207,9 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
                               children: [
                                 Text(
                                   draft.exercise.localizedName(context),
-                                  style: AppTypography.ofBody(context).copyWith(
-                                    fontWeight: FontWeight.w700,
-                                  ),
+                                  style: AppTypography.ofBody(
+                                    context,
+                                  ).copyWith(fontWeight: FontWeight.w700),
                                 ),
                                 Text(
                                   draft.exercise.localizedMuscleGroup(context),
@@ -214,7 +219,10 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.remove_circle_outline, size: 20),
+                            icon: const Icon(
+                              Icons.remove_circle_outline,
+                              size: 20,
+                            ),
                             onPressed: draft.targetSets > 1
                                 ? () => setState(() => draft.targetSets--)
                                 : null,
@@ -228,7 +236,10 @@ class _CreateRoutineDialogState extends State<CreateRoutineDialog> {
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add_circle_outline, size: 20),
+                            icon: const Icon(
+                              Icons.add_circle_outline,
+                              size: 20,
+                            ),
                             onPressed: () => setState(() => draft.targetSets++),
                           ),
                           IconButton(

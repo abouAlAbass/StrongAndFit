@@ -41,18 +41,21 @@ class WorkoutSessionScreen extends StatefulWidget {
 class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
   int? _selectedSetId;
 
-  ({WorkoutExerciseDetail exercise, SetLog set, SetLog? previousSet})? _findActiveSet(
-    WorkoutSessionDetail detail,
-    WorkoutSessionState state,
-  ) {
+  ({WorkoutExerciseDetail exercise, SetLog set, SetLog? previousSet})?
+  _findActiveSet(WorkoutSessionDetail detail, WorkoutSessionState state) {
     if (detail.exercises.isEmpty) return null;
 
     if (_selectedSetId != null) {
       for (final exerciseItem in detail.exercises) {
-        final matchIndex = exerciseItem.sets.indexWhere((s) => s.id == _selectedSetId);
+        final matchIndex = exerciseItem.sets.indexWhere(
+          (s) => s.id == _selectedSetId,
+        );
         if (matchIndex != -1) {
-          final previousSets = state.previousExerciseSets[exerciseItem.exercise.id] ?? [];
-          final previousSet = matchIndex < previousSets.length ? previousSets[matchIndex] : null;
+          final previousSets =
+              state.previousExerciseSets[exerciseItem.exercise.id] ?? [];
+          final previousSet = matchIndex < previousSets.length
+              ? previousSets[matchIndex]
+              : null;
           return (
             exercise: exerciseItem,
             set: exerciseItem.sets[matchIndex],
@@ -67,13 +70,10 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
       for (int i = 0; i < exerciseItem.sets.length; i++) {
         final s = exerciseItem.sets[i];
         if (!s.isCompleted) {
-          final previousSets = state.previousExerciseSets[exerciseItem.exercise.id] ?? [];
+          final previousSets =
+              state.previousExerciseSets[exerciseItem.exercise.id] ?? [];
           final previousSet = i < previousSets.length ? previousSets[i] : null;
-          return (
-            exercise: exerciseItem,
-            set: s,
-            previousSet: previousSet,
-          );
+          return (exercise: exerciseItem, set: s, previousSet: previousSet);
         }
       }
     }
@@ -82,11 +82,14 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
     final lastExercise = detail.exercises.last;
     if (lastExercise.sets.isNotEmpty) {
       final lastIndex = lastExercise.sets.length - 1;
-      final previousSets = state.previousExerciseSets[lastExercise.exercise.id] ?? [];
+      final previousSets =
+          state.previousExerciseSets[lastExercise.exercise.id] ?? [];
       return (
         exercise: lastExercise,
         set: lastExercise.sets[lastIndex],
-        previousSet: lastIndex < previousSets.length ? previousSets[lastIndex] : null,
+        previousSet: lastIndex < previousSets.length
+            ? previousSets[lastIndex]
+            : null,
       );
     }
 
@@ -183,7 +186,10 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
           actions: [
             // Rest Timer Chronograph Button
             IconButton(
-              icon: const Icon(Icons.timer_outlined, color: AppColors.secondary),
+              icon: const Icon(
+                Icons.timer_outlined,
+                color: AppColors.secondary,
+              ),
               tooltip: l10n.restTimer,
               onPressed: () => RestTimerDialog.show(context),
             ),
@@ -239,9 +245,9 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                       padding: const EdgeInsetsDirectional.only(end: 8),
                       child: TextButton(
                         onPressed: () {
-                          context
-                              .read<WorkoutSessionBloc>()
-                              .add(const CompleteSessionRequested());
+                          context.read<WorkoutSessionBloc>().add(
+                            const CompleteSessionRequested(),
+                          );
                         },
                         child: Text(
                           l10n.finishWorkout,
@@ -272,115 +278,127 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
               }
             }
           },
-        builder: (context, state) {
-          if (state.status == WorkoutSessionStatus.loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+          builder: (context, state) {
+            if (state.status == WorkoutSessionStatus.loading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          if (!state.hasActiveSession) {
-            return _buildEmptyOrStartSessionView(context);
-          }
+            if (!state.hasActiveSession) {
+              return _buildEmptyOrStartSessionView(context);
+            }
 
-          final detail = state.detail!;
-          return ResponsiveContentWrapper(
-            maxWidth: 820,
-            child: _buildActiveSessionView(context, detail, state),
-          );
-        },
-      ),
-      bottomNavigationBar: BlocBuilder<WorkoutSessionBloc, WorkoutSessionState>(
-        builder: (context, state) {
-          if (!state.hasActiveSession) return const SizedBox.shrink();
-          final detail = state.detail!;
-          final active = _findActiveSet(detail, state);
+            final detail = state.detail!;
+            return ResponsiveContentWrapper(
+              maxWidth: 820,
+              child: _buildActiveSessionView(context, detail, state),
+            );
+          },
+        ),
+        bottomNavigationBar:
+            BlocBuilder<WorkoutSessionBloc, WorkoutSessionState>(
+              builder: (context, state) {
+                if (!state.hasActiveSession) return const SizedBox.shrink();
+                final detail = state.detail!;
+                final active = _findActiveSet(detail, state);
 
-          return SafeArea(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // 1. One-Handed Quick Input Bar in Reachable Thumb Zone
-                if (active != null)
-                  ResponsiveContentWrapper(
-                    maxWidth: 820,
-                    child: OneHandedQuickInputBar(
-                      key: ValueKey('one_hand_set_${active.set.id}'),
-                      exerciseItem: active.exercise,
-                      setLog: active.set,
-                      previousSetLog: active.previousSet,
-                      isPr: (state.personalRecords[active.exercise.exercise.id]
-                              ?.evaluateSet(
-                                weightKg: active.set.weightKg ?? 0,
-                                reps: active.set.reps ?? 0,
-                              )
-                              .isNotEmpty ??
-                          false),
-                      onUpdateValues: (weight, reps, [rpe]) {
-                        context.read<WorkoutSessionBloc>().add(
-                              UpdateSetRequested(
-                                setId: active.set.id,
-                                workoutExerciseId: active.set.workoutExerciseId,
-                                setNumber: active.set.setNumber,
-                                setType: active.set.setType,
-                                weightKg: weight,
-                                reps: reps,
-                                rpe: rpe ?? active.set.rpe,
-                                isCompleted: active.set.isCompleted,
-                              ),
-                            );
-                      },
-                      onToggleCompleted: (completed) {
-                        context.read<WorkoutSessionBloc>().add(
-                              ToggleSetCompletionRequested(
-                                setId: active.set.id,
-                                isCompleted: completed,
-                              ),
-                            );
-                        if (completed) {
-                          _triggerRest(context, detail, active.exercise, active.set.id);
-                        }
-                      },
-                      onNextSet: () => _advanceToNextSet(detail),
-                    ),
-                  ),
-
-                // 2. Rest Timer Floating Bar
-                const RestTimerFloatingBar(),
-
-                // 3. Add Exercise Button
-                Padding(
-                  padding: const EdgeInsetsDirectional.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  child: ResponsiveContentWrapper(
-                    maxWidth: 820,
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        icon: const Icon(Icons.add, size: 20),
-                        label: Text(l10n.addExercise),
-                        onPressed: () {
-                          ExercisePickerBottomSheet.show(
-                            context,
-                            onExerciseSelected: (exercise) {
-                              context
-                                  .read<WorkoutSessionBloc>()
-                                  .add(AddExerciseRequested(exercise.id));
+                return SafeArea(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // 1. One-Handed Quick Input Bar in Reachable Thumb Zone
+                      if (active != null)
+                        ResponsiveContentWrapper(
+                          maxWidth: 820,
+                          child: OneHandedQuickInputBar(
+                            key: ValueKey('one_hand_set_${active.set.id}'),
+                            exerciseItem: active.exercise,
+                            setLog: active.set,
+                            previousSetLog: active.previousSet,
+                            isPr:
+                                (state
+                                    .personalRecords[active
+                                        .exercise
+                                        .exercise
+                                        .id]
+                                    ?.evaluateSet(
+                                      weightKg: active.set.weightKg ?? 0,
+                                      reps: active.set.reps ?? 0,
+                                    )
+                                    .isNotEmpty ??
+                                false),
+                            onUpdateValues: (weight, reps, [rpe]) {
+                              context.read<WorkoutSessionBloc>().add(
+                                UpdateSetRequested(
+                                  setId: active.set.id,
+                                  workoutExerciseId:
+                                      active.set.workoutExerciseId,
+                                  setNumber: active.set.setNumber,
+                                  setType: active.set.setType,
+                                  weightKg: weight,
+                                  reps: reps,
+                                  rpe: rpe ?? active.set.rpe,
+                                  isCompleted: active.set.isCompleted,
+                                ),
+                              );
                             },
-                          );
-                        },
+                            onToggleCompleted: (completed) {
+                              context.read<WorkoutSessionBloc>().add(
+                                ToggleSetCompletionRequested(
+                                  setId: active.set.id,
+                                  isCompleted: completed,
+                                ),
+                              );
+                              if (completed) {
+                                _triggerRest(
+                                  context,
+                                  detail,
+                                  active.exercise,
+                                  active.set.id,
+                                );
+                              }
+                            },
+                            onNextSet: () => _advanceToNextSet(detail),
+                          ),
+                        ),
+
+                      // 2. Rest Timer Floating Bar
+                      const RestTimerFloatingBar(),
+
+                      // 3. Add Exercise Button
+                      Padding(
+                        padding: const EdgeInsetsDirectional.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: ResponsiveContentWrapper(
+                          maxWidth: 820,
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              icon: const Icon(Icons.add, size: 20),
+                              label: Text(l10n.addExercise),
+                              onPressed: () {
+                                ExercisePickerBottomSheet.show(
+                                  context,
+                                  onExerciseSelected: (exercise) {
+                                    context.read<WorkoutSessionBloc>().add(
+                                      AddExerciseRequested(exercise.id),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ),
-              ],
+                );
+              },
             ),
-          );
-        },
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildEmptyOrStartSessionView(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -429,13 +447,11 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
             ElevatedButton.icon(
               icon: const Icon(Icons.play_arrow_rounded, size: 22),
               label: Text(l10n.startWorkout),
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(200, 50),
-              ),
+              style: ElevatedButton.styleFrom(minimumSize: const Size(200, 50)),
               onPressed: () {
-                context
-                    .read<WorkoutSessionBloc>()
-                    .add(const StartSessionRequested());
+                context.read<WorkoutSessionBloc>().add(
+                  const StartSessionRequested(),
+                );
               },
             ),
           ],
@@ -471,13 +487,21 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                 label: l10n.sets,
                 value: '${detail.completedSetsCount}',
               ),
-              Container(width: 1, height: 32, color: AppColors.ofBorder(context)),
+              Container(
+                width: 1,
+                height: 32,
+                color: AppColors.ofBorder(context),
+              ),
               _buildMetricColumn(
                 context: context,
                 label: l10n.duration,
                 value: state.formattedDuration,
               ),
-              Container(width: 1, height: 32, color: AppColors.ofBorder(context)),
+              Container(
+                width: 1,
+                height: 32,
+                color: AppColors.ofBorder(context),
+              ),
               _buildMetricColumn(
                 context: context,
                 label: l10n.weightKg,
@@ -504,12 +528,27 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                 borderRadius: BorderRadius.circular(16),
                 border: supersetLabel != null
                     ? Border(
-                        left: const BorderSide(color: Color(0xFF8B5CF6), width: 4.0),
-                        top: BorderSide(color: AppColors.ofBorder(context), width: 0.8),
-                        right: BorderSide(color: AppColors.ofBorder(context), width: 0.8),
-                        bottom: BorderSide(color: AppColors.ofBorder(context), width: 0.8),
+                        left: const BorderSide(
+                          color: Color(0xFF8B5CF6),
+                          width: 4.0,
+                        ),
+                        top: BorderSide(
+                          color: AppColors.ofBorder(context),
+                          width: 0.8,
+                        ),
+                        right: BorderSide(
+                          color: AppColors.ofBorder(context),
+                          width: 0.8,
+                        ),
+                        bottom: BorderSide(
+                          color: AppColors.ofBorder(context),
+                          width: 0.8,
+                        ),
                       )
-                    : Border.all(color: AppColors.ofBorder(context), width: 0.8),
+                    : Border.all(
+                        color: AppColors.ofBorder(context),
+                        width: 0.8,
+                      ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -518,7 +557,10 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                   if (supersetLabel != null)
                     Container(
                       margin: const EdgeInsetsDirectional.only(bottom: 8),
-                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
+                      padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 8,
+                        vertical: 3,
+                      ),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           colors: [Color(0xFF7C3AED), Color(0xFF9333EA)],
@@ -528,7 +570,11 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.link_rounded, size: 13, color: Colors.white),
+                          const Icon(
+                            Icons.link_rounded,
+                            size: 13,
+                            color: Colors.white,
+                          ),
                           const SizedBox(width: 4),
                           Text(
                             '${l10n.supersetLabel} $supersetLabel',
@@ -542,235 +588,240 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                         ],
                       ),
                     ),
-                // Exercise Header: Name + Badges + Delete Option
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item.exercise.localizedName(context),
-                            style: AppTypography.ofTitleLarge(context),
-                          ),
-                          const SizedBox(height: 4),
-                          Row(
-                            children: [
-                              Text(
-                                item.exercise.localizedMuscleGroup(context),
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                              Text(
-                                ' • ',
-                                style: TextStyle(color: AppColors.ofTextTertiary(context)),
-                              ),
-                              Text(
-                                item.exercise.localizedEquipment(context),
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: AppColors.ofTextSecondary(context),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    ExerciseRestChip(exercise: item.exercise),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.menu_book_rounded,
-                        color: AppColors.primary,
-                        size: 20,
-                      ),
-                      tooltip: l10n.exerciseGuide,
-                      onPressed: () => ExerciseGuideSheet.show(
-                        context,
-                        slug: item.exercise.slug,
-                        exerciseName: item.exercise.localizedName(context),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: AppColors.ofTextTertiary(context),
-                        size: 20,
-                      ),
-                      onPressed: () => _showExerciseOptions(
-                        context,
-                        item,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-
-                // Table Headers (SET, PREVIOUS, KG, REPS, CHECK)
-                Padding(
-                  padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
-                  child: Row(
+                  // Exercise Header: Name + Badges + Delete Option
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
-                        width: 32,
-                        child: Text(
-                          l10n.set.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: AppTypography.ofCaption(context),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
                       Expanded(
-                        flex: 3,
-                        child: Text(
-                          l10n.previous.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: AppTypography.ofCaption(context),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.exercise.localizedName(context),
+                              style: AppTypography.ofTitleLarge(context),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Text(
+                                  item.exercise.localizedMuscleGroup(context),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                Text(
+                                  ' • ',
+                                  style: TextStyle(
+                                    color: AppColors.ofTextTertiary(context),
+                                  ),
+                                ),
+                                Text(
+                                  item.exercise.localizedEquipment(context),
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.ofTextSecondary(context),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        flex: 3,
-                        child: Text(
-                          l10n.weight.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: AppTypography.ofCaption(context),
+                      ExerciseRestChip(exercise: item.exercise),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.menu_book_rounded,
+                          color: AppColors.primary,
+                          size: 20,
+                        ),
+                        tooltip: l10n.exerciseGuide,
+                        onPressed: () => ExerciseGuideSheet.show(
+                          context,
+                          slug: item.exercise.slug,
+                          exerciseName: item.exercise.localizedName(context),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        flex: 3,
-                        child: Text(
-                          l10n.reps.toUpperCase(),
-                          textAlign: TextAlign.center,
-                          style: AppTypography.ofCaption(context),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      SizedBox(
-                        width: 38,
-                        child: Icon(
-                          Icons.done_all,
-                          size: 16,
+                      IconButton(
+                        icon: Icon(
+                          Icons.more_vert,
                           color: AppColors.ofTextTertiary(context),
+                          size: 20,
                         ),
+                        onPressed: () => _showExerciseOptions(context, item),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 8),
+                  const SizedBox(height: 12),
 
-                // Set Rows
-                ...item.sets.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final setLog = entry.value;
-                  final previousSet = index < previousSets.length
-                      ? previousSets[index]
-                      : null;
+                  // Table Headers (SET, PREVIOUS, KG, REPS, CHECK)
+                  Padding(
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 8,
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 32,
+                          child: Text(
+                            l10n.set.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: AppTypography.ofCaption(context),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            l10n.previous.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: AppTypography.ofCaption(context),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            l10n.weight.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: AppTypography.ofCaption(context),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            l10n.reps.toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: AppTypography.ofCaption(context),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        SizedBox(
+                          width: 38,
+                          child: Icon(
+                            Icons.done_all,
+                            size: 16,
+                            color: AppColors.ofTextTertiary(context),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 8),
 
-                  return SetRowWidget(
-                    key: ValueKey('set_${setLog.id}'),
-                    setLog: setLog,
-                    previousSetLog: previousSet,
-                    personalRecords: state.personalRecords[item.exercise.id],
-                    isSelected: (active != null && active.set.id == setLog.id),
-                    onSelect: () {
-                      setState(() => _selectedSetId = setLog.id);
-                    },
-                    onToggleCompleted: (completed) {
-                      context.read<WorkoutSessionBloc>().add(
-                            ToggleSetCompletionRequested(
-                              setId: setLog.id,
-                              isCompleted: completed,
-                            ),
-                          );
-                      if (completed) {
-                        _triggerRest(context, detail, item, setLog.id);
+                  // Set Rows
+                  ...item.sets.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final setLog = entry.value;
+                    final previousSet = index < previousSets.length
+                        ? previousSets[index]
+                        : null;
 
-                        // Check and celebrate PR
-                        final prs = state.personalRecords[item.exercise.id];
-                        final prBadges = prs?.evaluateSet(
-                          weightKg: setLog.weightKg ?? 0,
-                          reps: setLog.reps ?? 0,
+                    return SetRowWidget(
+                      key: ValueKey('set_${setLog.id}'),
+                      setLog: setLog,
+                      previousSetLog: previousSet,
+                      personalRecords: state.personalRecords[item.exercise.id],
+                      isSelected:
+                          (active != null && active.set.id == setLog.id),
+                      onSelect: () {
+                        setState(() => _selectedSetId = setLog.id);
+                      },
+                      onToggleCompleted: (completed) {
+                        context.read<WorkoutSessionBloc>().add(
+                          ToggleSetCompletionRequested(
+                            setId: setLog.id,
+                            isCompleted: completed,
+                          ),
                         );
-                        if (prBadges != null && prBadges.isNotEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: const Color(0xFFD4AF37),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              content: Row(
-                                children: [
-                                  const Text('🏆', style: TextStyle(fontSize: 20)),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Text(
-                                      '${l10n.newPrAchieved} ${item.exercise.localizedName(context)} (${setLog.weightKg} kg × ${setLog.reps})',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w800,
-                                        color: Colors.black,
+                        if (completed) {
+                          _triggerRest(context, detail, item, setLog.id);
+
+                          // Check and celebrate PR
+                          final prs = state.personalRecords[item.exercise.id];
+                          final prBadges = prs?.evaluateSet(
+                            weightKg: setLog.weightKg ?? 0,
+                            reps: setLog.reps ?? 0,
+                          );
+                          if (prBadges != null && prBadges.isNotEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: const Color(0xFFD4AF37),
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                content: Row(
+                                  children: [
+                                    const Text(
+                                      '🏆',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Text(
+                                        '${l10n.newPrAchieved} ${item.exercise.localizedName(context)} (${setLog.weightKg} kg × ${setLog.reps})',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w800,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
+                                duration: const Duration(seconds: 3),
                               ),
-                              duration: const Duration(seconds: 3),
-                            ),
-                          );
+                            );
+                          }
                         }
-                      }
-                    },
-                    onUpdateValues: (weight, reps, rpe, setType) {
-                      context.read<WorkoutSessionBloc>().add(
-                            UpdateSetRequested(
-                              setId: setLog.id,
-                              workoutExerciseId: setLog.workoutExerciseId,
-                              setNumber: setLog.setNumber,
-                              setType: setType,
-                              weightKg: weight,
-                              reps: reps,
-                              rpe: rpe,
-                              isCompleted: setLog.isCompleted,
-                            ),
-                          );
-                    },
-                    onDelete: () {
-                      context
-                          .read<WorkoutSessionBloc>()
-                          .add(DeleteSetRequested(setLog.id));
-                    },
-                  );
-                }),
-                const SizedBox(height: 8),
+                      },
+                      onUpdateValues: (weight, reps, rpe, setType) {
+                        context.read<WorkoutSessionBloc>().add(
+                          UpdateSetRequested(
+                            setId: setLog.id,
+                            workoutExerciseId: setLog.workoutExerciseId,
+                            setNumber: setLog.setNumber,
+                            setType: setType,
+                            weightKg: weight,
+                            reps: reps,
+                            rpe: rpe,
+                            isCompleted: setLog.isCompleted,
+                          ),
+                        );
+                      },
+                      onDelete: () {
+                        context.read<WorkoutSessionBloc>().add(
+                          DeleteSetRequested(setLog.id),
+                        );
+                      },
+                    );
+                  }),
+                  const SizedBox(height: 8),
 
-                // Add Set Button
-                Center(
-                  child: TextButton.icon(
-                    icon: const Icon(Icons.add, size: 16),
-                    label: Text('+ ${l10n.set}'),
-                    style: TextButton.styleFrom(
-                      foregroundColor: AppColors.primary,
-                      visualDensity: VisualDensity.compact,
+                  // Add Set Button
+                  Center(
+                    child: TextButton.icon(
+                      icon: const Icon(Icons.add, size: 16),
+                      label: Text('+ ${l10n.set}'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppColors.primary,
+                        visualDensity: VisualDensity.compact,
+                      ),
+                      onPressed: () {
+                        context.read<WorkoutSessionBloc>().add(
+                          AddSetRequested(item.workoutExercise.id),
+                        );
+                      },
                     ),
-                    onPressed: () {
-                      context.read<WorkoutSessionBloc>().add(
-                            AddSetRequested(item.workoutExercise.id),
-                          );
-                    },
                   ),
-                ),
-              ],
-            ),
-          );
-        }).toList();
-      }(),
-    ],
+                ],
+              ),
+            );
+          }).toList();
+        }(),
+      ],
     );
   }
 
@@ -780,8 +831,9 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
     WorkoutExerciseDetail item,
     int completedSetId,
   ) {
-    final hasPendingSets =
-        item.sets.any((s) => s.id != completedSetId && !s.isCompleted);
+    final hasPendingSets = item.sets.any(
+      (s) => s.id != completedSetId && !s.isCompleted,
+    );
 
     String? nextName;
     if (!hasPendingSets) {
@@ -803,10 +855,10 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
     }
 
     context.read<RestTimerCubit>().onSetCompleted(
-          exerciseRestSeconds: item.exercise.restSeconds,
-          isLastSetOfExercise: !hasPendingSets,
-          nextExerciseName: nextName,
-        );
+      exerciseRestSeconds: item.exercise.restSeconds,
+      isLastSetOfExercise: !hasPendingSets,
+      nextExerciseName: nextName,
+    );
   }
 
   Widget _buildMetricColumn({
@@ -832,9 +884,24 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
         widget.onLocaleChanged(Locale(code));
       },
       itemBuilder: (ctx) => [
-        _buildPopupItem(context, 'en', 'English (EN)', widget.currentLocale.languageCode == 'en'),
-        _buildPopupItem(context, 'fr', 'Français (FR)', widget.currentLocale.languageCode == 'fr'),
-        _buildPopupItem(context, 'ar', 'العربية (AR - RTL)', widget.currentLocale.languageCode == 'ar'),
+        _buildPopupItem(
+          context,
+          'en',
+          'English (EN)',
+          widget.currentLocale.languageCode == 'en',
+        ),
+        _buildPopupItem(
+          context,
+          'fr',
+          'Français (FR)',
+          widget.currentLocale.languageCode == 'fr',
+        ),
+        _buildPopupItem(
+          context,
+          'ar',
+          'العربية (AR - RTL)',
+          widget.currentLocale.languageCode == 'ar',
+        ),
       ],
     );
   }
@@ -854,7 +921,9 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
             label,
             style: TextStyle(
               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
-              color: isSelected ? AppColors.primary : AppColors.ofTextPrimary(context),
+              color: isSelected
+                  ? AppColors.primary
+                  : AppColors.ofTextPrimary(context),
             ),
           ),
           if (isSelected)
@@ -880,9 +949,18 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
         child: Wrap(
           children: [
             ListTile(
-              leading: const Icon(Icons.menu_book_rounded, color: AppColors.secondary),
-              title: Text(l10n.exerciseGuide, style: AppTypography.ofBody(context)),
-              subtitle: Text(l10n.techniqueGuide, style: AppTypography.ofCaption(context)),
+              leading: const Icon(
+                Icons.menu_book_rounded,
+                color: AppColors.secondary,
+              ),
+              title: Text(
+                l10n.exerciseGuide,
+                style: AppTypography.ofBody(context),
+              ),
+              subtitle: Text(
+                l10n.techniqueGuide,
+                style: AppTypography.ofCaption(context),
+              ),
               onTap: () {
                 Navigator.pop(ctx);
                 ExerciseGuideSheet.show(
@@ -894,21 +972,33 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
             ),
             Divider(height: 1, color: AppColors.ofDivider(context)),
             ListTile(
-              leading: const Icon(Icons.calculate_outlined, color: AppColors.primary),
-              title: Text(l10n.plateCalculator, style: AppTypography.ofBody(context)),
-              subtitle: Text('${l10n.barWeight}: 20 kg', style: AppTypography.ofCaption(context)),
+              leading: const Icon(
+                Icons.calculate_outlined,
+                color: AppColors.primary,
+              ),
+              title: Text(
+                l10n.plateCalculator,
+                style: AppTypography.ofBody(context),
+              ),
+              subtitle: Text(
+                '${l10n.barWeight}: 20 kg',
+                style: AppTypography.ofCaption(context),
+              ),
               onTap: () {
                 Navigator.pop(ctx);
-                PlateCalculatorDialog.show(
-                  context,
-                  initialWeight: lastWeight,
-                );
+                PlateCalculatorDialog.show(context, initialWeight: lastWeight);
               },
             ),
             Divider(height: 1, color: AppColors.ofDivider(context)),
             ListTile(
-              leading: const Icon(Icons.fireplace_rounded, color: AppColors.warmup),
-              title: Text(l10n.warmupCalculator, style: AppTypography.ofBody(context)),
+              leading: const Icon(
+                Icons.fireplace_rounded,
+                color: AppColors.warmup,
+              ),
+              title: Text(
+                l10n.warmupCalculator,
+                style: AppTypography.ofBody(context),
+              ),
               onTap: () {
                 Navigator.pop(ctx);
                 WarmupSetsDialog.show(
@@ -917,13 +1007,13 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                   onAddWarmupSets: (steps) {
                     for (final step in steps) {
                       context.read<WorkoutSessionBloc>().add(
-                            AddSetRequested(
-                              item.workoutExercise.id,
-                              setType: SetType.warmup,
-                              weightKg: step.weightKg,
-                              reps: step.reps,
-                            ),
-                          );
+                        AddSetRequested(
+                          item.workoutExercise.id,
+                          setType: SetType.warmup,
+                          weightKg: step.weightKg,
+                          reps: step.reps,
+                        ),
+                      );
                     }
                   },
                 );
@@ -932,17 +1022,26 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
             Divider(height: 1, color: AppColors.ofDivider(context)),
             if (item.workoutExercise.supersetGroupId != null)
               ListTile(
-                leading: const Icon(Icons.link_off_rounded, color: Color(0xFF8B5CF6)),
-                title: Text(l10n.unlinkSuperset, style: AppTypography.ofBody(context)),
-                subtitle: Text(l10n.supersetUnlinked, style: AppTypography.ofCaption(context)),
+                leading: const Icon(
+                  Icons.link_off_rounded,
+                  color: Color(0xFF8B5CF6),
+                ),
+                title: Text(
+                  l10n.unlinkSuperset,
+                  style: AppTypography.ofBody(context),
+                ),
+                subtitle: Text(
+                  l10n.supersetUnlinked,
+                  style: AppTypography.ofCaption(context),
+                ),
                 onTap: () {
                   Navigator.pop(ctx);
                   context.read<WorkoutSessionBloc>().add(
-                        SetExerciseSupersetRequested(
-                          workoutExerciseId: item.workoutExercise.id,
-                          supersetGroupId: null,
-                        ),
-                      );
+                    SetExerciseSupersetRequested(
+                      workoutExerciseId: item.workoutExercise.id,
+                      supersetGroupId: null,
+                    ),
+                  );
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(l10n.supersetUnlinked),
@@ -954,9 +1053,18 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
               )
             else
               ListTile(
-                leading: const Icon(Icons.link_rounded, color: Color(0xFF8B5CF6)),
-                title: Text(l10n.createSuperset, style: AppTypography.ofBody(context)),
-                subtitle: Text(l10n.linkWithNext, style: AppTypography.ofCaption(context)),
+                leading: const Icon(
+                  Icons.link_rounded,
+                  color: Color(0xFF8B5CF6),
+                ),
+                title: Text(
+                  l10n.createSuperset,
+                  style: AppTypography.ofBody(context),
+                ),
+                subtitle: Text(
+                  l10n.linkWithNext,
+                  style: AppTypography.ofCaption(context),
+                ),
                 onTap: () {
                   Navigator.pop(ctx);
                   _linkExerciseInSuperset(context, item);
@@ -964,13 +1072,19 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
               ),
             Divider(height: 1, color: AppColors.ofDivider(context)),
             ListTile(
-              leading: const Icon(Icons.delete_outline, color: AppColors.failure),
-              title: Text(l10n.delete, style: const TextStyle(color: AppColors.failure)),
+              leading: const Icon(
+                Icons.delete_outline,
+                color: AppColors.failure,
+              ),
+              title: Text(
+                l10n.delete,
+                style: const TextStyle(color: AppColors.failure),
+              ),
               onTap: () {
                 Navigator.pop(ctx);
-                context
-                    .read<WorkoutSessionBloc>()
-                    .add(DeleteExerciseRequested(item.workoutExercise.id));
+                context.read<WorkoutSessionBloc>().add(
+                  DeleteExerciseRequested(item.workoutExercise.id),
+                );
               },
             ),
           ],
@@ -979,13 +1093,18 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
     );
   }
 
-  void _linkExerciseInSuperset(BuildContext context, WorkoutExerciseDetail item) {
+  void _linkExerciseInSuperset(
+    BuildContext context,
+    WorkoutExerciseDetail item,
+  ) {
     final l10n = AppLocalizations.of(context)!;
     final state = context.read<WorkoutSessionBloc>().state;
     final detail = state.detail;
     if (detail == null) return;
 
-    final currentIndex = detail.exercises.indexWhere((e) => e.workoutExercise.id == item.workoutExercise.id);
+    final currentIndex = detail.exercises.indexWhere(
+      (e) => e.workoutExercise.id == item.workoutExercise.id,
+    );
     if (currentIndex == -1) return;
 
     int maxGroupId = 0;
@@ -998,21 +1117,21 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
     final targetGroupId = maxGroupId + 1;
 
     context.read<WorkoutSessionBloc>().add(
-          SetExerciseSupersetRequested(
-            workoutExerciseId: item.workoutExercise.id,
-            supersetGroupId: targetGroupId,
-          ),
-        );
+      SetExerciseSupersetRequested(
+        workoutExerciseId: item.workoutExercise.id,
+        supersetGroupId: targetGroupId,
+      ),
+    );
 
     // If there is a next exercise in the session, link it as well!
     if (currentIndex + 1 < detail.exercises.length) {
       final nextExercise = detail.exercises[currentIndex + 1];
       context.read<WorkoutSessionBloc>().add(
-            SetExerciseSupersetRequested(
-              workoutExerciseId: nextExercise.workoutExercise.id,
-              supersetGroupId: targetGroupId,
-            ),
-          );
+        SetExerciseSupersetRequested(
+          workoutExerciseId: nextExercise.workoutExercise.id,
+          supersetGroupId: targetGroupId,
+        ),
+      );
     }
 
     ScaffoldMessenger.of(context).showSnackBar(
@@ -1032,7 +1151,10 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
       builder: (dialogCtx) => AlertDialog(
         backgroundColor: AppColors.ofCard(context),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(l10n.discardDialogTitle, style: AppTypography.ofTitleLarge(context)),
+        title: Text(
+          l10n.discardDialogTitle,
+          style: AppTypography.ofTitleLarge(context),
+        ),
         content: Text(
           l10n.discardDialogMessage,
           style: AppTypography.ofBodySecondary(context),
@@ -1046,9 +1168,9 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.failure),
             onPressed: () {
               Navigator.pop(dialogCtx);
-              context
-                  .read<WorkoutSessionBloc>()
-                  .add(const DiscardSessionRequested());
+              context.read<WorkoutSessionBloc>().add(
+                const DiscardSessionRequested(),
+              );
               if (context.mounted && Navigator.of(context).canPop()) {
                 Navigator.of(context).pop();
               }

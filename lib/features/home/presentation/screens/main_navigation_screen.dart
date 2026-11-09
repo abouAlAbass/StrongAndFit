@@ -54,9 +54,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
     final l10n = AppLocalizations.of(context);
     if (l10n != null) {
       context.read<RestTimerCubit>().updateNotificationText(
-            title: l10n.restNotificationTitle,
-            body: l10n.restNotificationBody,
-          );
+        title: l10n.restNotificationTitle,
+        body: l10n.restNotificationBody,
+      );
     }
   }
 
@@ -84,7 +84,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
               children: [
                 NavigationRail(
                   selectedIndex: _currentIndex,
-                  onDestinationSelected: (idx) => setState(() => _currentIndex = idx),
+                  onDestinationSelected: (idx) =>
+                      setState(() => _currentIndex = idx),
                   labelType: NavigationRailLabelType.all,
                   backgroundColor: AppColors.ofSurface(context),
                   indicatorColor: AppColors.ofPrimaryContainer(context),
@@ -102,27 +103,43 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
                   destinations: [
                     NavigationRailDestination(
                       icon: const Icon(Icons.fitness_center_outlined),
-                      selectedIcon: const Icon(Icons.fitness_center, color: AppColors.primary),
+                      selectedIcon: const Icon(
+                        Icons.fitness_center,
+                        color: AppColors.primary,
+                      ),
                       label: Text(l10n.navWorkout),
                     ),
                     NavigationRailDestination(
                       icon: const Icon(Icons.history_outlined),
-                      selectedIcon: const Icon(Icons.history, color: AppColors.primary),
+                      selectedIcon: const Icon(
+                        Icons.history,
+                        color: AppColors.primary,
+                      ),
                       label: Text(l10n.navHistory),
                     ),
                     NavigationRailDestination(
                       icon: const Icon(Icons.format_list_bulleted_outlined),
-                      selectedIcon: const Icon(Icons.format_list_bulleted, color: AppColors.primary),
+                      selectedIcon: const Icon(
+                        Icons.format_list_bulleted,
+                        color: AppColors.primary,
+                      ),
                       label: Text(l10n.navExercises),
                     ),
                     NavigationRailDestination(
                       icon: const Icon(Icons.person_outline),
-                      selectedIcon: const Icon(Icons.person, color: AppColors.primary),
+                      selectedIcon: const Icon(
+                        Icons.person,
+                        color: AppColors.primary,
+                      ),
                       label: Text(l10n.navProfile),
                     ),
                   ],
                 ),
-                VerticalDivider(thickness: 1, width: 1, color: AppColors.ofBorder(context)),
+                VerticalDivider(
+                  thickness: 1,
+                  width: 1,
+                  color: AppColors.ofBorder(context),
+                ),
                 Expanded(
                   child: Column(
                     children: [
@@ -140,38 +157,48 @@ class _MainNavigationScreenState extends State<MainNavigationScreen>
             ),
           )
         : Scaffold(
-            body: IndexedStack(
-              index: _currentIndex,
-              children: screens,
-            ),
+            body: IndexedStack(index: _currentIndex, children: screens),
             bottomNavigationBar: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 const RestTimerFloatingBar(),
                 NavigationBar(
                   selectedIndex: _currentIndex,
-                  onDestinationSelected: (idx) => setState(() => _currentIndex = idx),
+                  onDestinationSelected: (idx) =>
+                      setState(() => _currentIndex = idx),
                   backgroundColor: AppColors.ofSurface(context),
                   indicatorColor: AppColors.ofPrimaryContainer(context),
                   destinations: [
                     NavigationDestination(
                       icon: const Icon(Icons.fitness_center_outlined),
-                      selectedIcon: const Icon(Icons.fitness_center, color: AppColors.primary),
+                      selectedIcon: const Icon(
+                        Icons.fitness_center,
+                        color: AppColors.primary,
+                      ),
                       label: l10n.navWorkout,
                     ),
                     NavigationDestination(
                       icon: const Icon(Icons.history_outlined),
-                      selectedIcon: const Icon(Icons.history, color: AppColors.primary),
+                      selectedIcon: const Icon(
+                        Icons.history,
+                        color: AppColors.primary,
+                      ),
                       label: l10n.navHistory,
                     ),
                     NavigationDestination(
                       icon: const Icon(Icons.format_list_bulleted_outlined),
-                      selectedIcon: const Icon(Icons.format_list_bulleted, color: AppColors.primary),
+                      selectedIcon: const Icon(
+                        Icons.format_list_bulleted,
+                        color: AppColors.primary,
+                      ),
                       label: l10n.navExercises,
                     ),
                     NavigationDestination(
                       icon: const Icon(Icons.person_outline),
-                      selectedIcon: const Icon(Icons.person, color: AppColors.primary),
+                      selectedIcon: const Icon(
+                        Icons.person,
+                        color: AppColors.primary,
+                      ),
                       label: l10n.navProfile,
                     ),
                   ],

@@ -52,7 +52,10 @@ class WarmupCalculator {
         stepNumber: stepNum++,
         weightKg: barWeightKg,
         reps: 10,
-        percentage: ((barWeightKg / workingWeightKg) * 100).round().clamp(10, 100),
+        percentage: ((barWeightKg / workingWeightKg) * 100).round().clamp(
+          10,
+          100,
+        ),
         label: 'Activation',
       ),
     );
@@ -69,7 +72,8 @@ class WarmupCalculator {
       final roundedWeight = _roundToIncrement(rawWeight, plateIncrement);
 
       // Only add if it's strictly greater than previous step and significantly below working weight
-      if (roundedWeight > steps.last.weightKg && roundedWeight < workingWeightKg - 2.5) {
+      if (roundedWeight > steps.last.weightKg &&
+          roundedWeight < workingWeightKg - 2.5) {
         steps.add(
           WarmupStep(
             stepNumber: stepNum++,

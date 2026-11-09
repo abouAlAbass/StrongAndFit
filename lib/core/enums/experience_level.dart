@@ -1,5 +1,1 @@
-enum ExperienceLevel {
-  beginner,
-  intermediate,
-  advanced,
-}
+enum ExperienceLevel { beginner, intermediate, advanced }

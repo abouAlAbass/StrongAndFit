@@ -34,8 +34,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
         name: name != null ? Value(name) : const Value.absent(),
         weightKg: weightKg != null ? Value(weightKg) : const Value.absent(),
         heightCm: heightCm != null ? Value(heightCm) : const Value.absent(),
-        weeklyWorkoutGoal:
-            weeklyWorkoutGoal != null ? Value(weeklyWorkoutGoal) : const Value.absent(),
+        weeklyWorkoutGoal: weeklyWorkoutGoal != null
+            ? Value(weeklyWorkoutGoal)
+            : const Value.absent(),
         experienceLevel: experienceLevel != null
             ? Value(experienceLevel)
             : const Value.absent(),

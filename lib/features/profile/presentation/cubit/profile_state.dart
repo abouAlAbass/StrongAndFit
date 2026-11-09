@@ -50,8 +50,7 @@ class ProfileState extends Equatable {
     return ProfileState(
       status: status ?? this.status,
       profile: profile ?? this.profile,
-      weeklyCompletedCount:
-          weeklyCompletedCount ?? this.weeklyCompletedCount,
+      weeklyCompletedCount: weeklyCompletedCount ?? this.weeklyCompletedCount,
       lifetimeStats: lifetimeStats ?? this.lifetimeStats,
       muscleDistribution: muscleDistribution ?? this.muscleDistribution,
       errorMessage: errorMessage ?? this.errorMessage,
@@ -60,11 +59,11 @@ class ProfileState extends Equatable {
 
   @override
   List<Object?> get props => [
-        status,
-        profile,
-        weeklyCompletedCount,
-        lifetimeStats,
-        muscleDistribution,
-        errorMessage,
-      ];
+    status,
+    profile,
+    weeklyCompletedCount,
+    lifetimeStats,
+    muscleDistribution,
+    errorMessage,
+  ];
 }

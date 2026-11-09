@@ -51,8 +51,8 @@ class _Bar extends StatelessWidget {
     final subtitle = isFinished
         ? l10n.tapToStartNextSet
         : (state.nextExerciseName != null
-            ? l10n.nextExercise(state.nextExerciseName!)
-            : (RestTimerVisuals.kindLabel(state, l10n) ?? l10n.tapToAdjust));
+              ? l10n.nextExercise(state.nextExerciseName!)
+              : (RestTimerVisuals.kindLabel(state, l10n) ?? l10n.tapToAdjust));
 
     return Center(
       child: ConstrainedBox(
@@ -69,7 +69,10 @@ class _Bar extends StatelessWidget {
               end: AlignmentDirectional.bottomEnd,
             ),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: accent.withValues(alpha: 0.7), width: 1.2),
+            border: Border.all(
+              color: accent.withValues(alpha: 0.7),
+              width: 1.2,
+            ),
             boxShadow: [
               BoxShadow(
                 color: accent.withValues(alpha: 0.28),
@@ -96,7 +99,9 @@ class _Bar extends StatelessWidget {
                       child: Icon(
                         isFinished
                             ? Icons.check_rounded
-                            : (state.isPaused ? Icons.pause_rounded : Icons.timer_outlined),
+                            : (state.isPaused
+                                  ? Icons.pause_rounded
+                                  : Icons.timer_outlined),
                         size: 18,
                         color: isFinished ? AppColors.completed : Colors.white,
                       ),
@@ -115,8 +120,12 @@ class _Bar extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: AppTypography.titleMedium.copyWith(
                               fontSize: 15,
-                              color: isFinished ? AppColors.completed : Colors.white,
-                              fontFeatures: const [FontFeature.tabularFigures()],
+                              color: isFinished
+                                  ? AppColors.completed
+                                  : Colors.white,
+                              fontFeatures: const [
+                                FontFeature.tabularFigures(),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 2),
@@ -126,23 +135,38 @@ class _Bar extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: AppTypography.caption.copyWith(
                               fontSize: 11.5,
-                              color: isFinished ? Colors.white70 : const Color(0xFF9898A0),
+                              color: isFinished
+                                  ? Colors.white70
+                                  : const Color(0xFF9898A0),
                             ),
                           ),
                         ],
                       ),
                     ),
                     if (!isFinished) ...[
-                      _QuickButton(label: '-15', onTap: () => cubit.adjustTime(-15)),
+                      _QuickButton(
+                        label: '-15',
+                        onTap: () => cubit.adjustTime(-15),
+                      ),
                       const SizedBox(width: 6),
-                      _QuickButton(label: '+15', onTap: () => cubit.adjustTime(15)),
+                      _QuickButton(
+                        label: '+15',
+                        onTap: () => cubit.adjustTime(15),
+                      ),
                     ],
                     IconButton(
                       tooltip: l10n.skip,
-                      constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
+                      constraints: const BoxConstraints(
+                        minWidth: 44,
+                        minHeight: 44,
+                      ),
                       icon: Icon(
-                        isFinished ? Icons.check_circle_rounded : Icons.close_rounded,
-                        color: isFinished ? AppColors.completed : const Color(0xFF9898A0),
+                        isFinished
+                            ? Icons.check_circle_rounded
+                            : Icons.close_rounded,
+                        color: isFinished
+                            ? AppColors.completed
+                            : const Color(0xFF9898A0),
                         size: 22,
                       ),
                       onPressed: cubit.stop,

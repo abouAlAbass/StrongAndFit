@@ -15,7 +15,8 @@ class EditProfileDialog extends StatefulWidget {
     required double? heightCm,
     required int weeklyGoal,
     required ExperienceLevel experienceLevel,
-  }) onSave;
+  })
+  onSave;
 
   const EditProfileDialog({
     super.key,
@@ -32,7 +33,8 @@ class EditProfileDialog extends StatefulWidget {
       required double? heightCm,
       required int weeklyGoal,
       required ExperienceLevel experienceLevel,
-    }) onSave,
+    })
+    onSave,
   }) {
     return showModalBottomSheet(
       context: context,
@@ -132,12 +134,16 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(l10n.weightKg, style: AppTypography.ofCaption(context)),
+                      Text(
+                        l10n.weightKg,
+                        style: AppTypography.ofCaption(context),
+                      ),
                       const SizedBox(height: 6),
                       TextField(
                         controller: _weightController,
-                        keyboardType:
-                            const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
                         inputFormatters: [
                           FilteringTextInputFormatter.allow(
                             RegExp(r'^\d*\.?\d*'),
@@ -156,7 +162,10 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(l10n.heightCm, style: AppTypography.ofCaption(context)),
+                      Text(
+                        l10n.heightCm,
+                        style: AppTypography.ofCaption(context),
+                      ),
                       const SizedBox(height: 6),
                       TextField(
                         controller: _heightController,
@@ -197,12 +206,16 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 final isSelected = _weeklyGoal == days;
                 return Expanded(
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.symmetric(horizontal: 3),
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 3,
+                    ),
                     child: InkWell(
                       onTap: () => setState(() => _weeklyGoal = days),
                       borderRadius: BorderRadius.circular(8),
                       child: Container(
-                        padding: const EdgeInsetsDirectional.symmetric(vertical: 10),
+                        padding: const EdgeInsetsDirectional.symmetric(
+                          vertical: 10,
+                        ),
                         decoration: BoxDecoration(
                           color: isSelected
                               ? AppColors.ofPrimaryContainer(context)
@@ -309,7 +322,9 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 : AppColors.ofSurface(context),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.ofBorder(context),
+              color: isSelected
+                  ? AppColors.primary
+                  : AppColors.ofBorder(context),
               width: 1.2,
             ),
           ),
@@ -319,7 +334,9 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: isSelected ? AppColors.primary : AppColors.ofTextSecondary(context),
+                color: isSelected
+                    ? AppColors.primary
+                    : AppColors.ofTextSecondary(context),
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

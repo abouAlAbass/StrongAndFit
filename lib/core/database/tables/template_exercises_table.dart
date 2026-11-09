@@ -8,18 +8,12 @@ class TemplateExercises extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   /// Foreign key linking to the parent template.
-  IntColumn get templateId => integer().references(
-        Templates,
-        #id,
-        onDelete: KeyAction.cascade,
-      )();
+  IntColumn get templateId =>
+      integer().references(Templates, #id, onDelete: KeyAction.cascade)();
 
   /// Foreign key referencing the master exercise record.
-  IntColumn get exerciseId => integer().references(
-        Exercises,
-        #id,
-        onDelete: KeyAction.restrict,
-      )();
+  IntColumn get exerciseId =>
+      integer().references(Exercises, #id, onDelete: KeyAction.restrict)();
 
   /// Sequence ordering index of the exercise within the template (0-indexed).
   IntColumn get orderIndex => integer().withDefault(const Constant(0))();

@@ -27,7 +27,8 @@ class RestProgressRing extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isRtl = Directionality.of(context) == TextDirection.rtl;
-    final resolvedTrackColor = trackColor ?? AppColors.ofSurfaceElevated(context);
+    final resolvedTrackColor =
+        trackColor ?? AppColors.ofSurfaceElevated(context);
 
     return TweenAnimationBuilder<double>(
       tween: Tween(end: progress.clamp(0.0, 1.0)),
