@@ -54,19 +54,17 @@ jobs:
       - name: Run Test Suite
         run: flutter test
 
-      - name: Warm up Gradle Wrapper (Retry on transient 504)
-        working-directory: android
-        run: |
-          chmod +x gradlew
-          for i in 1 2 3 4 5; do
-            echo "Attempt $i: Initializing Gradle wrapper..."
-            ./gradlew --version && break
-            echo "Transient error downloading Gradle, retrying in 5s..."
-            sleep 5
-          done
-
       - name: Build Android Release APK
         run: |
+          for i in 1 2 3 4; do
+            echo "Attempt $i: Building Android Release APK..."
+            if flutter build apk --release --build-number=${{ github.run_number }} --android-skip-build-dependency-validation; then
+              exit 0
+            fi
+            echo "Transient error during build/download, retrying in 5s..."
+            sleep 5
+          done
+          echo "Final attempt 5: Building Android Release APK..."
           flutter build apk --release \
             --build-number=${{ github.run_number }} \
             --android-skip-build-dependency-validation
