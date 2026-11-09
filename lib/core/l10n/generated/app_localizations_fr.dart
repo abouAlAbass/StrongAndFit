@@ -933,6 +933,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Impossible de contacter les serveurs Google Gemini. Vérifiez votre connexion Internet.';
 
   @override
+  String get aiTimeoutError =>
+      'Délai d\'attente dépassé lors de la communication avec Google Gemini. Vérifiez votre connexion Internet.';
+
+  @override
   String get aiAnalysisDialogTitle => 'Analyse Préparateur Physique';
 
   @override

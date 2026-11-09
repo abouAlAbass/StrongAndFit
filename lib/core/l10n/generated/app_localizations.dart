@@ -1816,6 +1816,12 @@ abstract class AppLocalizations {
   /// **'Unable to connect to Google Gemini servers. Please check your Internet connection.'**
   String get networkConnectionError;
 
+  /// No description provided for @aiTimeoutError.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection timed out while communicating with Google Gemini. Please check your Internet connection.'**
+  String get aiTimeoutError;
+
   /// No description provided for @aiAnalysisDialogTitle.
   ///
   /// In en, this message translates to:

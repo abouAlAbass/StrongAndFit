@@ -923,6 +923,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Unable to connect to Google Gemini servers. Please check your Internet connection.';
 
   @override
+  String get aiTimeoutError =>
+      'Connection timed out while communicating with Google Gemini. Please check your Internet connection.';
+
+  @override
   String get aiAnalysisDialogTitle => 'Strength Coach Analysis';
 
   @override

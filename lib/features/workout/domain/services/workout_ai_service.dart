@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -15,62 +16,113 @@ class AiNetworkException implements Exception {
   String toString() => message;
 }
 
+/// Exception specifically thrown when request times out while querying Gemini AI.
+class AiTimeoutException implements Exception {
+  final String message;
+  const AiTimeoutException([
+    this.message =
+        'Délai d\'attente dépassé lors de la communication avec Google Gemini.',
+  ]);
+
+  @override
+  String toString() => message;
+}
+
 /// Service interfacing directly with Google Gemini Generative AI for
 /// deep athletic analysis, strength coaching insights, and BYOK validation.
 class WorkoutAiService {
   final AiKeyStorageService _keyStorage;
 
-  /// Default fast and cost-effective model recommended for structured JSON tasks.
-  static const String defaultModel = 'gemini-1.5-flash';
+  /// Candidate model names tried sequentially to guarantee robust discovery
+  /// across API endpoints (e.g. gemini-1.5-flash, gemini-2.5-flash, gemini-1.5-flash-latest).
+  static const List<String> candidateModels = [
+    'gemini-1.5-flash',
+    'gemini-2.5-flash',
+    'gemini-1.5-flash-latest',
+    'gemini-pro',
+  ];
 
   WorkoutAiService({AiKeyStorageService? keyStorage})
     : _keyStorage = keyStorage ?? AiKeyStorageService();
 
+  /// Creates a GenerativeModel with standard safety settings and optional system instruction.
+  static GenerativeModel _createModel({
+    required String modelName,
+    required String apiKey,
+    GenerationConfig? generationConfig,
+    Content? systemInstruction,
+  }) {
+    return GenerativeModel(
+      model: modelName,
+      apiKey: apiKey,
+      generationConfig: generationConfig,
+      systemInstruction: systemInstruction,
+    );
+  }
+
   /// Tests a provided Gemini API key with a minimal query to verify validity.
-  /// Throws an informative [Exception] if invalid, expired, or network unreachable.
+  /// Iterates through [candidateModels] if a specific variant returns 404/not found.
+  /// Throws an informative [Exception] if invalid, expired, network unreachable, or timed out.
   Future<bool> testApiKey(String key) async {
     final sanitized = key.trim();
     if (sanitized.isEmpty) {
       throw Exception('La clé d\'API ne peut pas être vide.');
     }
 
-    try {
-      final model = GenerativeModel(model: defaultModel, apiKey: sanitized);
+    String? lastModelError;
 
-      final response = await model.generateContent([Content.text('ping')]);
+    for (final modelName in candidateModels) {
+      try {
+        final model = _createModel(modelName: modelName, apiKey: sanitized);
 
-      if (response.text != null && response.text!.isNotEmpty) {
-        return true;
-      }
-      throw Exception('Aucune réponse reçue de Google Gemini.');
-    } on GenerativeAIException catch (e) {
-      if (_isNetworkError(e)) {
-        throw const AiNetworkException();
-      }
-      if (e.message.contains('API_KEY_INVALID') ||
-          e.message.contains('API key not valid')) {
-        throw Exception('Clé d\'API Google AI Studio invalide.');
-      } else if (e.message.contains('QUOTA_EXCEEDED') ||
-          e.message.contains('Resource has been exhausted')) {
-        throw Exception('Quota dépassé pour cette clé.');
-      }
-      throw Exception('Erreur Google Gemini: ${e.message}');
-    } on SocketException catch (_) {
-      throw const AiNetworkException();
-    } on HttpException catch (_) {
-      throw const AiNetworkException();
-    } catch (e) {
-      if (e is Exception) {
+        final response = await model
+            .generateContent([Content.text('ping')])
+            .timeout(const Duration(seconds: 15));
+
+        if (response.text != null && response.text!.isNotEmpty) {
+          return true;
+        }
+      } on TimeoutException {
+        throw const AiTimeoutException();
+      } on GenerativeAIException catch (e) {
         if (_isNetworkError(e)) {
           throw const AiNetworkException();
         }
-        rethrow;
-      }
-      if (_isNetworkError(e)) {
+        if (e.message.contains('API_KEY_INVALID') ||
+            e.message.contains('API key not valid')) {
+          throw Exception('Clé d\'API Google AI Studio invalide.');
+        } else if (e.message.contains('QUOTA_EXCEEDED') ||
+            e.message.contains('Resource has been exhausted')) {
+          throw Exception('Quota dépassé pour cette clé.');
+        } else if (e.message.contains('is not found') ||
+            e.message.contains('not supported for generateContent') ||
+            e.message.contains('404')) {
+          // Model variant not supported or not found in current region/endpoint; try fallback candidate
+          lastModelError = e.message;
+          continue;
+        }
+        throw Exception('Erreur Google Gemini: ${e.message}');
+      } on SocketException catch (_) {
         throw const AiNetworkException();
+      } on HttpException catch (_) {
+        throw const AiNetworkException();
+      } catch (e) {
+        if (e is TimeoutException) {
+          throw const AiTimeoutException();
+        }
+        if (_isNetworkError(e)) {
+          throw const AiNetworkException();
+        }
+        if (e is Exception) rethrow;
+        throw Exception('Erreur de connexion avec l\'API Google AI: $e');
       }
-      throw Exception('Erreur de connexion avec l\'API Google AI: $e');
     }
+
+    throw Exception(
+      lastModelError != null
+          ? 'Erreur Google Gemini: $lastModelError'
+          : 'Aucune réponse reçue de Google Gemini.',
+    );
   }
 
   static bool _isNetworkError(dynamic error) {
@@ -124,71 +176,90 @@ Format JSON attendu :
       );
     }
 
-    try {
-      final model = GenerativeModel(
-        model: defaultModel,
-        apiKey: apiKey,
-        generationConfig: GenerationConfig(
-          responseMimeType: 'application/json',
-          temperature: 0.3,
-        ),
-        systemInstruction: Content.system(buildSystemInstruction(languageCode)),
-      );
+    String? lastModelError;
 
-      final prompt =
-          'Voici les données de la séance à analyser :\n${jsonEncode(payload.toJson())}';
-
-      final response = await model.generateContent([Content.text(prompt)]);
-
-      final rawText = response.text;
-      if (rawText == null || rawText.trim().isEmpty) {
-        throw Exception('Réponse vide retournée par Gemini.');
-      }
-
-      // Sanitize potential backticks if returned despite responseMimeType
-      var cleanedJson = rawText.trim();
-      if (cleanedJson.startsWith('```json')) {
-        cleanedJson = cleanedJson.substring(7);
-      }
-      if (cleanedJson.startsWith('```')) {
-        cleanedJson = cleanedJson.substring(3);
-      }
-      if (cleanedJson.endsWith('```')) {
-        cleanedJson = cleanedJson.substring(0, cleanedJson.length - 3);
-      }
-      cleanedJson = cleanedJson.trim();
-
-      final decoded = jsonDecode(cleanedJson) as Map<String, dynamic>;
-      return WorkoutAiAnalysis.fromJson(decoded);
-    } on GenerativeAIException catch (e) {
-      if (_isNetworkError(e)) {
-        throw const AiNetworkException();
-      }
-      if (e.message.contains('API_KEY_INVALID')) {
-        throw Exception(
-          'Clé d\'API invalide. Vérifiez vos paramètres dans votre profil.',
+    for (final modelName in candidateModels) {
+      try {
+        final model = _createModel(
+          modelName: modelName,
+          apiKey: apiKey,
+          generationConfig: GenerationConfig(
+            responseMimeType: 'application/json',
+            temperature: 0.3,
+          ),
+          systemInstruction: Content.system(
+            buildSystemInstruction(languageCode),
+          ),
         );
-      } else if (e.message.contains('QUOTA_EXCEEDED')) {
-        throw Exception(
-          'Quota Gemini gratuit atteint. Réessayez dans un instant.',
-        );
-      }
-      throw Exception('Erreur Gemini : ${e.message}');
-    } on SocketException catch (_) {
-      throw const AiNetworkException();
-    } on HttpException catch (_) {
-      throw const AiNetworkException();
-    } catch (e) {
-      if (e is Exception) {
+
+        final prompt =
+            'Voici les données de la séance à analyser :\n${jsonEncode(payload.toJson())}';
+
+        final response = await model
+            .generateContent([Content.text(prompt)])
+            .timeout(const Duration(seconds: 30));
+
+        final rawText = response.text;
+        if (rawText == null || rawText.trim().isEmpty) {
+          throw Exception('Réponse vide retournée par Gemini.');
+        }
+
+        // Sanitize potential backticks if returned despite responseMimeType
+        var cleanedJson = rawText.trim();
+        if (cleanedJson.startsWith('```json')) {
+          cleanedJson = cleanedJson.substring(7);
+        }
+        if (cleanedJson.startsWith('```')) {
+          cleanedJson = cleanedJson.substring(3);
+        }
+        if (cleanedJson.endsWith('```')) {
+          cleanedJson = cleanedJson.substring(0, cleanedJson.length - 3);
+        }
+        cleanedJson = cleanedJson.trim();
+
+        final decoded = jsonDecode(cleanedJson) as Map<String, dynamic>;
+        return WorkoutAiAnalysis.fromJson(decoded);
+      } on TimeoutException {
+        throw const AiTimeoutException();
+      } on GenerativeAIException catch (e) {
         if (_isNetworkError(e)) {
           throw const AiNetworkException();
         }
-        rethrow;
-      }
-      if (_isNetworkError(e)) {
+        if (e.message.contains('API_KEY_INVALID')) {
+          throw Exception(
+            'Clé d\'API invalide. Vérifiez vos paramètres dans votre profil.',
+          );
+        } else if (e.message.contains('QUOTA_EXCEEDED')) {
+          throw Exception(
+            'Quota Gemini gratuit atteint. Réessayez dans un instant.',
+          );
+        } else if (e.message.contains('is not found') ||
+            e.message.contains('not supported for generateContent') ||
+            e.message.contains('404')) {
+          lastModelError = e.message;
+          continue;
+        }
+        throw Exception('Erreur Gemini : ${e.message}');
+      } on SocketException catch (_) {
         throw const AiNetworkException();
+      } on HttpException catch (_) {
+        throw const AiNetworkException();
+      } catch (e) {
+        if (e is TimeoutException) {
+          throw const AiTimeoutException();
+        }
+        if (_isNetworkError(e)) {
+          throw const AiNetworkException();
+        }
+        if (e is Exception) rethrow;
+        throw Exception('Erreur lors de l\'analyse IA : $e');
       }
-      throw Exception('Erreur lors de l\'analyse IA : $e');
     }
+
+    throw Exception(
+      lastModelError != null
+          ? 'Erreur Gemini : $lastModelError'
+          : 'Réponse vide retournée par Gemini.',
+    );
   }
 }

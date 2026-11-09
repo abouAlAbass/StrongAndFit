@@ -151,13 +151,14 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
     } catch (e) {
       HapticFeedback.heavyImpact();
       if (mounted) {
-        final errorText =
-            e is AiNetworkException ||
-                e.toString().toLowerCase().contains('socket') ||
-                e.toString().toLowerCase().contains('clientexception') ||
-                e.toString().toLowerCase().contains('failed host lookup')
-            ? l10n.networkConnectionError
-            : e.toString().replaceAll('Exception: ', '');
+        final errorText = e is AiTimeoutException
+            ? l10n.aiTimeoutError
+            : (e is AiNetworkException ||
+                      e.toString().toLowerCase().contains('socket') ||
+                      e.toString().toLowerCase().contains('clientexception') ||
+                      e.toString().toLowerCase().contains('failed host lookup')
+                  ? l10n.networkConnectionError
+                  : e.toString().replaceAll('Exception: ', ''));
         setState(() {
           _isLoading = false;
           _errorMessage = errorText;

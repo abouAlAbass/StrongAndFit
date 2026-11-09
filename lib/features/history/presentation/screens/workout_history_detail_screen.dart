@@ -524,13 +524,14 @@ class WorkoutHistoryDetailScreen extends StatelessWidget {
     } catch (e) {
       if (context.mounted) {
         Navigator.of(context, rootNavigator: true).pop(); // dismiss loader
-        final errorText =
-            e is AiNetworkException ||
-                e.toString().toLowerCase().contains('socket') ||
-                e.toString().toLowerCase().contains('clientexception') ||
-                e.toString().toLowerCase().contains('failed host lookup')
-            ? l10n.networkConnectionError
-            : 'Erreur Coach IA : ${e.toString().replaceAll("Exception: ", "")}';
+        final errorText = e is AiTimeoutException
+            ? l10n.aiTimeoutError
+            : (e is AiNetworkException ||
+                      e.toString().toLowerCase().contains('socket') ||
+                      e.toString().toLowerCase().contains('clientexception') ||
+                      e.toString().toLowerCase().contains('failed host lookup')
+                  ? l10n.networkConnectionError
+                  : 'Erreur Coach IA : ${e.toString().replaceAll("Exception: ", "")}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(errorText),

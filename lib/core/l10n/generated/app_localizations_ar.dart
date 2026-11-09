@@ -921,6 +921,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'تعذر الاتصال بخوادم Google Gemini. يرجى التحقق من اتصالك بالإنترنت.';
 
   @override
+  String get aiTimeoutError =>
+      'انتهت مهلة الانتظار أثناء الاتصال بخوادم Google Gemini. يرجى التحقق من اتصالك بالإنترنت.';
+
+  @override
   String get aiAnalysisDialogTitle => 'تحليل المعد البدني الذكي';
 
   @override

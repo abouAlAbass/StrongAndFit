@@ -3310,18 +3310,14 @@ class $RestSettingsTable extends RestSettings
         DriftSqlType.bool,
         data['${effectivePrefix}vibration_enabled'],
       )!,
-      preferredLocale:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}preferred_locale'],
-          ) ??
-          'en',
-      themeMode:
-          attachedDatabase.typeMapping.read(
-            DriftSqlType.string,
-            data['${effectivePrefix}theme_mode'],
-          ) ??
-          'dark',
+      preferredLocale: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}preferred_locale'],
+      )!,
+      themeMode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}theme_mode'],
+      )!,
     );
   }
 
@@ -3339,7 +3335,11 @@ class RestSettingsData extends DataClass
   final bool autoStart;
   final bool notificationsEnabled;
   final bool vibrationEnabled;
+
+  /// Persisted application language code ('ar', 'en', 'fr').
   final String preferredLocale;
+
+  /// Persisted visual theme mode ('system', 'light', 'dark').
   final String themeMode;
   const RestSettingsData({
     required this.id,
@@ -3348,8 +3348,8 @@ class RestSettingsData extends DataClass
     required this.autoStart,
     required this.notificationsEnabled,
     required this.vibrationEnabled,
-    this.preferredLocale = 'en',
-    this.themeMode = 'dark',
+    required this.preferredLocale,
+    required this.themeMode,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3394,12 +3394,8 @@ class RestSettingsData extends DataClass
         json['notificationsEnabled'],
       ),
       vibrationEnabled: serializer.fromJson<bool>(json['vibrationEnabled']),
-      preferredLocale: json['preferredLocale'] != null
-          ? serializer.fromJson<String>(json['preferredLocale'])
-          : 'en',
-      themeMode: json['themeMode'] != null
-          ? serializer.fromJson<String>(json['themeMode'])
-          : 'dark',
+      preferredLocale: serializer.fromJson<String>(json['preferredLocale']),
+      themeMode: serializer.fromJson<String>(json['themeMode']),
     );
   }
   @override
@@ -3991,6 +3987,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       result: [TableUpdate('template_exercises', kind: UpdateKind.delete)],
     ),
   ]);
+  @override
+  DriftDatabaseOptions get options =>
+      const DriftDatabaseOptions(storeDateTimeAsText: true);
 }
 
 typedef $$ExercisesTableCreateCompanionBuilder =

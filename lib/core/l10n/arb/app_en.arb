@@ -332,6 +332,7 @@
   "aiKeySavedSuccess": "Gemini key validated and securely saved!",
   "aiKeyDeletedSuccess": "Key deleted.",
   "networkConnectionError": "Unable to connect to Google Gemini servers. Please check your Internet connection.",
+  "aiTimeoutError": "Connection timed out while communicating with Google Gemini. Please check your Internet connection.",
   "aiAnalysisDialogTitle": "Strength Coach Analysis",
   "aiAnalysisProgressiveOverloadTitle": "Progressive Overload & Intensity",
   "aiAnalysisRecoveryRpeTitle": "Recovery & Fatigue (RPE/RIR)",

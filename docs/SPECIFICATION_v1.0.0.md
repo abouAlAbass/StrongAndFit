@@ -479,8 +479,7 @@ Contrairement aux applications concurrentes qui brident le nombre de routines gr
 | **Framework UI** | Flutter (Material 3) | SDK Flutter (`stable`) | `3.41+` / CI `stable` | Rendu graphique multiplateforme, adaptatif mobile/tablette/desktop. | `[CONFIRMÉ]` |
 | **Gestion d'état** | `flutter_bloc` / `bloc` | `^9.1.1` | `9.1.1` | Architecture réactive événementielle (BLoC) et états simples (Cubit). | `[CONFIRMÉ]` |
 | **Comparaison d'états** | `equatable` | `^3.0.0` | `2.0.8` / `3.0.0` | Égalité structurelle par valeur des modèles et états BLoC. | `[CONFIRMÉ]` |
-| **ORM & Base locale** | `drift` + `drift_flutter` | `^2.34.4` / `^0.3.1` | `2.34.4` / `0.3.1` | Abstraction relationnelle typée, requêtes réactives (`Stream`) et migrations SQLite. | `[CONFIRMÉ]` |
-| **Moteur SQLite natif** | `sqlite3_flutter_libs` | `^0.6.0+eol` | `0.6.0+eol` | Binaires natifs SQLite embarqués sur Android/iOS/Desktop. | `[CONFIRMÉ]` |
+| **ORM & Base locale** | `drift` + `drift_flutter` | `^2.34.0` / `^0.3.1` | `2.34.0` / `0.3.1` | Abstraction relationnelle typée, requêtes réactives (`Stream`), migrations SQLite et runtime natif sqlite3 multiplateforme. | `[CONFIRMÉ]` |
 | **Stockage sécurisé** | `flutter_secure_storage` | `^10.0.0` | `10.0.0` | Chiffrement matériel/OS de la clé API Gemini (Android Keystore / iOS Keychain). | `[CONFIRMÉ]` |
 | **Intelligence Artificielle** | `google_generative_ai` | `^0.4.7` | `0.4.7` | Client officiel Google pour interroger l'API REST Gemini (`gemini-1.5-flash`). | `[CONFIRMÉ]` |
 | **Visualisation graphique** | `fl_chart` | `^1.2.0` | `1.2.0` | Rendu des courbes d'évolution du poids corporel et du 1RM. | `[CONFIRMÉ]` |
@@ -555,7 +554,7 @@ Le code source sous `lib/` est structuré selon une approche **Feature-First com
 
 | Module / Répertoire | Responsabilités principales | Composants clés | Confiance |
 | :--- | :--- | :--- | :--- |
-| `lib/core/database/` | Définition des 9 tables relationnelles, 5 DAOs, stratégie de migration (`v1` à `v5`), activation des clés étrangères et *seeding* initial. | `AppDatabase`, `WorkoutDao`, `ProfileDao`, `ExerciseDao`, `TemplateDao`, `SettingsDao` | `[CONFIRMÉ]` |
+| `lib/core/database/` | Définition des 9 tables relationnelles, 5 DAOs, stratégie de migration (`v1` à `v6`), activation des clés étrangères et *seeding* initial. | `AppDatabase`, `WorkoutDao`, `ProfileDao`, `ExerciseDao`, `TemplateDao`, `SettingsDao` | `[CONFIRMÉ]` |
 | `lib/core/l10n/` | Internationalisation trilingue (`ar`, `en`, `fr`), fichiers `.arb`, classes générées et résolution dynamique des noms d'exercices par `slug`. | `AppLocalizations`, `ExerciseTranslationHelper` | `[CONFIRMÉ]` |
 | `lib/core/notifications/` | Abstraction et implémentation des notifications locales d'échéance de repos avec gestion des permissions Android 13+/iOS et fuseaux UTC. | `RestNotificationService`, `LocalRestNotificationService`, `NoopRestNotificationService` | `[CONFIRMÉ]` |
 | `lib/core/services/` | Persistance chiffrée de la clé API Google Gemini de l'utilisateur. | `AiKeyStorageService` | `[CONFIRMÉ]` |
@@ -571,7 +570,7 @@ Le code source sous `lib/` est structuré selon une approche **Feature-First com
 #### Stockage SQLite (`strong_app_database`)
 La base de données SQLite est ouverte via `driftDatabase(name: 'strong_app_database', native: const DriftNativeOptions(shareAcrossIsolates: true))` (`lib/core/database/connection/connection.dart:10-13`), stockée dans le répertoire de documents applicatif standard du système d'exploitation `[CONFIRMÉ]`.
 
-#### Schéma détaillé des 9 tables (Version de schéma : `5`)
+#### Schéma détaillé des 9 tables (Version de schéma : `6`)
 
 | Table SQL (Classe Drift) | Clé primaire | Colonnes et types | Contraintes & Clés étrangères | Fichier source |
 | :--- | :--- | :--- | :--- | :--- |
@@ -700,9 +699,9 @@ Le dépôt contient deux pipelines GitHub Actions actifs sous `.github/workflows
 | :--- | :--- | :--- | :--- | :--- |
 | `android/app/build.gradle.kts:27` | `TODO` | `// TODO: Specify your own unique Application ID` (`com.strong.app.strong`). | Faible (l'ID est déjà personnalisé, commentaire résiduel du template Flutter). | `[CONFIRMÉ]` |
 | `android/app/build.gradle.kts:40-42` | `TODO` | `// TODO: Add your own signing config for the release build.` La build `release` utilise `signingConfigs.getByName("debug")`. | **Élevé** : Bloquant pour une publication sur Google Play Store et non sécurisé pour la production. | `[CONFIRMÉ]` |
-| `lib/core/errors/failures.dart:1-19` | Code mort | Les classes `Failure`, `DatabaseFailure` et `NotFoundFailure` sont définies mais ne sont importées dans aucun autre fichier du projet. | Faible (vestige d'une approche fonctionnelle de type `Either<Failure, T>` non retenue). | `[CONFIRMÉ]` |
+| `lib/core/errors/failures.dart:1-19` | Code mort (**Supprimé**) | Les classes `Failure`, `DatabaseFailure` et `NotFoundFailure` n'étaient importées nulle part. Fichier et dossier supprimés. | Néant (nettoyé). | `[CONFIRMÉ]` |
 | `lib/features/workout/presentation/screens/workout_session_screen.dart:1-1199` | Dette modulaire | Le fichier `WorkoutSessionScreen` compte **1 199 lignes** et cumule l'affichage de la séance, les dialogues d'édition, le menu de langue et la gestion des supersets (identifié en Tâche 07 de `AUDIT_AND_TASKS.md:27`). | Moyen (maintenabilité et lisibilité). | `[CONFIRMÉ]` |
-| `pubspec.yaml:41` | Dépendance EOL | Utilisation de `sqlite3_flutter_libs: ^0.6.0+eol` (marqué *End-Of-Life* par l'auteur au profit des *Native Assets* de Dart/Drift). | Faible à court terme, nécessite une migration lors d'une future mise à jour majeure de Flutter. | `[CONFIRMÉ]` |
+| `pubspec.yaml` | Dépendance EOL (**Résolu**) | `sqlite3_flutter_libs: ^0.6.0+eol` a été retiré. Le runtime SQLite natif est désormais fourni de manière transparente par `drift_flutter: ^0.3.1`. | Néant (résolu). | `[CONFIRMÉ]` |
 | `flutter_01.log:1` | Fichier parasite | Présence d'un fichier de log `flutter_01.log` (`5 155 octets`) à la racine du dépôt, bien que `*.log` figure dans `.gitignore:3` (probablement suivi ou généré localement). | Très faible. | `[CONFIRMÉ]` |
 | `lib/features/workout/presentation/widgets/rpe_picker_dialog.dart:36-92` | Dette i18n | Les descriptions de l'échelle RPE ne comportent que `labelFr` et `labelEn` ; si la langue active est l'arabe (`ar`), `isFrench` vaut `false` et l'échelle affiche les descriptions en anglais (`rpe_picker_dialog.dart:97`). | Moyen (incohérence linguistique en mode arabe sur ce dialogue). | `[CONFIRMÉ]` |
 | `lib/features/workout/presentation/widgets/ai_key_settings_sheet.dart` & `workout_ai_analysis_dialog.dart` | Dette i18n | Les textes de l'interface du Coach IA Gemini (BYOK et dialogue de résultat) ainsi que le prompt système sont codés en dur en français au lieu d'utiliser les fichiers `.arb` (`AppLocalizations`). | Moyen (les utilisateurs anglophones et arabophones voient l'interface IA en français). | `[CONFIRMÉ]` |
@@ -753,20 +752,21 @@ Le dépôt contient deux pipelines GitHub Actions actifs sous `.github/workflows
 
 ### 7.1 Stratégie et couverture actuelle
 
-L'application dispose d'une suite de tests automatisés centralisée dans `test/widget_test.dart` (**1 429 lignes**) exécutée systématiquement en intégration continue (`flutter test --coverage` dans `.github/workflows/ci.yml:42`) `[CONFIRMÉ]`.
+L'application dispose d'une suite de tests automatisés centralisée dans `test/widget_test.dart` (40 tests, 1 500+ lignes) et `test/database/migration_test.dart` (8 tests de migration de schéma Drift), exécutée systématiquement en intégration continue (`flutter test --coverage` dans `.github/workflows/ci.yml:42`) `[CONFIRMÉ]`.
 
-| Type de test | Nombre de tests | Outils utilisés | Périmètre vérifié dans `test/widget_test.dart` | Confiance |
+| Type de test | Nombre de tests | Outils utilisés | Périmètre vérifié | Confiance |
 | :--- | :---: | :--- | :--- | :--- |
 | **Tests unitaires (Modèles & Services purs)** | 12 | `flutter_test` | Sérialisation/désérialisation JSON de `WorkoutSummary` et `WorkoutAiAnalysis`, valeurs par défaut résilientes sur JSON malformé, nettoyage des balises Markdown ```json par `WorkoutAiService`, calculs de 1RM Epley et ratios de force (`test/widget_test.dart:1173-1428`). | `[CONFIRMÉ]` |
-| **Tests d'intégration SQLite / Drift (In-Memory)** | 15 | `drift/native.dart` (`NativeDatabase.memory()`) | Seeding initial des 34 exercices et 4 templates, CRUD exercices personnalisés, démarrage/complétion/annulation de séance, pré-remplissage depuis la séance précédente, calcul des records personnels (PRs), création/liaison/dissociation des supersets, CRUD profil, suivi du poids corporel, suppression intégrale RGPD (`deleteProfileAndData`), génération d'exports CSV et JSON (`test/widget_test.dart:26-980`). | `[CONFIRMÉ]` |
+| **Tests d'intégration SQLite / Drift (In-Memory)** | 19 | `drift/native.dart` (`NativeDatabase.memory()`) | Seeding initial des 34 exercices et 4 templates, CRUD exercices personnalisés, démarrage/complétion/annulation de séance, pré-remplissage depuis la séance précédente, calcul des records personnels (PRs), création/liaison/dissociation des supersets, CRUD profil, suivi du poids corporel, suppression intégrale RGPD (`deleteProfileAndData`), génération d'exports CSV et JSON (`test/widget_test.dart:26-980`). | `[CONFIRMÉ]` |
+| **Tests de migrations incrémentales Drift** | 8 | `package:drift_dev/api/migrations_native.dart` | Validation de conformité du schéma Drift `v6`, exécution et intégrité de chaque migration `onUpgrade` (`v1 -> v2`, `v2 -> v3`, `v3 -> v4`, `v4 -> v5`, `v5 -> v6`), persistance des données utilisateur au travers des montées de version (`test/database/migration_test.dart`). | `[CONFIRMÉ]` |
 | **Tests de composants d'état (BLoC / Cubit)** | 5 | `flutter_test` | `RestTimerCubit` (démarrage, pause, reprise, ajout de temps, arrêt), `ThemeCubit`, `LocaleCubit`, `ProfileCubit` (`test/widget_test.dart:520-690`). | `[CONFIRMÉ]` |
 | **Tests de Widgets (UI)** | 4 | `WidgetTester` | Affichage de l'écran d'onboarding si aucun profil n'existe, navigation principale, feuille de configuration BYOK (`AiKeySettingsSheet`), boîte de dialogue de résultat d'analyse IA (`WorkoutAiAnalysisDialog`) (`test/widget_test.dart:985-1428`). | `[CONFIRMÉ]` |
-| **Total** | **36 tests** | **100 % passants** | Vérifié par exécution de `flutter test` (`All 36 tests passed!`). | `[CONFIRMÉ]` |
+| **Total** | **48 tests** | **100 % passants** | Vérifié par exécution de `flutter test` (`All 48 tests passed!`). | `[CONFIRMÉ]` |
 
 ### 7.2 Zones non testées ou fragiles
 
-1. **Migrations incrémentales de schéma SQLite (`v1 -> v2 -> v3 -> v4 -> v5`)** : Les tests utilisent `NativeDatabase.memory()` qui exécute uniquement la branche `onCreate` (`lib/core/database/app_database.dart:68-73`). La branche `onUpgrade` (`app_database.dart:74-103`) n'est pas couverte par des tests de migration de schéma automatisés `[CONFIRMÉ]`.
-2. **Appels réseau réels / mockés vers Google Gemini SDK** : La classe `GenerativeModel` du package `google_generative_ai` est instanciée directement à l'intérieur de `WorkoutAiService.testApiKey()` et `analyzeWorkoutData()` (`lib/features/workout/domain/services/workout_ai_service.dart:26`, `98`) sans injection de dépendance, ce qui empêche de simuler (*mocker*) les erreurs HTTP (`API_KEY_INVALID`, `QUOTA_EXCEEDED`, timeout réseau) en test unitaire `[CONFIRMÉ]`.
+1. **Migrations incrémentales de schéma SQLite (`v1 -> v6`) [COUVERT]** : Couvertes par la suite dédiée `test/database/migration_test.dart` (8 tests automatisés) et le schéma exporté `drift_schemas/drift_schema_v6.json` `[CONFIRMÉ]`.
+2. **Appels réseau réels / mockés vers Google Gemini SDK** : La classe `GenerativeModel` du package `google_generative_ai` est instanciée directement à l'intérieur de `WorkoutAiService.testApiKey()` et `analyzeWorkoutData()` (`lib/features/workout/domain/services/workout_ai_service.dart`) sans injection d'un client HTTP simulable, bien que protégée par des timeouts de 15s/30s et un repli dynamique sur plusieurs modèles candidats `[CONFIRMÉ]`.
 3. **Intégrations natives OS** : Les appels aux plugins natifs `FlutterLocalNotificationsPlugin` (`rest_notification_service.dart`), `WakelockPlus` (`workout_session_screen.dart:49`), `SharePlus.instance.share` (`workout_export_service.dart:183`) et `launchUrl` (`ai_key_settings_sheet.dart:93`) ne font pas l'objet de tests d'intégration sur émulateur (`integration_test/`) `[CONFIRMÉ]`.
 4. **Absence de seuil minimal de couverture en CI** : Bien que `.github/workflows/ci.yml:42` génère le rapport `--coverage`, aucune étape ne vérifie un pourcentage minimal de lignes couvertes ni ne bloque la Pull Request en cas de baisse de couverture `[CONFIRMÉ]`.
 
@@ -795,7 +795,7 @@ L'application dispose d'une suite de tests automatisés centralisée dans `test/
 
 ### 7.4 Scénarios de test prioritaires à automatiser (Backlog QA)
 
-1. **Test de migration SQLite multi-versions (`Schema v1 -> v5`)** : Instancier une base SQLite en version `1`, y insérer des données de test, puis déclencher l'ouverture avec `schemaVersion = 5` pour vérifier que les tables `user_profiles`, `rest_settings`, `body_weight_logs` et les colonnes `restSeconds` / `supersetGroupId` sont créées sans perte de données.
+1. **Test de migration SQLite multi-versions (`Schema v1 -> v6`) [RÉALISÉ]** : Suite `test/database/migration_test.dart` créée et intégrée, validant le schéma cible `v6` et l'ensemble des étapes `v1 -> v2 -> v3 -> v4 -> v5 -> v6` sans perte de données.
 2. **Test unitaire de `WorkoutAiService` avec client HTTP / modèle mocké** : Extraire une interface ou injecter un client mocké dans `WorkoutAiService` pour tester les branches `API_KEY_INVALID`, `QUOTA_EXCEEDED`, réponse vide et JSON invalide (`workout_ai_service.dart:33-53`, `109-129`).
 3. **Test Widget bout-en-bout d'une séance complète avec Superset et Minuteur** : Démarrer une séance depuis un template, lier 2 exercices en superset, valider une série via la barre à une main (`OneHandedQuickInputBar`), vérifier l'apparition du bandeau `RestTimerBanner`, et terminer la séance.
 
@@ -897,7 +897,7 @@ Conformément à la règle d'audit n°4, toutes les valeurs sensibles repérées
 
 - **Surface de dépendances maîtrisée** : Seulement **13 dépendances directes** d'exécution dans `pubspec.yaml:30-55`, toutes issues d'éditeurs reconnus (équipe Flutter/Dart officielle, `simolus3` pour Drift, `google_generative_ai`, `firebase_core`, `plus_plugins`) `[CONFIRMÉ]`.
 - **Licences** : Toutes les dépendances directes et transitives utilisent des licences open-source permissives (**BSD-3-Clause**, **MIT**, **Apache-2.0**) compatibles avec une distribution commerciale propriétaire sans obligation de divulgation du code source (*pas de licence GPL/AGPL détectée dans `pubspec.lock`*) `[CONFIRMÉ]`.
-- **Dépendance en fin de vie (*EOL*)** : `sqlite3_flutter_libs: ^0.6.0+eol` (`pubspec.yaml:41` / `pubspec.lock:588`) est explicitement marquée `+eol`. Bien qu'elle ne comporte pas de CVE connue à ce jour, elle ne recevra plus de correctifs de sécurité et doit être remplacée par le mécanisme *Native Assets* de `sqlite3` `[CONFIRMÉ]`.
+- **Dépendance en fin de vie (*EOL*) [RÉSOLU]** : `sqlite3_flutter_libs` a été retirée du manifeste `pubspec.yaml`. Le runtime natif SQLite est fourni de manière pérenne et transparente par `drift_flutter: ^0.3.1` `[CONFIRMÉ]`.
 
 ### 8.8 Configuration sécurité et CI/CD
 
@@ -921,7 +921,7 @@ Conformément à la règle d'audit n°4, toutes les valeurs sensibles repérées
 | Catégorie OWASP Mobile Top 10 (2024) | Statut sur Strong Fit | Constat factuel dans le code | Confiance |
 | :--- | :---: | :--- | :--- |
 | **M1 : Improper Credential Usage** | **Attention** | La clé Gemini de l'utilisateur est parfaitement protégée dans `FlutterSecureStorage` (`ai_key_storage_service.dart:11`). En revanche, les clés clientes Firebase (`firebase_options.dart`, `google-services.json`) et l'e-mail d'un testeur (`deploy_firebase_app_distribution.yml:23`) sont committés en clair. | `[CONFIRMÉ]` |
-| **M2 : Inadequate Supply Chain Security** | **Attention** | Action GitHub tierce `wzieba/Firebase-Distribution-Github-Action@v1` non épinglée par hash SHA (`deploy_firebase_app_distribution.yml:80`) et package `sqlite3_flutter_libs` en version `+eol` (`pubspec.yaml:41`). | `[CONFIRMÉ]` |
+| **M2 : Inadequate Supply Chain Security** | **Attention** | Action GitHub tierce `wzieba/Firebase-Distribution-Github-Action@v1` non épinglée par hash SHA (`deploy_firebase_app_distribution.yml:80`). La dépendance obsolète `sqlite3_flutter_libs` a été éliminée au profit de `drift_flutter`. | `[CONFIRMÉ]` |
 | **M3 : Insecure Authentication / Authorization** | **Non applicable / Info** | Application locale mono-utilisateur sans authentification serveur ni verrouillage biométrique local. | `[CONFIRMÉ]` |
 | **M4 : Insufficient Input / Output Validation** | **Attention** | Requêtes SQL 100 % paramétrées via Drift et parsing JSON Gemini défensif (`workout_ai_models.dart:109`). Cependant, absence de neutralisation des préfixes de formules (`=`, `+`, `-`, `@`) dans l'export CSV (`workout_export_service.dart:204`). | `[CONFIRMÉ]` |
 | **M5 : Insecure Communication** | **Conforme** | Toutes les communications sortantes (Gemini API, Firebase, AI Studio URL) utilisent exclusivement `https://` (TLS). Aucun attribut `usesCleartextTraffic="true"` n'est présent dans `AndroidManifest.xml`. | `[CONFIRMÉ]` |
@@ -943,8 +943,8 @@ Conformément à la règle d'audit n°4, toutes les valeurs sensibles repérées
 | **S-006** | Absence de chiffrement applicatif de la base SQLite locale | **Faible** | M9 (Insecure Data Storage) | `lib/core/database/connection/native.dart:13-16` | Le fichier `strong_app_database.sqlite` contenant le poids corporel, la taille et l'historique de séances est stocké en clair dans le répertoire applicatif. Sur un appareil *rooté* / *jailbreaké* ou via une sauvegarde ADB non chiffrée, le fichier est lisible directement. | Si le niveau de confidentialité visé augmente, migrer vers `sqlcipher_flutter_libs` avec une clé de chiffrement SQLite générée aléatoirement et stockée dans `FlutterSecureStorage`, et définir `android:allowBackup="false"` dans `AndroidManifest.xml`. | `[CONFIRMÉ]` |
 | **S-007** | Absence d'obfuscation du binaire Dart en mode `release` | **Faible** | M7 (Binary Protections) | `.github/workflows/deploy_firebase_app_distribution.yml:61`, `70` | Les builds APK release sont compilés sans les arguments `--obfuscate` et `--split-debug-info`, facilitant la rétro-ingénierie de la logique métier. | Ajouter `--obfuscate --split-debug-info=build/app/outputs/symbols` à la commande `flutter build apk --release`. | `[CONFIRMÉ]` |
 | **S-008** | Contournement de la validation des dépendances de build Android en CI | **Faible** | M8 (Security Misconfiguration) | `.github/workflows/deploy_firebase_app_distribution.yml:61`, `70` | Le drapeau `--android-skip-build-dependency-validation` masque d'éventuelles incompatibilités ou alertes de versions sur la chaîne d'outils Gradle/AGP/Kotlin. | Retirer `--android-skip-build-dependency-validation` une fois les versions de Gradle, Kotlin et Android Gradle Plugin alignées dans `android/settings.gradle.kts`. | `[CONFIRMÉ]` |
-| **S-009** | Dépendance native `sqlite3_flutter_libs` en fin de vie (`+eol`) | **Info** | M2 (Supply Chain) | `pubspec.yaml:41` | Le package `sqlite3_flutter_libs: ^0.6.0+eol` est marqué en fin de vie par son mainteneur. | Planifier la migration vers les *Native Assets* du package `sqlite3` conformément à la documentation officielle de Drift. | `[CONFIRMÉ]` |
-| **S-010** | Absence de délai d'expiration réseau (*Timeout*) explicite sur les appels Gemini | **Info** | M5 (Communication) | `lib/features/workout/domain/services/workout_ai_service.dart:28`, `109` | Les appels `model.generateContent(...)` ne sont pas enveloppés dans un `.timeout(const Duration(seconds: 30))`, pouvant laisser l'indicateur de chargement actif longtemps sur une connexion mobile dégradée. | Ajouter `.timeout(const Duration(seconds: 30))` sur les appels `generateContent` dans `testApiKey()` et `analyzeWorkoutData()`. | `[CONFIRMÉ]` |
+| **S-009** | Dépendance native `sqlite3_flutter_libs` en fin de vie (`+eol`) (**Résolu**) | **Info** | M2 (Supply Chain) | `pubspec.yaml` | Le package `sqlite3_flutter_libs` a été retiré. Le chargement natif SQLite3 est opéré par `drift_flutter`. | Résolu. | `[CONFIRMÉ]` |
+| **S-010** | Absence de délai d'expiration réseau (*Timeout*) explicite sur les appels Gemini (**Résolu**) | **Info** | M5 (Communication) | `lib/features/workout/domain/services/workout_ai_service.dart:34`, `124` | Les appels Gemini sont désormais protégés par un `.timeout()` de 15s (`testApiKey`) et 30s (`analyzeWorkoutData`), avec `AiTimeoutException` et messages localisés (`aiTimeoutError`). | Résolu. | `[CONFIRMÉ]` |
 
 ---
 
@@ -959,11 +959,11 @@ Conformément à la règle d'audit n°4, toutes les valeurs sensibles repérées
 | **R-003** | **Rejet du binaire sur Google Play Store et risque d'usurpation de mise à jour** en raison de la signature du build `release` avec la clé `debug`. | Sécurité / Release | Certaine | **Critique** | `android/app/build.gradle.kts:40-42` | Mettre en place une configuration de signature `release` dédiée avant toute diffusion publique hors bêta interne. | `[CONFIRMÉ]` |
 | **R-004** | **Rupture d'expérience linguistique pour les utilisateurs anglophones et arabophones** sur le Coach IA Gemini (100 % en français) et le sélecteur RPE (français/anglais uniquement). | Produit / i18n | Certaine | **Moyen** | `ai_key_settings_sheet.dart`, `workout_ai_analysis_dialog.dart`, `workout_ai_service.dart:56-96`, `rpe_picker_dialog.dart:36-97` | Externaliser toutes les chaînes de l'UI IA et RPE dans `app_en.arb`, `app_fr.arb`, `app_ar.arb` et passer la langue active dans le prompt système de `WorkoutAiService` pour que Gemini réponde dans la langue de l'utilisateur. | `[CONFIRMÉ]` |
 | **R-005** | **Noms d'exercices et de groupes musculaires figés en français** dans la base SQLite pour les utilisateurs ayant choisi l'anglais ou l'arabe. | Produit / i18n | Certaine | **Moyen** | `lib/core/database/seed/initial_exercises.dart:9-192` | Associer chaque exercice standard à une clé de traduction ou ajouter des colonnes/tables localisées (`nameEn`, `nameFr`, `nameAr`) à l'instar de ce qui a été fait pour `exercise_guides_data.dart`. | `[CONFIRMÉ]` |
-| **R-006** | **Régression potentielle lors d'une future mise à jour du schéma SQLite** en l'absence de tests automatisés sur la méthode `onUpgrade`. | Qualité / Base de données | Moyenne | **Élevé** | `lib/core/database/app_database.dart:74-103`, `test/widget_test.dart` | Générer les schémas Drift versionnés (`drift_dev schema`) et ajouter des tests unitaires vérifiant chaque transition `v1 -> v2 -> v3 -> v4 -> v5`. | `[CONFIRMÉ]` |
+| **R-006** | **Régression potentielle lors d'une future mise à jour du schéma SQLite** (**Résolu**) | Qualité / Base de données | Faible | **Maîtrisé** | `drift_schemas/`, `test/database/migration_test.dart` | Schéma exporté (`drift_schema_v6.json`) et suite de tests de migration incrémentale automatisée `v1 -> v6` opérationnelle (8 tests). | `[CONFIRMÉ]` |
 | **R-007** | **Dégradation des performances lors de l'export CSV et du calcul du volume à vie** après plusieurs années d'historique (requêtes $N+1$ et agrégation en mémoire Dart). | Technique / Performance | Moyenne | **Moyen** | `workout_export_service.dart:43-88`, `profile_dao.dart:227-233` | Remplacer les boucles de requêtes de l'export CSV par une jointure SQL unique (`INNER JOIN`) et utiliser `SUM(weight_kg * reps)` côté SQLite dans `getLifetimeStats()`. | `[CONFIRMÉ]` |
 | **R-008** | **Complexité de maintenance sur `WorkoutSessionScreen` (1 199 lignes)** qui concentre la vue, les dialogues et la logique d'interaction de la séance. | Architecture / Maintenabilité | Moyenne | **Moyen** | `lib/features/workout/presentation/screens/workout_session_screen.dart:1-1199` | Découper `WorkoutSessionScreen` en sous-widgets dédiés (`ExerciseSessionCard`, `SupersetHeaderBanner`, `FinishSessionFeedbackDialog`) conformément à la tâche T07 de `AUDIT_AND_TASKS.md:27`. | `[CONFIRMÉ]` |
 | **R-009** | **Exposition des données exportées dans le répertoire temporaire du téléphone** après un partage CSV/JSON. | Sécurité / Vie privée | Moyenne | **Moyen** | `workout_export_service.dart:90-94`, `171-189` | Nettoyer systématiquement les fichiers temporaires après l'appel à `SharePlus.instance.share()`. | `[CONFIRMÉ]` |
-| **R-010** | **Obsolescence programmée du modèle `gemini-1.5-flash` codé en dur** dans `WorkoutAiService`. | Technique / IA | Moyenne | **Moyen** | `lib/features/workout/domain/services/workout_ai_service.dart:16` | Prévoir une constante facilement configurable ou un repli automatique vers `gemini-2.5-flash` / `gemini-2.0-flash` si le modèle `gemini-1.5-flash` est retiré par Google AI Studio. | `[DÉDUIT]` |
+| **R-010** | **Obsolescence ou indisponibilité du modèle `gemini-1.5-flash`** (**Résolu**) | Technique / IA | Faible | **Maîtrisé** | `workout_ai_service.dart:18-23` | Repli dynamique implémenté sur une liste ordonnée de modèles candidats (`gemini-1.5-flash`, `gemini-2.5-flash`, `gemini-1.5-flash-latest`, `gemini-pro`). | `[CONFIRMÉ]` |
 
 ### 9.2 Questions ouvertes et points `[À VALIDER]`
 
@@ -1032,14 +1032,12 @@ c:\private\strong\
 │   ├── firebase_options.dart                         # Configuration statique FlutterFire (projet strongfit-a51cb)
 │   ├── core/
 │   │   ├── database/
-│   │   │   ├── app_database.dart                     # Base Drift (schemaVersion 5) et migrations v1 -> v5
+│   │   │   ├── app_database.dart                     # Base Drift (schemaVersion 6) et migrations v1 -> v6
 │   │   │   ├── app_database.g.dart                   # Code généré par drift_dev
 │   │   │   ├── connection/                           # Connecteurs SQLite (natif mobile/desktop, web wasm, stub)
-│   │   │   ├── daos/                                 # 4 DAOs : ExerciseDao, TemplateDao, WorkoutDao, ProfileDao
+│   │   │   ├── daos/                                 # 5 DAOs : ExerciseDao, TemplateDao, WorkoutDao, ProfileDao, SettingsDao
 │   │   │   ├── seed/                                 # Données initiales : 34 exercices, guides multilingues, 4 templates
 │   │   │   └── tables/                               # 9 définitions de tables SQLite Drift
-│   │   ├── errors/
-│   │   │   └── failures.dart                         # Classes Failure abstraites (actuellement non utilisées / code mort)
 │   │   ├── l10n/
 │   │   │   ├── arb/                                  # Fichiers de traduction app_ar.arb, app_en.arb, app_fr.arb
 │   │   │   ├── generated/                            # Classes AppLocalizations générées par Flutter gen-l10n
@@ -1061,14 +1059,17 @@ c:\private\strong\
 │       ├── profile/                                  # Onboarding, tableau de bord, graphiques, suivi du poids, BYOK, RGPD
 │       ├── templates/                                # Gestion des routines d'entraînement réutilisables
 │       └── workout/                                  # Séance en direct, BLoC, minuteur de repos, supersets, Coach IA Gemini
+├── drift_schemas/                                    # Schémas SQLite exportés (drift_schema_v6.json)
 ├── linux/                                            # Cible desktop Linux
 ├── macos/                                            # Cible desktop macOS
 ├── test/
-│   └── widget_test.dart                              # Suite de 36 tests automatisés (1 429 lignes)
+│   ├── database/                                     # Tests de migration Drift (migration_test.dart) et code généré
+│   └── widget_test.dart                              # Suite de 40 tests automatisés BLoC/UI/DAOs
 ├── web/                                              # Cible Web
 ├── windows/                                          # Cible desktop Windows
 ├── analysis_options.yaml                             # Configuration du linter Dart (flutter_lints)
 ├── AUDIT_AND_TASKS.md                                # Journal d'audit interne et suivi des tâches T01 à T11
+├── build.yaml                                        # Configuration Drift (store_date_time_values_as_text)
 ├── l10n.yaml                                         # Configuration de génération i18n Flutter
 ├── pubspec.yaml                                      # Manifeste du projet, dépendances et configuration flutter_launcher_icons
 └── README.md                                         # Documentation de démarrage rapide
@@ -1083,8 +1084,8 @@ c:\private\strong\
 | `cupertino_icons` | `^1.0.8` | `1.0.8` | UI | MIT | Icônes de style iOS/Cupertino. |
 | `flutter_bloc` | `^9.1.0` | `9.1.1` | État | MIT | Gestion d'état réactive (BLoC & Cubit). |
 | `equatable` | `^2.0.7` | `2.0.8` | Utilitaire | MIT | Comparaison par valeur des états et événements. |
-| `drift` | `^2.26.0` | `2.32.1` | Base de données | MIT | ORM SQLite réactif et typé. |
-| `sqlite3_flutter_libs` | `^0.6.0+eol` | `0.6.0+eol` | Base de données | MIT | Binaires natifs SQLite3 pour Android/iOS (marqué *EOL*). |
+| `drift` | `^2.34.0` | `2.34.0` | Base de données | MIT | ORM SQLite réactif et typé. |
+| `drift_flutter` | `^0.3.1` | `0.3.1` | Base de données | MIT | Connecteur SQLite Flutter avec runtime natif multiplateforme. |
 | `path_provider` | `^2.1.5` | `2.1.5` | Système de fichiers | BSD-3-Clause | Accès aux répertoires documents (`SQLite`) et temporaire (`Exports`). |
 | `path` | `^1.9.1` | `1.9.1` | Utilitaire | BSD-3-Clause | Manipulation des chemins de fichiers multiplateformes. |
 | `intl` | `^0.20.2` | `0.20.2` | i18n / Formatage | BSD-3-Clause | Formatage des dates et génération des traductions. |

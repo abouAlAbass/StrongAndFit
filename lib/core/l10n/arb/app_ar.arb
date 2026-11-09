@@ -298,6 +298,7 @@
   "aiKeySavedSuccess": "تم التحقق من مفتاح Gemini وحفظه بأمان!",
   "aiKeyDeletedSuccess": "تم حذف المفتاح.",
   "networkConnectionError": "تعذر الاتصال بخوادم Google Gemini. يرجى التحقق من اتصالك بالإنترنت.",
+  "aiTimeoutError": "انتهت مهلة الانتظار أثناء الاتصال بخوادم Google Gemini. يرجى التحقق من اتصالك بالإنترنت.",
   "aiAnalysisDialogTitle": "تحليل المعد البدني الذكي",
   "aiAnalysisProgressiveOverloadTitle": "الزيادة التدريجية للأحمال والشدة",
   "aiAnalysisRecoveryRpeTitle": "الاستشفاء والإجهاد العضلي (RPE/RIR)",

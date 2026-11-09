@@ -298,6 +298,7 @@
   "aiKeySavedSuccess": "Clé Gemini validée et enregistrée de façon sécurisée !",
   "aiKeyDeletedSuccess": "Clé supprimée.",
   "networkConnectionError": "Impossible de contacter les serveurs Google Gemini. Vérifiez votre connexion Internet.",
+  "aiTimeoutError": "Délai d'attente dépassé lors de la communication avec Google Gemini. Vérifiez votre connexion Internet.",
   "aiAnalysisDialogTitle": "Analyse Préparateur Physique",
   "aiAnalysisProgressiveOverloadTitle": "Surcharge Progressive & Intensité",
   "aiAnalysisRecoveryRpeTitle": "Récupération & Fatigue (RPE/RIR)",
