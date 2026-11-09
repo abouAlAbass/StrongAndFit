@@ -293,7 +293,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: 'العربية',
-          description: 'واجهة وتدريبات باللغة العربية مع دعم RTL',
+          description: l10n.langArabicDesc,
           icon: Icons.language_rounded,
           isSelected: _selectedLangCode == 'ar',
           onTap: () {
@@ -306,7 +306,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: 'English',
-          description: 'English interface, exercise guides, and analytics',
+          description: l10n.langEnglishDesc,
           icon: Icons.language_rounded,
           isSelected: _selectedLangCode == 'en',
           onTap: () {
@@ -319,7 +319,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: 'Français',
-          description: 'Interface, exercices et métriques en français',
+          description: l10n.langFrenchDesc,
           icon: Icons.language_rounded,
           isSelected: _selectedLangCode == 'fr',
           onTap: () {
@@ -332,7 +332,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: l10n.systemDefault,
-          description: 'Suit automatiquement les réglages de votre smartphone',
+          description: l10n.systemDefaultDesc,
           icon: Icons.phone_android_rounded,
           isSelected: _selectedLangCode == 'system',
           onTap: () {
@@ -357,7 +357,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: l10n.themeSystem,
-          description: 'Suit le mode clair/sombre de votre appareil',
+          description: l10n.themeSystemDesc,
           icon: Icons.brightness_auto_rounded,
           isSelected: currentThemeMode == ThemeMode.system,
           onTap: () {
@@ -369,7 +369,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: l10n.themeDark,
-          description: 'Contraste sombre optimal pour la salle de musculation',
+          description: l10n.themeDarkDesc,
           icon: Icons.dark_mode_rounded,
           isSelected: currentThemeMode == ThemeMode.dark,
           onTap: () {
@@ -381,7 +381,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: l10n.themeLight,
-          description: 'Style clair et épuré',
+          description: l10n.themeLightDesc,
           icon: Icons.light_mode_rounded,
           isSelected: currentThemeMode == ThemeMode.light,
           onTap: () {
@@ -486,8 +486,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: l10n.daysPerWeek(3),
-          description:
-              'Full-body frequency 3x per week. Optimal for fast recovery and baseline strength.',
+          description: l10n.daysPerWeek3Desc,
           icon: Icons.calendar_today_rounded,
           isSelected: _selectedDays == 3,
           onTap: () => setState(() => _selectedDays = 3),
@@ -496,8 +495,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: l10n.daysPerWeek(4),
-          description:
-              'Upper / Lower 4-day split. The scientific gold standard for balanced volume.',
+          description: l10n.daysPerWeek4Desc,
           icon: Icons.calendar_view_week_rounded,
           isSelected: _selectedDays == 4,
           onTap: () => setState(() => _selectedDays = 4),
@@ -506,8 +504,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         _buildChoiceCard(
           context: context,
           title: l10n.daysPerWeek(5),
-          description:
-              'Push / Pull / Legs 5-day cycle. Maximum specialization and hypertrophy stimulus.',
+          description: l10n.daysPerWeek5Desc,
           icon: Icons.date_range_rounded,
           isSelected: _selectedDays == 5,
           onTap: () => setState(() => _selectedDays = 5),

@@ -8,6 +8,7 @@ import '../../../../core/theme/theme_cubit.dart';
 import '../../../../core/widgets/responsive_content_wrapper.dart';
 import '../../../history/domain/services/workout_export_service.dart';
 import '../../../history/domain/services/workout_import_service.dart';
+import '../../../history/presentation/screens/workout_history_screen.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 import '../widgets/ai_key_settings_sheet.dart';
@@ -110,7 +111,11 @@ class ProfileScreen extends StatelessWidget {
                 _buildGeminiAiCard(context),
                 const SizedBox(height: 20),
 
-                // 7. Settings, Theme & Language Card
+                // 7. Workout History & AI Coaching Reports Shortcut
+                _buildHistoryShortcutCard(context),
+                const SizedBox(height: 20),
+
+                // 8. Settings, Theme & Language Card
                 _buildSettingsCard(context),
                 const SizedBox(height: 20),
 
@@ -489,7 +494,93 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: TextButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        const WorkoutHistoryScreen(initialTabIndex: 1),
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.psychology_rounded,
+                size: 18,
+                color: AppColors.secondary,
+              ),
+              label: Text(
+                l10n.tabAiReports,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.secondary,
+                ),
+              ),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildHistoryShortcutCard(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => const WorkoutHistoryScreen(),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsetsDirectional.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.ofCard(context),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppColors.ofPrimaryContainer(context),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(
+                Icons.history_rounded,
+                color: AppColors.primary,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.workoutHistory,
+                    style: AppTypography.ofTitleMedium(context),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '${l10n.tabWorkouts} & ${l10n.tabAiReports}',
+                    style: AppTypography.ofCaption(context),
+                  ),
+                ],
+              ),
+            ),
+            Icon(
+              Icons.chevron_right_rounded,
+              color: AppColors.ofTextTertiary(context),
+              size: 22,
+            ),
+          ],
+        ),
       ),
     );
   }

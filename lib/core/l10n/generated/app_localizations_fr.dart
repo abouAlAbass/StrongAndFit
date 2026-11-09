@@ -1025,4 +1025,174 @@ class AppLocalizationsFr extends AppLocalizations {
   String beginnerRecommendationNote(int days) {
     return 'Bien que vous ayez sélectionné $days jours, nous recommandons de débuter par 3 séances par semaine pour optimiser votre récupération neuromusculaire.';
   }
+
+  @override
+  String get langArabicDesc => 'Interface, exercices et support RTL en arabe';
+
+  @override
+  String get langEnglishDesc =>
+      'Interface, guides d\'exercices et métriques en anglais';
+
+  @override
+  String get langFrenchDesc => 'Interface, exercices et métriques en français';
+
+  @override
+  String get systemDefaultDesc =>
+      'Suit automatiquement la langue de votre smartphone';
+
+  @override
+  String get themeSystemDesc => 'Suit le mode clair/sombre de votre appareil';
+
+  @override
+  String get themeDarkDesc =>
+      'Contraste sombre optimal pour la salle de musculation';
+
+  @override
+  String get themeLightDesc => 'Style clair et épuré';
+
+  @override
+  String get daysPerWeek3Desc =>
+      'Full-body 3 fois par semaine. Idéal pour une récupération rapide et la force de base.';
+
+  @override
+  String get daysPerWeek4Desc =>
+      'Split Haut / Bas sur 4 jours. La référence scientifique pour un volume équilibré.';
+
+  @override
+  String get daysPerWeek5Desc =>
+      'Cycle Push / Pull / Legs sur 5 jours. Spécialisation maximale et hypertrophie.';
+
+  @override
+  String get aiAnalyzeProgramButton => 'Audit IA du programme';
+
+  @override
+  String get aiProgramAuditTitle => 'Audit IA du Programme';
+
+  @override
+  String get aiProgramAuditSubtitle =>
+      'Évaluation personnalisée selon votre récupération, vos points faibles et vos objectifs.';
+
+  @override
+  String get aiFatigueQuestion => 'Niveau d\'énergie & Récupération actuelle';
+
+  @override
+  String get aiFatigueFresh => 'Pleine forme / Reposé';
+
+  @override
+  String get aiFatigueModerate => 'Fatigue modérée';
+
+  @override
+  String get aiFatigueExhausted => 'Épuisé / Récupération difficile';
+
+  @override
+  String get aiWeakPointQuestion =>
+      'Point faible / Groupe musculaire prioritaire';
+
+  @override
+  String get aiFocusBalanced => 'Équilibré (global)';
+
+  @override
+  String get aiFocusChest => 'Pectoraux';
+
+  @override
+  String get aiFocusBack => 'Dos & Chaîne postérieure';
+
+  @override
+  String get aiFocusLegs => 'Jambes & Fessiers';
+
+  @override
+  String get aiFocusShouldersArms => 'Épaules & Bras';
+
+  @override
+  String get aiTimeConstraintQuestion => 'Durée visée par séance';
+
+  @override
+  String get aiPainQuestion => 'Gênes articulaires / Douleurs';
+
+  @override
+  String get aiPainNone => 'Aucune gêne';
+
+  @override
+  String get aiPainShoulders => 'Épaules';
+
+  @override
+  String get aiPainLowerBack => 'Bas du dos';
+
+  @override
+  String get aiPainKnees => 'Genoux';
+
+  @override
+  String get aiPainElbowsWrists => 'Coudes / Poignets';
+
+  @override
+  String get aiFreeTextLabel =>
+      'Précisions & Demandes particulières (Texte libre)';
+
+  @override
+  String get aiFreeTextHint =>
+      'Ex: Mettre l\'accent sur les deltoïdes latéraux, éviter les squats lourds suite à une gêne, charges modérées...';
+
+  @override
+  String get aiLaunchProgramAudit => 'Lancer l\'audit IA du programme';
+
+  @override
+  String get aiProgramScoreLabel => 'Score d\'adéquation du programme';
+
+  @override
+  String get aiProgramModificationsTitle =>
+      'Ajustements & Remplacements recommandés';
+
+  @override
+  String get aiProgramInjuryTipsTitle =>
+      'Biomécanique & Prévention des blessures';
+
+  @override
+  String get aiProgramPeriodizationTitle =>
+      'Périodisation & Stratégie de progression';
+
+  @override
+  String get aiAnalyzeHistoryButton => 'Bilan de progression IA';
+
+  @override
+  String get aiHistoryAuditTitle => 'Bilan de Progression IA';
+
+  @override
+  String get aiHistoryAuditSubtitle =>
+      'Analyse approfondie de la surcharge progressive, du volume et des plateaux sur l\'ensemble de vos séances.';
+
+  @override
+  String get aiHistoryScoreLabel => 'Score de régularité & surcharge';
+
+  @override
+  String get aiHistoryVolumeTrajectory => 'Trajectoire du volume';
+
+  @override
+  String get aiHistoryOverloadAssessment =>
+      'Qualité de la surcharge progressive';
+
+  @override
+  String get aiHistoryMuscleBalance => 'Équilibre musculaire global';
+
+  @override
+  String get aiHistoryPlateausTitle => 'Alertes plateaux & fatigue nerveuse';
+
+  @override
+  String get aiHistoryMilestonesTitle => 'Objectifs pour le prochain cycle';
+
+  @override
+  String get viewWorkoutHistory => 'Voir l\'historique des séances';
+
+  @override
+  String get tabWorkouts => 'Séances';
+
+  @override
+  String get tabAiReports => 'Bilans Coach IA';
+
+  @override
+  String get noAiReportsYet =>
+      'Aucun bilan IA généré pour l\'instant. Lancez l\'analyse de votre programme ou de votre historique !';
+
+  @override
+  String get configureApiKeyPrompt =>
+      'Configurez votre clé Gemini pour débloquer les analyses du Coach IA.';
 }

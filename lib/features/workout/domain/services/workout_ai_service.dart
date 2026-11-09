@@ -137,7 +137,7 @@ class WorkoutAiService {
         msg.contains('handshakeexception');
   }
 
-  /// Builds the localized system instruction acting as a world-class strength & conditioning coach.
+  /// Localized system instruction for full workout session review.
   static String buildSystemInstruction(String languageCode) {
     final targetLang = switch (languageCode) {
       'ar' => 'Arabic (العربية الفصحى الرياضية الواضحة)',
@@ -163,11 +163,79 @@ Format JSON attendu :
 ''';
   }
 
-  /// Performs full athletic review using the saved or explicitly passed API key.
-  Future<WorkoutAiAnalysis> analyzeWorkoutData(
-    WorkoutSummary payload, {
+  /// Localized system instruction for routine/program audit tailored to questionnaire and free text.
+  static String buildProgramSystemInstruction(String languageCode) {
+    final targetLang = switch (languageCode) {
+      'ar' => 'Arabic (العربية الفصحى الرياضية الواضحة)',
+      'en' => 'English',
+      _ => 'French (Français)',
+    };
+    return '''
+Tu es un préparateur physique d'élite et expert en programmation d'entraînement et biomécanique (CSCS).
+Analyse le programme d'entraînement et les réponses de l'athlète (fatigue, point faible, durée par séance, gênes articulaires, et ses remarques libres).
+IMPORTANT : Rédige TOUTES les valeurs textuelles du JSON dans la langue suivante : $targetLang.
+Les clés du JSON ("summary", "program_match_score", etc.) doivent rester strictement en anglais comme spécifié ci-dessous.
+Tu dois répondre UNIQUEMENT par un objet JSON valide, sans texte d'introduction ni backticks markdown autour.
+
+Format JSON attendu :
+{
+  "summary": "Résumé de l'adéquation du programme avec les besoins et contraintes de l'athlète (2-3 phrases).",
+  "program_match_score": 8,
+  "volume_assessment": "Évaluation du volume par groupe musculaire et de la fréquence hebdomadaire.",
+  "modifications": [
+    "Ajustement ou remplacement d'exercice concret 1",
+    "Ajustement 2"
+  ],
+  "injury_prevention": [
+    "Conseil biomécanique ou d'échauffement spécifique 1 pour les zones sensibles",
+    "Conseil 2"
+  ],
+  "periodization": [
+    "Stratégie de progression et périodisation sur 4 à 6 semaines (ex: incréments, deload)",
+    "Recommandation 2"
+  ]
+}
+''';
+  }
+
+  /// Localized system instruction for longitudinal workout history analysis.
+  static String buildHistorySystemInstruction(String languageCode) {
+    final targetLang = switch (languageCode) {
+      'ar' => 'Arabic (العربية الفصحى الرياضية الواضحة)',
+      'en' => 'English',
+      _ => 'French (Français)',
+    };
+    return '''
+Tu es un préparateur physique d'élite et analyste de performance sportive (CSCS).
+Analyse l'historique complet des séances d'entraînement de l'athlète pour évaluer sa progression, sa régularité, sa surcharge progressive et la gestion de la fatigue.
+IMPORTANT : Rédige TOUTES les valeurs textuelles du JSON dans la langue suivante : $targetLang.
+Les clés du JSON ("executive_summary", "progression_score", etc.) doivent rester strictement en anglais comme spécifié ci-dessous.
+Tu dois répondre UNIQUEMENT par un objet JSON valide, sans texte d'introduction ni backticks markdown autour.
+
+Format JSON attendu :
+{
+  "executive_summary": "Bilan global de la progression, régularité et investissement de l'athlète (2-3 phrases).",
+  "progression_score": 8,
+  "progressive_overload_rate": "Évaluation précise de la surcharge progressive (charges, répétitions, tonnage).",
+  "volume_trajectory": "Tendance du volume au fil du temps (en hausse, stable, en baisse, fluctuations).",
+  "muscular_balance": "Équilibre du volume entre groupes musculaires (poussée vs tirage vs bas du corps).",
+  "plateaus_and_fatigue": [
+    "Signalement de stagnation ou risque de surmenage 1",
+    "Signalement 2"
+  ],
+  "next_milestones": [
+    "Objectif prioritaire concret pour le prochain cycle d'entraînement 1",
+    "Objectif 2"
+  ]
+}
+''';
+  }
+
+  /// Internal helper that sends a structured prompt to Gemini with resilient model discovery.
+  Future<Map<String, dynamic>> _executeGeminiQuery({
+    required String systemInstruction,
+    required String prompt,
     String? explicitKey,
-    String languageCode = 'fr',
   }) async {
     final apiKey = explicitKey ?? await _keyStorage.getApiKey();
     if (apiKey == null || apiKey.isEmpty) {
@@ -187,13 +255,8 @@ Format JSON attendu :
             responseMimeType: 'application/json',
             temperature: 0.3,
           ),
-          systemInstruction: Content.system(
-            buildSystemInstruction(languageCode),
-          ),
+          systemInstruction: Content.system(systemInstruction),
         );
-
-        final prompt =
-            'Voici les données de la séance à analyser :\n${jsonEncode(payload.toJson())}';
 
         final response = await model
             .generateContent([Content.text(prompt)])
@@ -204,7 +267,6 @@ Format JSON attendu :
           throw Exception('Réponse vide retournée par Gemini.');
         }
 
-        // Sanitize potential backticks if returned despite responseMimeType
         var cleanedJson = rawText.trim();
         if (cleanedJson.startsWith('```json')) {
           cleanedJson = cleanedJson.substring(7);
@@ -217,8 +279,7 @@ Format JSON attendu :
         }
         cleanedJson = cleanedJson.trim();
 
-        final decoded = jsonDecode(cleanedJson) as Map<String, dynamic>;
-        return WorkoutAiAnalysis.fromJson(decoded);
+        return jsonDecode(cleanedJson) as Map<String, dynamic>;
       } on TimeoutException {
         throw const AiTimeoutException();
       } on GenerativeAIException catch (e) {
@@ -261,5 +322,86 @@ Format JSON attendu :
           ? 'Erreur Gemini : $lastModelError'
           : 'Réponse vide retournée par Gemini.',
     );
+  }
+
+  /// Performs full athletic review of a single workout session.
+  Future<WorkoutAiAnalysis> analyzeWorkoutData(
+    WorkoutSummary payload, {
+    String? explicitKey,
+    String languageCode = 'fr',
+  }) async {
+    final prompt =
+        'Voici les données de la séance à analyser :\n${jsonEncode(payload.toJson())}';
+    final decoded = await _executeGeminiQuery(
+      systemInstruction: buildSystemInstruction(languageCode),
+      prompt: prompt,
+      explicitKey: explicitKey,
+    );
+    return WorkoutAiAnalysis.fromJson(decoded);
+  }
+
+  /// Performs a personalized AI audit of a workout program/routine with questionnaire and athlete notes.
+  Future<ProgramAiAnalysis> analyzeProgram({
+    required String programName,
+    String? programNotes,
+    required List<Map<String, dynamic>> exercises,
+    required ProgramAiQuestionnaire questionnaire,
+    String? athleteName,
+    String? experienceLevel,
+    double? bodyWeightKg,
+    String? explicitKey,
+    String languageCode = 'fr',
+  }) async {
+    final payload = {
+      'athlete': {
+        'name': ?athleteName,
+        'experience_level': ?experienceLevel,
+        'body_weight_kg': ?bodyWeightKg,
+      },
+      'program': {
+        'name': programName,
+        'notes': ?programNotes,
+        'exercises': exercises,
+      },
+      'questionnaire': questionnaire.toJson(),
+    };
+
+    final prompt =
+        'Voici les détails du programme et les réponses de l\'athlète :\n${jsonEncode(payload)}';
+    final decoded = await _executeGeminiQuery(
+      systemInstruction: buildProgramSystemInstruction(languageCode),
+      prompt: prompt,
+      explicitKey: explicitKey,
+    );
+    return ProgramAiAnalysis.fromJson(decoded);
+  }
+
+  /// Performs longitudinal progression review across athlete's historical workouts.
+  Future<HistoryAiAnalysis> analyzeTrainingHistory({
+    required List<Map<String, dynamic>> historicalSessions,
+    String? athleteName,
+    String? experienceLevel,
+    double? bodyWeightKg,
+    String? explicitKey,
+    String languageCode = 'fr',
+  }) async {
+    final payload = {
+      'athlete': {
+        'name': ?athleteName,
+        'experience_level': ?experienceLevel,
+        'body_weight_kg': ?bodyWeightKg,
+      },
+      'sessions_history': historicalSessions,
+      'total_sessions_analyzed': historicalSessions.length,
+    };
+
+    final prompt =
+        'Voici l\'historique des séances d\'entraînement à analyser :\n${jsonEncode(payload)}';
+    final decoded = await _executeGeminiQuery(
+      systemInstruction: buildHistorySystemInstruction(languageCode),
+      prompt: prompt,
+      explicitKey: explicitKey,
+    );
+    return HistoryAiAnalysis.fromJson(decoded);
   }
 }

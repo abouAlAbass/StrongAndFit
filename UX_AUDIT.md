@@ -102,3 +102,4 @@ L'application est utilisée dans des conditions biomécaniques et environnementa
 - [x] Étape biométrique rapide (Poids & Taille) dans l'onboarding pour personnaliser le profil dès la première utilisation.
 - [x] Ajout de balises `Semantics` sur les graphiques de progression corporelle.
 - [x] Option de sauvegarde préventive avant suppression définitive du profil RGPD.
+

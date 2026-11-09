@@ -1013,4 +1013,166 @@ class AppLocalizationsAr extends AppLocalizations {
   String beginnerRecommendationNote(int days) {
     return 'على الرغم من اختيارك $days أيام، نوصي بالبدء بـ 3 جلسات أسبوعياً لتحقيق أفضل تكيف عصبي عضلي دون إجهاد.';
   }
+
+  @override
+  String get langArabicDesc => 'واجهة وتدريبات باللغة العربية مع دعم RTL كامل';
+
+  @override
+  String get langEnglishDesc => 'واجهة وتدريبات ومقاييس باللغة الإنجليزية';
+
+  @override
+  String get langFrenchDesc => 'واجهة وتدريبات ومقاييس باللغة الفرنسية';
+
+  @override
+  String get systemDefaultDesc => 'يتبع إعدادات ولغة هاتفك تلقائياً';
+
+  @override
+  String get themeSystemDesc => 'يتبع المظهر الفاتح/الداكن لجهازك تلقائياً';
+
+  @override
+  String get themeDarkDesc => 'تباين داكن مثالي لصالة الألعاب الرياضية';
+
+  @override
+  String get themeLightDesc => 'تصميم أنيق وواضح';
+
+  @override
+  String get daysPerWeek3Desc =>
+      'كامل الجسم 3 مرات أسبوعياً. مثالي للاستشفاء السريع وبناء قوة الأساس.';
+
+  @override
+  String get daysPerWeek4Desc =>
+      'تقسيم علوي / سفلي 4 أيام. المعيار العلمي للتضخيم وحجم تدريبي متوازن.';
+
+  @override
+  String get daysPerWeek5Desc =>
+      'دورة دفع / سحب / أرجل 5 أيام. أقصى تخصص وتحفيز للبناء العضلي.';
+
+  @override
+  String get aiAnalyzeProgramButton => 'تدقيق البرنامج بالذكاء الاصطناعي';
+
+  @override
+  String get aiProgramAuditTitle => 'تدقيق البرنامج الرياضي بالذكاء الاصطناعي';
+
+  @override
+  String get aiProgramAuditSubtitle =>
+      'تقييم مخصص لبرنامجك بناءً على استشفائك، نقاط ضعفك وأهدافك الفردية.';
+
+  @override
+  String get aiFatigueQuestion => 'مستوى الطاقة والاستشفاء الحالي';
+
+  @override
+  String get aiFatigueFresh => 'نشيط ومستعد تماماً';
+
+  @override
+  String get aiFatigueModerate => 'تعب معتدل';
+
+  @override
+  String get aiFatigueExhausted => 'إرهاق شديد / صعوبة في الاستشفاء';
+
+  @override
+  String get aiWeakPointQuestion => 'المجموعة العضلية المستهدفة أو نقطة الضعف';
+
+  @override
+  String get aiFocusBalanced => 'متوازن (شامل)';
+
+  @override
+  String get aiFocusChest => 'الصدر';
+
+  @override
+  String get aiFocusBack => 'الظهر والسلسلة الخلفية';
+
+  @override
+  String get aiFocusLegs => 'الأرجل والمؤخرة';
+
+  @override
+  String get aiFocusShouldersArms => 'الأكتاف والذراعين';
+
+  @override
+  String get aiTimeConstraintQuestion => 'المدة المستهدفة للجلسة التدريبية';
+
+  @override
+  String get aiPainQuestion => 'آلام المفاصل أو الإصابات';
+
+  @override
+  String get aiPainNone => 'لا توجد أي آلام';
+
+  @override
+  String get aiPainShoulders => 'الأكتاف';
+
+  @override
+  String get aiPainLowerBack => 'أسفل الظهر';
+
+  @override
+  String get aiPainKnees => 'الركبتين';
+
+  @override
+  String get aiPainElbowsWrists => 'المرفقين / المعصمين';
+
+  @override
+  String get aiFreeTextLabel => 'ملاحظات وطلبات خاصة (نص حر)';
+
+  @override
+  String get aiFreeTextHint =>
+      'مثال: أريد التركيز على الأكتاف الجانبية، وتجنب السكوات الثقيل بسبب ألم الركبة...';
+
+  @override
+  String get aiLaunchProgramAudit => 'بدء تحليل البرنامج بواسطة جيميني';
+
+  @override
+  String get aiProgramScoreLabel => 'درجة ملاءمة البرنامج';
+
+  @override
+  String get aiProgramModificationsTitle => 'التعديلات والبدائل الموصى بها';
+
+  @override
+  String get aiProgramInjuryTipsTitle =>
+      'الوقاية الميكانيكية الحيوية وتفادي الإصابات';
+
+  @override
+  String get aiProgramPeriodizationTitle => 'التخطيط التدريبي والتدرج في الشدة';
+
+  @override
+  String get aiAnalyzeHistoryButton => 'تقرير التقدم بالذكاء الاصطناعي';
+
+  @override
+  String get aiHistoryAuditTitle => 'تقرير تقدم التدريب بالذكاء الاصطناعي';
+
+  @override
+  String get aiHistoryAuditSubtitle =>
+      'تحليل شامل لزيادة الأحمال التدريجية، الحجم ومحطات الثبات عبر كافة جلساتك.';
+
+  @override
+  String get aiHistoryScoreLabel => 'درجة الانتظام والزيادة التدريجية';
+
+  @override
+  String get aiHistoryVolumeTrajectory => 'مسار الحجم التدريبي';
+
+  @override
+  String get aiHistoryOverloadAssessment => 'جودة الزيادة التدريجية في الأحمال';
+
+  @override
+  String get aiHistoryMuscleBalance => 'التوازن العضلي الإجمالي';
+
+  @override
+  String get aiHistoryPlateausTitle => 'تنبيهات ثبات الأوزان والإجهاد العصبي';
+
+  @override
+  String get aiHistoryMilestonesTitle => 'أهداف الدورة التدريبية القادمة';
+
+  @override
+  String get viewWorkoutHistory => 'عرض سجل التمارين';
+
+  @override
+  String get tabWorkouts => 'الجلسات';
+
+  @override
+  String get tabAiReports => 'تقارير المدرب الذكي';
+
+  @override
+  String get noAiReportsYet =>
+      'لم يتم إنشاء أي تقرير بعد. ابدأ بتحليل برنامجك أو سجل تمارينك!';
+
+  @override
+  String get configureApiKeyPrompt =>
+      'قم بإعداد مفتاح Gemini لتفعيل تحليلات المدرب الذكي.';
 }

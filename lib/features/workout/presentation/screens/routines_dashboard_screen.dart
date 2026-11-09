@@ -7,6 +7,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/theme_cubit.dart';
 import '../../../../core/widgets/responsive_content_wrapper.dart';
+import '../../../history/presentation/screens/workout_history_screen.dart';
 import '../../../profile/presentation/cubit/profile_cubit.dart';
 import '../../../profile/presentation/widgets/athlete_onboarding_dialog.dart';
 import '../bloc/workout_session_bloc.dart';
@@ -15,6 +16,7 @@ import '../bloc/workout_session_state.dart';
 import '../cubit/routines_cubit.dart';
 import '../cubit/routines_state.dart';
 import '../widgets/create_routine_dialog.dart';
+import '../widgets/program_ai_analysis_dialog.dart';
 import 'workout_session_screen.dart';
 
 /// Routines and Workout Start Dashboard with responsive tablet & desktop scaling.
@@ -94,6 +96,19 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
           ],
         ),
         actions: [
+          // Workout History Shortcut
+          IconButton(
+            tooltip: l10n.workoutHistory,
+            icon: const Icon(Icons.history_rounded),
+            color: AppColors.ofTextPrimary(context),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const WorkoutHistoryScreen(),
+                ),
+              );
+            },
+          ),
           // 1-Tap Theme Mode Switch (Sun / Moon)
           BlocBuilder<ThemeCubit, ThemeMode>(
             builder: (context, themeMode) {
@@ -392,6 +407,72 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 14),
+
+                // 4b. "Historique des séances & Bilans IA"
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const WorkoutHistoryScreen(),
+                      ),
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(16),
+                  child: Container(
+                    padding: const EdgeInsetsDirectional.all(14),
+                    decoration: BoxDecoration(
+                      color: AppColors.ofCard(context),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: AppColors.ofBorder(context),
+                        width: 0.8,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: AppColors.secondary.withAlpha(30),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.history_rounded,
+                            color: AppColors.secondary,
+                            size: 22,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                l10n.viewWorkoutHistory,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                '${l10n.tabWorkouts} & ${l10n.tabAiReports}',
+                                style: AppTypography.ofCaption(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right_rounded,
+                          color: AppColors.ofTextTertiary(context),
+                          size: 20,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 24),
 
                 // 5. "Séances types & modèles" Section Header
@@ -575,27 +656,61 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
           ),
           const SizedBox(height: 14),
 
-          // Action: Start Routine Button
-          SizedBox(
-            width: double.infinity,
-            height: 42,
-            child: ElevatedButton.icon(
-              icon: const Icon(Icons.fitness_center, size: 18),
-              label: Text(l10n.startRoutine),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: isFeatured
-                    ? AppColors.primary
-                    : AppColors.ofPrimaryContainer(context),
-                foregroundColor: isFeatured ? Colors.white : AppColors.primary,
-                elevation: 0,
+          // Action: Start Routine Button & AI Program Audit Button
+          Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  height: 42,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.fitness_center, size: 18),
+                    label: Text(l10n.startRoutine),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isFeatured
+                          ? AppColors.primary
+                          : AppColors.ofPrimaryContainer(context),
+                      foregroundColor:
+                          isFeatured ? Colors.white : AppColors.primary,
+                      elevation: 0,
+                    ),
+                    onPressed: () {
+                      context.read<WorkoutSessionBloc>().add(
+                        StartSessionFromTemplateRequested(template),
+                      );
+                      _navigateToActiveWorkout(context);
+                    },
+                  ),
+                ),
               ),
-              onPressed: () {
-                context.read<WorkoutSessionBloc>().add(
-                  StartSessionFromTemplateRequested(template),
-                );
-                _navigateToActiveWorkout(context);
-              },
-            ),
+              const SizedBox(width: 8),
+              SizedBox(
+                height: 42,
+                child: OutlinedButton.icon(
+                  icon: const Icon(
+                    Icons.auto_awesome,
+                    size: 16,
+                    color: AppColors.secondary,
+                  ),
+                  label: Text(
+                    l10n.aiAnalyzeProgramButton,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.ofTextPrimary(context),
+                    side: BorderSide(
+                      color: AppColors.secondary.withAlpha(120),
+                      width: 1,
+                    ),
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 10,
+                    ),
+                  ),
+                  onPressed: () {
+                    ProgramAiAnalysisDialog.show(context, template: template);
+                  },
+                ),
+              ),
+            ],
           ),
         ],
       ),

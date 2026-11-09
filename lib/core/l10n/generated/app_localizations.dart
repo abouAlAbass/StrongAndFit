@@ -1977,6 +1977,312 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Although you selected {days} days, we recommend starting with 3 sessions per week to optimize neuromuscular recovery.'**
   String beginnerRecommendationNote(int days);
+
+  /// No description provided for @langArabicDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic interface, exercises, and RTL support'**
+  String get langArabicDesc;
+
+  /// No description provided for @langEnglishDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'English interface, exercise guides, and analytics'**
+  String get langEnglishDesc;
+
+  /// No description provided for @langFrenchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'French interface, exercises, and metrics'**
+  String get langFrenchDesc;
+
+  /// No description provided for @systemDefaultDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically follows your device\'s settings'**
+  String get systemDefaultDesc;
+
+  /// No description provided for @themeSystemDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Follows your device\'s light/dark mode'**
+  String get themeSystemDesc;
+
+  /// No description provided for @themeDarkDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimal dark contrast for the gym'**
+  String get themeDarkDesc;
+
+  /// No description provided for @themeLightDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Clean and bright style'**
+  String get themeLightDesc;
+
+  /// No description provided for @daysPerWeek3Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-body frequency 3x per week. Optimal for fast recovery and baseline strength.'**
+  String get daysPerWeek3Desc;
+
+  /// No description provided for @daysPerWeek4Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Upper / Lower 4-day split. The scientific gold standard for balanced volume.'**
+  String get daysPerWeek4Desc;
+
+  /// No description provided for @daysPerWeek5Desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Push / Pull / Legs 5-day cycle. Maximum specialization and hypertrophy stimulus.'**
+  String get daysPerWeek5Desc;
+
+  /// No description provided for @aiAnalyzeProgramButton.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Program Audit'**
+  String get aiAnalyzeProgramButton;
+
+  /// No description provided for @aiProgramAuditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Program Analysis'**
+  String get aiProgramAuditTitle;
+
+  /// No description provided for @aiProgramAuditSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalized evaluation based on your recovery, weak points, and specific goals.'**
+  String get aiProgramAuditSubtitle;
+
+  /// No description provided for @aiFatigueQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Current Energy & Recovery'**
+  String get aiFatigueQuestion;
+
+  /// No description provided for @aiFatigueFresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Fresh & Rested'**
+  String get aiFatigueFresh;
+
+  /// No description provided for @aiFatigueModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate Fatigue'**
+  String get aiFatigueModerate;
+
+  /// No description provided for @aiFatigueExhausted.
+  ///
+  /// In en, this message translates to:
+  /// **'Exhausted / Poor Recovery'**
+  String get aiFatigueExhausted;
+
+  /// No description provided for @aiWeakPointQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority Target Muscle Group'**
+  String get aiWeakPointQuestion;
+
+  /// No description provided for @aiFocusBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get aiFocusBalanced;
+
+  /// No description provided for @aiFocusChest.
+  ///
+  /// In en, this message translates to:
+  /// **'Chest'**
+  String get aiFocusChest;
+
+  /// No description provided for @aiFocusBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back & Posterior Chain'**
+  String get aiFocusBack;
+
+  /// No description provided for @aiFocusLegs.
+  ///
+  /// In en, this message translates to:
+  /// **'Legs & Glutes'**
+  String get aiFocusLegs;
+
+  /// No description provided for @aiFocusShouldersArms.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoulders & Arms'**
+  String get aiFocusShouldersArms;
+
+  /// No description provided for @aiTimeConstraintQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Target Duration per Workout'**
+  String get aiTimeConstraintQuestion;
+
+  /// No description provided for @aiPainQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Joint Discomfort / Injuries'**
+  String get aiPainQuestion;
+
+  /// No description provided for @aiPainNone.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get aiPainNone;
+
+  /// No description provided for @aiPainShoulders.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoulders'**
+  String get aiPainShoulders;
+
+  /// No description provided for @aiPainLowerBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Lower Back'**
+  String get aiPainLowerBack;
+
+  /// No description provided for @aiPainKnees.
+  ///
+  /// In en, this message translates to:
+  /// **'Knees'**
+  String get aiPainKnees;
+
+  /// No description provided for @aiPainElbowsWrists.
+  ///
+  /// In en, this message translates to:
+  /// **'Elbows / Wrists'**
+  String get aiPainElbowsWrists;
+
+  /// No description provided for @aiFreeTextLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Specific Notes & Requests (Free text)'**
+  String get aiFreeTextLabel;
+
+  /// No description provided for @aiFreeTextHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Focus on lateral delts, prefer dumbbells for incline press, avoid heavy squats...'**
+  String get aiFreeTextHint;
+
+  /// No description provided for @aiLaunchProgramAudit.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze Program with Gemini'**
+  String get aiLaunchProgramAudit;
+
+  /// No description provided for @aiProgramScoreLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Match Score'**
+  String get aiProgramScoreLabel;
+
+  /// No description provided for @aiProgramModificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Customized Adjustments'**
+  String get aiProgramModificationsTitle;
+
+  /// No description provided for @aiProgramInjuryTipsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Biomechanics & Injury Prevention'**
+  String get aiProgramInjuryTipsTitle;
+
+  /// No description provided for @aiProgramPeriodizationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Periodization & Progression Strategy'**
+  String get aiProgramPeriodizationTitle;
+
+  /// No description provided for @aiAnalyzeHistoryButton.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Progression Audit'**
+  String get aiAnalyzeHistoryButton;
+
+  /// No description provided for @aiHistoryAuditTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Training Progression Audit'**
+  String get aiHistoryAuditTitle;
+
+  /// No description provided for @aiHistoryAuditSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Deep longitudinal analysis of volume, progressive overload, and recovery across your workouts.'**
+  String get aiHistoryAuditSubtitle;
+
+  /// No description provided for @aiHistoryScoreLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Consistency & Overload Score'**
+  String get aiHistoryScoreLabel;
+
+  /// No description provided for @aiHistoryVolumeTrajectory.
+  ///
+  /// In en, this message translates to:
+  /// **'Volume Trajectory'**
+  String get aiHistoryVolumeTrajectory;
+
+  /// No description provided for @aiHistoryOverloadAssessment.
+  ///
+  /// In en, this message translates to:
+  /// **'Progressive Overload Quality'**
+  String get aiHistoryOverloadAssessment;
+
+  /// No description provided for @aiHistoryMuscleBalance.
+  ///
+  /// In en, this message translates to:
+  /// **'Muscular Distribution Balance'**
+  String get aiHistoryMuscleBalance;
+
+  /// No description provided for @aiHistoryPlateausTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Plateau Warnings & Fatigue Alerts'**
+  String get aiHistoryPlateausTitle;
+
+  /// No description provided for @aiHistoryMilestonesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Cycle Milestones'**
+  String get aiHistoryMilestonesTitle;
+
+  /// No description provided for @viewWorkoutHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'View Workout History'**
+  String get viewWorkoutHistory;
+
+  /// No description provided for @tabWorkouts.
+  ///
+  /// In en, this message translates to:
+  /// **'Workouts'**
+  String get tabWorkouts;
+
+  /// No description provided for @tabAiReports.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Coaching Reports'**
+  String get tabAiReports;
+
+  /// No description provided for @noAiReportsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No AI reports generated yet. Analyze your program or training history to get started!'**
+  String get noAiReportsYet;
+
+  /// No description provided for @configureApiKeyPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure Gemini API key to unlock AI Coach insights.'**
+  String get configureApiKeyPrompt;
 }
 
 class _AppLocalizationsDelegate

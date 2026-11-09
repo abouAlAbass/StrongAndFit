@@ -1015,4 +1015,168 @@ class AppLocalizationsEn extends AppLocalizations {
   String beginnerRecommendationNote(int days) {
     return 'Although you selected $days days, we recommend starting with 3 sessions per week to optimize neuromuscular recovery.';
   }
+
+  @override
+  String get langArabicDesc => 'Arabic interface, exercises, and RTL support';
+
+  @override
+  String get langEnglishDesc =>
+      'English interface, exercise guides, and analytics';
+
+  @override
+  String get langFrenchDesc => 'French interface, exercises, and metrics';
+
+  @override
+  String get systemDefaultDesc =>
+      'Automatically follows your device\'s settings';
+
+  @override
+  String get themeSystemDesc => 'Follows your device\'s light/dark mode';
+
+  @override
+  String get themeDarkDesc => 'Optimal dark contrast for the gym';
+
+  @override
+  String get themeLightDesc => 'Clean and bright style';
+
+  @override
+  String get daysPerWeek3Desc =>
+      'Full-body frequency 3x per week. Optimal for fast recovery and baseline strength.';
+
+  @override
+  String get daysPerWeek4Desc =>
+      'Upper / Lower 4-day split. The scientific gold standard for balanced volume.';
+
+  @override
+  String get daysPerWeek5Desc =>
+      'Push / Pull / Legs 5-day cycle. Maximum specialization and hypertrophy stimulus.';
+
+  @override
+  String get aiAnalyzeProgramButton => 'AI Program Audit';
+
+  @override
+  String get aiProgramAuditTitle => 'AI Program Analysis';
+
+  @override
+  String get aiProgramAuditSubtitle =>
+      'Personalized evaluation based on your recovery, weak points, and specific goals.';
+
+  @override
+  String get aiFatigueQuestion => 'Current Energy & Recovery';
+
+  @override
+  String get aiFatigueFresh => 'Fresh & Rested';
+
+  @override
+  String get aiFatigueModerate => 'Moderate Fatigue';
+
+  @override
+  String get aiFatigueExhausted => 'Exhausted / Poor Recovery';
+
+  @override
+  String get aiWeakPointQuestion => 'Priority Target Muscle Group';
+
+  @override
+  String get aiFocusBalanced => 'Balanced';
+
+  @override
+  String get aiFocusChest => 'Chest';
+
+  @override
+  String get aiFocusBack => 'Back & Posterior Chain';
+
+  @override
+  String get aiFocusLegs => 'Legs & Glutes';
+
+  @override
+  String get aiFocusShouldersArms => 'Shoulders & Arms';
+
+  @override
+  String get aiTimeConstraintQuestion => 'Target Duration per Workout';
+
+  @override
+  String get aiPainQuestion => 'Joint Discomfort / Injuries';
+
+  @override
+  String get aiPainNone => 'None';
+
+  @override
+  String get aiPainShoulders => 'Shoulders';
+
+  @override
+  String get aiPainLowerBack => 'Lower Back';
+
+  @override
+  String get aiPainKnees => 'Knees';
+
+  @override
+  String get aiPainElbowsWrists => 'Elbows / Wrists';
+
+  @override
+  String get aiFreeTextLabel => 'Specific Notes & Requests (Free text)';
+
+  @override
+  String get aiFreeTextHint =>
+      'e.g. Focus on lateral delts, prefer dumbbells for incline press, avoid heavy squats...';
+
+  @override
+  String get aiLaunchProgramAudit => 'Analyze Program with Gemini';
+
+  @override
+  String get aiProgramScoreLabel => 'Program Match Score';
+
+  @override
+  String get aiProgramModificationsTitle => 'Customized Adjustments';
+
+  @override
+  String get aiProgramInjuryTipsTitle => 'Biomechanics & Injury Prevention';
+
+  @override
+  String get aiProgramPeriodizationTitle =>
+      'Periodization & Progression Strategy';
+
+  @override
+  String get aiAnalyzeHistoryButton => 'AI Progression Audit';
+
+  @override
+  String get aiHistoryAuditTitle => 'Training Progression Audit';
+
+  @override
+  String get aiHistoryAuditSubtitle =>
+      'Deep longitudinal analysis of volume, progressive overload, and recovery across your workouts.';
+
+  @override
+  String get aiHistoryScoreLabel => 'Consistency & Overload Score';
+
+  @override
+  String get aiHistoryVolumeTrajectory => 'Volume Trajectory';
+
+  @override
+  String get aiHistoryOverloadAssessment => 'Progressive Overload Quality';
+
+  @override
+  String get aiHistoryMuscleBalance => 'Muscular Distribution Balance';
+
+  @override
+  String get aiHistoryPlateausTitle => 'Plateau Warnings & Fatigue Alerts';
+
+  @override
+  String get aiHistoryMilestonesTitle => 'Upcoming Cycle Milestones';
+
+  @override
+  String get viewWorkoutHistory => 'View Workout History';
+
+  @override
+  String get tabWorkouts => 'Workouts';
+
+  @override
+  String get tabAiReports => 'AI Coaching Reports';
+
+  @override
+  String get noAiReportsYet =>
+      'No AI reports generated yet. Analyze your program or training history to get started!';
+
+  @override
+  String get configureApiKeyPrompt =>
+      'Configure Gemini API key to unlock AI Coach insights.';
 }

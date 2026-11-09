@@ -43,6 +43,8 @@ import 'package:strong/features/workout/presentation/cubit/rest_timer_state.dart
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:strong/core/services/ai_key_storage_service.dart';
+import 'package:strong/core/services/ai_report_storage_service.dart';
+import 'package:strong/features/history/presentation/screens/workout_history_screen.dart';
 import 'package:strong/features/profile/presentation/widgets/ai_key_settings_sheet.dart';
 import 'package:strong/features/workout/domain/models/workout_ai_models.dart';
 import 'package:strong/features/workout/domain/services/workout_ai_service.dart';
@@ -1425,6 +1427,180 @@ void main() {
           expect(find.text('Record sur le Squat'), findsOneWidget);
           expect(find.text('Légère fatigue lombaire'), findsOneWidget);
           expect(find.text('Augmenter le repos à 180s'), findsOneWidget);
+        },
+      );
+
+      test(
+        'ProgramAiQuestionnaire, ProgramAiAnalysis, and HistoryAiAnalysis model serialization and parsing',
+        () {
+          const questionnaire = ProgramAiQuestionnaire(
+            fatigueLevel: 'Fresh & Rested',
+            targetFocus: 'Chest',
+            sessionDuration: '60min',
+            painOrInjuries: 'None',
+            freeTextNotes: 'Focus on incline dumbbell press',
+          );
+          final qJson = questionnaire.toJson();
+          expect(qJson['fatigue_level'], 'Fresh & Rested');
+          expect(qJson['target_focus'], 'Chest');
+          expect(qJson['free_text_notes'], 'Focus on incline dumbbell press');
+
+          const programAnalysis = ProgramAiAnalysis(
+            summary: 'Programme bien structuré pour l\'hypertrophie.',
+            programMatchScore: 9,
+            volumeAssessment: 'Volume de 16 séries hebdomadaires.',
+            customizedModifications: ['Ajouter des élévations latérales'],
+            injuryPreventionTips: ['Bien échauffer la coiffe des rotateurs'],
+            periodizationAdvice: ['Deload en semaine 5'],
+          );
+          final pJson = programAnalysis.toJson();
+          final parsedProgram = ProgramAiAnalysis.fromJson(pJson);
+          expect(parsedProgram.programMatchScore, 9);
+          expect(parsedProgram.customizedModifications.length, 1);
+          expect(parsedProgram.periodizationAdvice.first, 'Deload en semaine 5');
+
+          const historyAnalysis = HistoryAiAnalysis(
+            executiveSummary: 'Progression constante sur les mouvements de base.',
+            progressionScore: 8,
+            progressiveOverloadRate: 'Augmentation de 2.5kg toutes les 2 semaines.',
+            volumeTrajectory: 'Volume stable et maîtrisé.',
+            muscularBalance: 'Bon ratio poussée / tirage.',
+            fatigueAndPlateauAlerts: ['Stagnation légère au développé militaire'],
+            nextCycleMilestones: ['Viser 100kg au squat'],
+          );
+          final hJson = historyAnalysis.toJson();
+          final parsedHistory = HistoryAiAnalysis.fromJson(hJson);
+          expect(parsedHistory.progressionScore, 8);
+          expect(parsedHistory.fatigueAndPlateauAlerts.first, contains('militaire'));
+          expect(parsedHistory.nextCycleMilestones.first, 'Viser 100kg au squat');
+        },
+      );
+
+      test(
+        'AiReportStorageService saves, retrieves, and clears reports accurately',
+        () async {
+          FlutterSecureStorage.setMockInitialValues({});
+          final reportStorage = AiReportStorageService();
+
+          expect(await reportStorage.getLatestProgramAnalysis(), isNull);
+          expect(await reportStorage.getLatestHistoryAnalysis(), isNull);
+
+          const prog = ProgramAiAnalysis(
+            summary: 'Programme test.',
+            programMatchScore: 8,
+            volumeAssessment: 'Volume modéré.',
+            customizedModifications: ['Mod 1'],
+            injuryPreventionTips: ['Tip 1'],
+            periodizationAdvice: ['Advice 1'],
+          );
+          await reportStorage.saveProgramAnalysis(prog);
+
+          final loadedProg = await reportStorage.getLatestProgramAnalysis();
+          expect(loadedProg, isNotNull);
+          expect(loadedProg!.summary, 'Programme test.');
+          expect(loadedProg.programMatchScore, 8);
+
+          const hist = HistoryAiAnalysis(
+            executiveSummary: 'Historique test.',
+            progressionScore: 9,
+            progressiveOverloadRate: 'Surcharge bonne.',
+            volumeTrajectory: 'Volume ascendant.',
+            muscularBalance: 'Équilibré.',
+            fatigueAndPlateauAlerts: ['Alerte 1'],
+            nextCycleMilestones: ['Objectif 1'],
+          );
+          await reportStorage.saveHistoryAnalysis(hist);
+
+          final loadedHist = await reportStorage.getLatestHistoryAnalysis();
+          expect(loadedHist, isNotNull);
+          expect(loadedHist!.progressionScore, 9);
+
+          await reportStorage.clearAllReports();
+          expect(await reportStorage.getLatestProgramAnalysis(), isNull);
+          expect(await reportStorage.getLatestHistoryAnalysis(), isNull);
+        },
+      );
+
+      testWidgets(
+        'WorkoutHistoryScreen renders Workouts and AI Coaching Reports tabs with tab switching',
+        (WidgetTester tester) async {
+          FlutterSecureStorage.setMockInitialValues({});
+
+          await tester.pumpWidget(
+            MaterialApp(
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
+              home: RepositoryProvider<WorkoutRepository>.value(
+                value: workoutRepo,
+                child: const WorkoutHistoryScreen(),
+              ),
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          expect(find.text('Historique des séances'), findsOneWidget);
+          expect(find.text('Séances'), findsOneWidget);
+          expect(find.text('Bilans Coach IA'), findsOneWidget);
+
+          // Switch to AI Coaching Reports Tab
+          await tester.tap(find.text('Bilans Coach IA'));
+          await tester.pumpAndSettle();
+          await tester.pump(const Duration(milliseconds: 500));
+          await tester.pumpAndSettle();
+
+          expect(find.text('Aucun bilan IA généré pour l\'instant. Lancez l\'analyse de votre programme ou de votre historique !'), findsOneWidget);
+          expect(find.text('Bilan de progression IA'), findsOneWidget);
+
+          // Drain widget tree cleanly
+          await tester.pumpWidget(const SizedBox.shrink());
+          await tester.pump(const Duration(milliseconds: 100));
+          await tester.pumpAndSettle();
+        },
+      );
+
+      testWidgets(
+        'AthleteOnboardingDialog Step 0 in Arabic mode displays localized Arabic strings without French',
+        (WidgetTester tester) async {
+          tester.view.physicalSize = const Size(1080, 2400);
+          tester.view.devicePixelRatio = 2.0;
+          addTearDown(() {
+            tester.view.resetPhysicalSize();
+            tester.view.resetDevicePixelRatio();
+          });
+
+          final themeCubit = ThemeCubit();
+
+          await tester.pumpWidget(
+            BlocProvider<ThemeCubit>.value(
+              value: themeCubit,
+              child: const MaterialApp(
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                locale: Locale('ar'),
+                home: Scaffold(
+                  body: AthleteOnboardingDialog(),
+                ),
+              ),
+            ),
+          );
+
+          await tester.pumpAndSettle();
+
+          // Check that localized Arabic strings are present
+          expect(find.text('العربية'), findsOneWidget);
+          expect(find.text('English'), findsOneWidget);
+          expect(find.text('Français'), findsOneWidget);
+          expect(find.text('واجهة وتدريبات باللغة العربية مع دعم RTL كامل'), findsOneWidget);
+          expect(find.text('يتبع إعدادات ولغة هاتفك تلقائياً'), findsOneWidget);
+          expect(find.text('تباين داكن مثالي لصالة الألعاب الرياضية'), findsOneWidget);
+          expect(find.text('تصميم أنيق وواضح'), findsOneWidget);
+
+          // Check that hardcoded French descriptions are NOT present
+          expect(find.text('Suit automatiquement les réglages de votre smartphone'), findsNothing);
+          expect(find.text('Contraste sombre optimal pour la salle de musculation'), findsNothing);
+          expect(find.text('Style clair et épuré'), findsNothing);
         },
       );
     });

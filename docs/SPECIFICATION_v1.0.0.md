@@ -6,7 +6,7 @@
 | :--- | :--- | :--- |
 | **Titre du document** | Spécification Technique, Fonctionnelle, Produit, QA et Cybersécurité | `[CONFIRMÉ]` |
 | **Nom du projet** | **Strong Track** (package `strong` dans `pubspec.yaml:1`, label Android `StrongFit` dans `android/app/src/main/AndroidManifest.xml:3`) | `[CONFIRMÉ]` |
-| **Version du document** | **1.1.0** | `[CONFIRMÉ]` |
+| **Version du document** | **1.2.0** | `[CONFIRMÉ]` |
 | **Version applicative** | `1.0.0+1` (`pubspec.yaml:19`) | `[CONFIRMÉ]` |
 | **Date de génération** | 2026-11-09 | `[CONFIRMÉ]` |
 | **Auteur** | Agent Analyste Technique Senior (Architecture, Business Analysis, QA & Cybersécurité) | `[CONFIRMÉ]` |
@@ -25,7 +25,8 @@ Ce document applique la norme **Semantic Versioning (SemVer 2.0.0)** :
 | Version | Date | Commit | Auteur | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | `1.0.0` | 2026-11-09 | `654f72f` | Agent Analyste Senior | Version initiale complète couvrant l'audit produit, marketing, architecture, QA et cybersécurité. |
-| `1.1.0` | 2026-11-09 | `HEAD` | Agent Analyste Senior | Mise à jour majeure : schéma Drift v6 (persistance langue/thème), service & UI d'import JSON atomique, extension du catalogue à 34 exercices avec ExerciseMediaViewer, modularisation de WorkoutSessionScreen (< 350 lignes), support trilingue étendu (RPE arabe, Gemini multilingue) et permission/résilience réseau Android. |
+| `1.1.0` | 2026-11-09 | `c98c10d` | Agent Analyste Senior | Schéma Drift v6 (persistance langue/thème), service & UI d'import JSON atomique, catalogue à 34 exercices, modularisation de WorkoutSessionScreen (< 350 lignes), ergonomie UX (cibles >= 44dp, steppers 1kg, suppression sécurisée) et permission réseau Android. |
+| `1.2.0` | 2026-11-09 | `HEAD` | Architecte Logiciel Senior | Internationalisation Onboarding en arabe (zéro chaîne en dur), Audit de programme par IA Gemini avec questionnaire interactif et champ texte libre (`ProgramAiAnalysis`), Bilan longitudinal de progression sur l'historique complet des entraînements (`HistoryAiAnalysis`), écran d'historique dédié à deux onglets (Séances & Bilans IA) avec persistance locale sécurisée des rapports (`AiReportStorageService`). |
 
 ### Guide de lecture par public cible
 

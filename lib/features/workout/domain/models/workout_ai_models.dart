@@ -160,3 +160,172 @@ class WorkoutAiAnalysis extends Equatable {
     overallScore,
   ];
 }
+
+/// Athlete's questionnaire responses used to tailor program analysis.
+class ProgramAiQuestionnaire extends Equatable {
+  final String fatigueLevel;
+  final String targetFocus;
+  final String sessionDuration;
+  final String painOrInjuries;
+  final String? freeTextNotes;
+
+  const ProgramAiQuestionnaire({
+    required this.fatigueLevel,
+    required this.targetFocus,
+    required this.sessionDuration,
+    required this.painOrInjuries,
+    this.freeTextNotes,
+  });
+
+  Map<String, dynamic> toJson() => {
+    'fatigue_level': fatigueLevel,
+    'target_focus': targetFocus,
+    'session_duration': sessionDuration,
+    'pain_or_injuries': painOrInjuries,
+    if (freeTextNotes != null && freeTextNotes!.trim().isNotEmpty)
+      'free_text_notes': freeTextNotes!.trim(),
+  };
+
+  @override
+  List<Object?> get props => [
+    fatigueLevel,
+    targetFocus,
+    sessionDuration,
+    painOrInjuries,
+    freeTextNotes,
+  ];
+}
+
+/// Deep athletic analysis of a workout program or routine.
+class ProgramAiAnalysis extends Equatable {
+  final String summary;
+  final int programMatchScore; // 1-10
+  final String volumeAssessment;
+  final List<String> customizedModifications;
+  final List<String> injuryPreventionTips;
+  final List<String> periodizationAdvice;
+
+  const ProgramAiAnalysis({
+    required this.summary,
+    required this.programMatchScore,
+    required this.volumeAssessment,
+    required this.customizedModifications,
+    required this.injuryPreventionTips,
+    required this.periodizationAdvice,
+  });
+
+  factory ProgramAiAnalysis.fromJson(Map<String, dynamic> json) {
+    return ProgramAiAnalysis(
+      summary: json['summary'] as String? ?? 'Analyse du programme terminée.',
+      programMatchScore:
+          (json['program_match_score'] as num?)?.toInt().clamp(1, 10) ?? 8,
+      volumeAssessment:
+          json['volume_assessment'] as String? ??
+          'Volume d\'entraînement équilibré.',
+      customizedModifications:
+          (json['modifications'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      injuryPreventionTips:
+          (json['injury_prevention'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      periodizationAdvice:
+          (json['periodization'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'summary': summary,
+    'program_match_score': programMatchScore,
+    'volume_assessment': volumeAssessment,
+    'modifications': customizedModifications,
+    'injury_prevention': injuryPreventionTips,
+    'periodization': periodizationAdvice,
+  };
+
+  @override
+  List<Object?> get props => [
+    summary,
+    programMatchScore,
+    volumeAssessment,
+    customizedModifications,
+    injuryPreventionTips,
+    periodizationAdvice,
+  ];
+}
+
+/// Long-term athletic progress analysis across completed workout history.
+class HistoryAiAnalysis extends Equatable {
+  final String executiveSummary;
+  final int progressionScore; // 1-10
+  final String progressiveOverloadRate;
+  final String volumeTrajectory;
+  final String muscularBalance;
+  final List<String> fatigueAndPlateauAlerts;
+  final List<String> nextCycleMilestones;
+
+  const HistoryAiAnalysis({
+    required this.executiveSummary,
+    required this.progressionScore,
+    required this.progressiveOverloadRate,
+    required this.volumeTrajectory,
+    required this.muscularBalance,
+    required this.fatigueAndPlateauAlerts,
+    required this.nextCycleMilestones,
+  });
+
+  factory HistoryAiAnalysis.fromJson(Map<String, dynamic> json) {
+    return HistoryAiAnalysis(
+      executiveSummary:
+          json['executive_summary'] as String? ??
+          'Progression globale positive.',
+      progressionScore:
+          (json['progression_score'] as num?)?.toInt().clamp(1, 10) ?? 8,
+      progressiveOverloadRate:
+          json['progressive_overload_rate'] as String? ??
+          'Surcharge progressive régulière.',
+      volumeTrajectory:
+          json['volume_trajectory'] as String? ?? 'Volume stable et maîtrisé.',
+      muscularBalance:
+          json['muscular_balance'] as String? ??
+          'Répartition musculaire proportionnée.',
+      fatigueAndPlateauAlerts:
+          (json['plateaus_and_fatigue'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+      nextCycleMilestones:
+          (json['next_milestones'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          const [],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'executive_summary': executiveSummary,
+    'progression_score': progressionScore,
+    'progressive_overload_rate': progressiveOverloadRate,
+    'volume_trajectory': volumeTrajectory,
+    'muscular_balance': muscularBalance,
+    'plateaus_and_fatigue': fatigueAndPlateauAlerts,
+    'next_milestones': nextCycleMilestones,
+  };
+
+  @override
+  List<Object?> get props => [
+    executiveSummary,
+    progressionScore,
+    progressiveOverloadRate,
+    volumeTrajectory,
+    muscularBalance,
+    fatigueAndPlateauAlerts,
+    nextCycleMilestones,
+  ];
+}
