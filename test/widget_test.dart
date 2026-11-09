@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +23,11 @@ import 'package:strong/features/workout/domain/models/rest_preferences.dart';
 import 'package:strong/features/workout/domain/repositories/workout_repository.dart';
 import 'package:strong/features/workout/domain/services/one_rep_max_calculator.dart';
 import 'package:strong/features/workout/domain/services/plate_calculator.dart';
+import 'package:strong/core/enums/set_type.dart';
+import 'package:strong/features/history/domain/services/workout_export_service.dart';
+import 'package:strong/features/workout/domain/models/workout_session_detail.dart';
+import 'package:strong/features/workout/presentation/widgets/one_handed_quick_input_bar.dart';
+import 'package:strong/features/workout/presentation/widgets/rpe_picker_dialog.dart';
 import 'package:strong/features/workout/domain/services/warmup_calculator.dart';
 import 'package:strong/features/exercises/data/exercise_guides_data.dart';
 import 'package:strong/features/profile/domain/routine_recommender.dart';
@@ -752,6 +758,196 @@ void main() {
 
         // Allow Drift query stream unmount timer to flush
         await tester.pumpAndSettle();
+      });
+
+      testWidgets(
+          'OneHandedQuickInputBar adjusts weight and reps and completes set with one hand',
+          (tester) async {
+        double? updatedWeight;
+        int? updatedReps;
+        bool completed = false;
+        bool nextSetCalled = false;
+
+        final exercise = Exercise(
+          id: 1,
+          slug: 'bench_press',
+          muscleGroup: MuscleGroup.chest,
+          equipment: EquipmentType.barbell,
+          isCustom: false,
+          createdAt: DateTime.now(),
+        );
+
+        final workoutExercise = WorkoutExercise(
+          id: 1,
+          sessionId: 1,
+          exerciseId: 1,
+          orderIndex: 0,
+        );
+
+        final setLog = SetLog(
+          id: 10,
+          workoutExerciseId: 1,
+          setNumber: 1,
+          setType: SetType.normal,
+          weightKg: 80.0,
+          reps: 8,
+          isCompleted: false,
+        );
+
+        final previousSetLog = SetLog(
+          id: 9,
+          workoutExerciseId: 1,
+          setNumber: 1,
+          setType: SetType.normal,
+          weightKg: 85.0,
+          reps: 10,
+          isCompleted: true,
+        );
+
+        final exerciseDetail = WorkoutExerciseDetail(
+          workoutExercise: workoutExercise,
+          exercise: exercise,
+          sets: [setLog],
+        );
+
+        await tester.pumpWidget(
+          MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('fr'),
+            home: Scaffold(
+              body: OneHandedQuickInputBar(
+                exerciseItem: exerciseDetail,
+                setLog: setLog,
+                previousSetLog: previousSetLog,
+                onUpdateValues: (w, r, [rpe]) {
+                  updatedWeight = w;
+                  updatedReps = r;
+                },
+                onToggleCompleted: (c) {
+                  completed = c;
+                },
+                onNextSet: () {
+                  nextSetCalled = true;
+                },
+              ),
+            ),
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        // 1. Verify Stepper increments weight (+2.5 kg)
+        expect(find.text('+2.5'), findsOneWidget);
+        await tester.tap(find.text('+2.5'));
+        expect(updatedWeight, 82.5);
+
+        // 2. Verify Stepper increments reps (+1)
+        expect(find.text('+1'), findsOneWidget);
+        await tester.tap(find.text('+1'));
+        expect(updatedReps, 9);
+
+        // 3. Verify 1-tap previous copy
+        expect(find.text('85.0kg × 10'), findsOneWidget);
+        await tester.tap(find.text('85.0kg × 10'));
+        expect(updatedWeight, 85.0);
+        expect(updatedReps, 10);
+
+        // 4. Verify giant validation button completes set & advances
+        final validateBtn = find.text('Valider la série');
+        expect(validateBtn, findsOneWidget);
+        await tester.tap(validateBtn);
+        expect(completed, isTrue);
+        expect(nextSetCalled, isTrue);
+      });
+
+      test('WorkoutExportService generates compliant CSV and JSON backup', () async {
+        final exportService = WorkoutExportService(
+          database,
+          tempDirectoryProvider: () async => Directory.systemTemp.createTempSync('strong_test_'),
+        );
+
+        // 1. Generate CSV export
+        final csvFile = await exportService.generateCsvExport();
+        expect(await csvFile.exists(), isTrue);
+        final csvContent = await csvFile.readAsString();
+
+        // Check header
+        expect(
+          csvContent.contains('Date,Workout Name,Duration (min),Exercise,Muscle Group,Set Number,Set Type,Weight (kg),Reps,RPE,Completed'),
+          isTrue,
+        );
+
+        // 2. Generate JSON backup
+        final jsonFile = await exportService.generateJsonBackup();
+        expect(await jsonFile.exists(), isTrue);
+        final jsonContent = await jsonFile.readAsString();
+
+        expect(jsonContent.contains('"app": "Strong Track"'), isTrue);
+        expect(jsonContent.contains('"profile":'), isTrue);
+        expect(jsonContent.contains('"sessions":'), isTrue);
+      });
+
+      testWidgets('RpePickerDialog displays scale and selects RPE value', (tester) async {
+        double? selectedRpe;
+
+        await tester.pumpWidget(
+          MaterialApp(
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('fr'),
+            home: Scaffold(
+              body: Builder(
+                builder: (ctx) => ElevatedButton(
+                  onPressed: () {
+                    RpePickerDialog.show(
+                      ctx,
+                      currentRpe: 8.0,
+                      onSelected: (val) {
+                        selectedRpe = val;
+                      },
+                    );
+                  },
+                  child: const Text('Open RPE'),
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.text('Open RPE'));
+        await tester.pumpAndSettle();
+
+        expect(find.text('@10'), findsOneWidget);
+        expect(find.text('@8.5'), findsOneWidget);
+
+        // Select @8.5
+        await tester.tap(find.text('@8.5'));
+        await tester.pumpAndSettle();
+
+        expect(selectedRpe, 8.5);
+      });
+
+      test('Superset grouping links multiple exercises and updates supersetGroupId', () async {
+        final sessionId = await workoutRepo.startNewSession(title: 'Superset Workout');
+        final we1 = await workoutRepo.addExerciseToSession(sessionId: sessionId, exerciseId: 1);
+        final we2 = await workoutRepo.addExerciseToSession(sessionId: sessionId, exerciseId: 2);
+
+        // Assign both to supersetGroupId = 1 (A1 and A2)
+        await workoutRepo.setExerciseSuperset(workoutExerciseId: we1, supersetGroupId: 1);
+        await workoutRepo.setExerciseSuperset(workoutExerciseId: we2, supersetGroupId: 1);
+
+        final detail = await workoutRepo.watchSessionWithSets(sessionId).first;
+        expect(detail, isNotNull);
+        expect(detail!.exercises.length, 2);
+        expect(detail.exercises[0].workoutExercise.supersetGroupId, 1);
+        expect(detail.exercises[1].workoutExercise.supersetGroupId, 1);
+
+        // Unlink we2
+        await workoutRepo.setExerciseSuperset(workoutExerciseId: we2, supersetGroupId: null);
+        final updatedDetail = await workoutRepo.watchSessionWithSets(sessionId).first;
+        expect(updatedDetail!.exercises[0].workoutExercise.supersetGroupId, 1);
+        expect(updatedDetail.exercises[1].workoutExercise.supersetGroupId, isNull);
       });
     });
   });

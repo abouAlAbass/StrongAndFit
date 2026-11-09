@@ -621,4 +621,79 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get readyTemplates => 'Séances types & modèles';
+
+  @override
+  String get oneHandedMode => 'Saisie rapide à 1 main';
+
+  @override
+  String get validateSet => 'Valider la série';
+
+  @override
+  String get copyPrevious => 'Copier précédent';
+
+  @override
+  String get tapToCopy => 'Toucher pour copier';
+
+  @override
+  String get activeSet => 'Série active';
+
+  @override
+  String get quickAdjustWeight => 'Charge';
+
+  @override
+  String get quickAdjustReps => 'Répétitions';
+
+  @override
+  String get exportSectionTitle => 'Sauvegarde & Export de données';
+
+  @override
+  String get exportCsvTitle => 'Exporter en CSV (Excel / Strong / Hevy)';
+
+  @override
+  String get exportCsvSubtitle =>
+      'Fichier tabulaire complet pour Excel, Google Sheets ou d\'autres applications';
+
+  @override
+  String get exportJsonTitle => 'Sauvegarde complète JSON';
+
+  @override
+  String get exportJsonSubtitle =>
+      'Archive intégrale de votre profil, historique, exercices et séries';
+
+  @override
+  String get exportInProgress => 'Génération du fichier d\'export...';
+
+  @override
+  String get rateOfPerceivedExertion => 'Effort perçu (RPE / RIR)';
+
+  @override
+  String get rpeSubtitle =>
+      'RPE 10 = Échec postural (0 RIR) • RPE 8 = 2 reps en réserve';
+
+  @override
+  String get repsInReserve => 'RIR';
+
+  @override
+  String get clearRpe => 'Effacer RPE';
+
+  @override
+  String get superset => 'Superset';
+
+  @override
+  String get createSuperset => 'Créer un superset';
+
+  @override
+  String get unlinkSuperset => 'Dissocier du superset';
+
+  @override
+  String get supersetLinked => 'Superset associé !';
+
+  @override
+  String get supersetUnlinked => 'Exercice dissocié du superset';
+
+  @override
+  String get supersetLabel => 'SUPERSET';
+
+  @override
+  String get linkWithNext => 'Lier avec l\'exercice suivant';
 }

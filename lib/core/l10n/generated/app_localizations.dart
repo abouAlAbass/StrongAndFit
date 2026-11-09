@@ -1257,6 +1257,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ready Templates & Routines'**
   String get readyTemplates;
+
+  /// No description provided for @oneHandedMode.
+  ///
+  /// In en, this message translates to:
+  /// **'1-Hand Quick Input'**
+  String get oneHandedMode;
+
+  /// No description provided for @validateSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Set'**
+  String get validateSet;
+
+  /// No description provided for @copyPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Previous'**
+  String get copyPrevious;
+
+  /// No description provided for @tapToCopy.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to copy'**
+  String get tapToCopy;
+
+  /// No description provided for @activeSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Active Set'**
+  String get activeSet;
+
+  /// No description provided for @quickAdjustWeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight'**
+  String get quickAdjustWeight;
+
+  /// No description provided for @quickAdjustReps.
+  ///
+  /// In en, this message translates to:
+  /// **'Reps'**
+  String get quickAdjustReps;
+
+  /// No description provided for @exportSectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup & Data Export'**
+  String get exportSectionTitle;
+
+  /// No description provided for @exportCsvTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Export to CSV (Excel / Strong / Hevy)'**
+  String get exportCsvTitle;
+
+  /// No description provided for @exportCsvSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete spreadsheet compatible with Excel, Sheets and fitness apps'**
+  String get exportCsvSubtitle;
+
+  /// No description provided for @exportJsonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Full JSON Backup'**
+  String get exportJsonTitle;
+
+  /// No description provided for @exportJsonSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Full archive of your athlete profile, sessions, exercises and sets'**
+  String get exportJsonSubtitle;
+
+  /// No description provided for @exportInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Generating export file...'**
+  String get exportInProgress;
+
+  /// No description provided for @rateOfPerceivedExertion.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate of Perceived Exertion (RPE / RIR)'**
+  String get rateOfPerceivedExertion;
+
+  /// No description provided for @rpeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'RPE 10 = Muscular Failure (0 RIR) • RPE 8 = 2 reps in reserve'**
+  String get rpeSubtitle;
+
+  /// No description provided for @repsInReserve.
+  ///
+  /// In en, this message translates to:
+  /// **'RIR'**
+  String get repsInReserve;
+
+  /// No description provided for @clearRpe.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear RPE'**
+  String get clearRpe;
+
+  /// No description provided for @superset.
+  ///
+  /// In en, this message translates to:
+  /// **'Superset'**
+  String get superset;
+
+  /// No description provided for @createSuperset.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Superset'**
+  String get createSuperset;
+
+  /// No description provided for @unlinkSuperset.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink from Superset'**
+  String get unlinkSuperset;
+
+  /// No description provided for @supersetLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Superset linked!'**
+  String get supersetLinked;
+
+  /// No description provided for @supersetUnlinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise unlinked from superset'**
+  String get supersetUnlinked;
+
+  /// No description provided for @supersetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'SUPERSET'**
+  String get supersetLabel;
+
+  /// No description provided for @linkWithNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Link with next exercise'**
+  String get linkWithNext;
 }
 
 class _AppLocalizationsDelegate

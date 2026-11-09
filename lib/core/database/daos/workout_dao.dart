@@ -280,6 +280,13 @@ class WorkoutDao extends DatabaseAccessor<AppDatabase> with _$WorkoutDaoMixin {
     return (delete(workoutExercises)..where((t) => t.id.equals(workoutExerciseId))).go();
   }
 
+  /// Sets or clears the superset group ID for a specific workout exercise.
+  Future<int> setExerciseSuperset(int workoutExerciseId, int? supersetGroupId) {
+    return (update(workoutExercises)..where((t) => t.id.equals(workoutExerciseId))).write(
+      WorkoutExercisesCompanion(supersetGroupId: Value(supersetGroupId)),
+    );
+  }
+
   /// Finalizes and completes a session with total elapsed duration.
   Future<int> completeSession({
     required int sessionId,

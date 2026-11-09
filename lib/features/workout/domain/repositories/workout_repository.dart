@@ -60,6 +60,12 @@ abstract class WorkoutRepository {
   /// Deletes an exercise from the session.
   Future<int> deleteWorkoutExercise(int workoutExerciseId);
 
+  /// Sets or clears a superset group linkage for a workout exercise.
+  Future<int> setExerciseSuperset({
+    required int workoutExerciseId,
+    required int? supersetGroupId,
+  });
+
   /// Finalizes and completes a session.
   Future<int> completeSession({
     required int sessionId,

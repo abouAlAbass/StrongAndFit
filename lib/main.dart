@@ -9,6 +9,7 @@ import 'core/theme/theme_cubit.dart';
 import 'features/exercises/data/repositories/exercise_repository_impl.dart';
 import 'features/exercises/domain/repositories/exercise_repository.dart';
 import 'features/exercises/presentation/cubit/exercise_list_cubit.dart';
+import 'features/history/domain/services/workout_export_service.dart';
 import 'features/home/presentation/screens/main_navigation_screen.dart';
 import 'features/profile/data/repositories/profile_repository_impl.dart';
 import 'features/profile/domain/repositories/profile_repository.dart';
@@ -46,6 +47,7 @@ void main() async {
   final templateRepository = TemplateRepositoryImpl(database.templateDao);
   final profileRepository = ProfileRepositoryImpl(database.profileDao);
   final restSettingsRepository = RestSettingsRepositoryImpl(database.settingsDao);
+  final exportService = WorkoutExportService(database);
 
   // OS-level alert when rest ends (works with the screen locked).
   final restNotifications = LocalRestNotificationService();
@@ -59,6 +61,7 @@ void main() async {
       profileRepository: profileRepository,
       restSettingsRepository: restSettingsRepository,
       restNotifications: restNotifications,
+      exportService: exportService,
     ),
   );
 }
@@ -70,6 +73,7 @@ class StrongApp extends StatefulWidget {
   final ProfileRepository profileRepository;
   final RestSettingsRepository restSettingsRepository;
   final RestNotificationService restNotifications;
+  final WorkoutExportService? exportService;
 
   const StrongApp({
     super.key,
@@ -79,6 +83,7 @@ class StrongApp extends StatefulWidget {
     required this.profileRepository,
     required this.restSettingsRepository,
     this.restNotifications = const NoopRestNotificationService(),
+    this.exportService,
   });
 
   @override
@@ -111,6 +116,10 @@ class _StrongAppState extends State<StrongApp> {
         RepositoryProvider<ProfileRepository>.value(
           value: widget.profileRepository,
         ),
+        if (widget.exportService != null)
+          RepositoryProvider<WorkoutExportService>.value(
+            value: widget.exportService!,
+          ),
       ],
       child: MultiBlocProvider(
         providers: [

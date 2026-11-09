@@ -9,6 +9,7 @@ import '../../../../core/theme/app_typography.dart';
 import '../../domain/models/exercise_personal_records.dart';
 import '../../domain/services/one_rep_max_calculator.dart';
 import 'plate_calculator_dialog.dart';
+import 'rpe_picker_dialog.dart';
 
 /// Interactive row representing an individual set within a workout exercise.
 ///
@@ -22,6 +23,8 @@ class SetRowWidget extends StatefulWidget {
   final SetLog setLog;
   final SetLog? previousSetLog;
   final ExercisePersonalRecords? personalRecords;
+  final bool isSelected;
+  final VoidCallback? onSelect;
   final ValueChanged<bool> onToggleCompleted;
   final void Function(double? weight, int? reps, double? rpe, SetType setType)
       onUpdateValues;
@@ -32,6 +35,8 @@ class SetRowWidget extends StatefulWidget {
     required this.setLog,
     this.previousSetLog,
     this.personalRecords,
+    this.isSelected = false,
+    this.onSelect,
     required this.onToggleCompleted,
     required this.onUpdateValues,
     required this.onDelete,
@@ -149,56 +154,114 @@ class _SetRowWidgetState extends State<SetRowWidget> {
         child: const Icon(Icons.delete_outline, color: Colors.white),
       ),
       onDismissed: (_) => widget.onDelete(),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        margin: const EdgeInsetsDirectional.only(bottom: 6),
-        padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 6),
-        decoration: BoxDecoration(
-          color: isCompleted
-              ? (Theme.of(context).brightness == Brightness.dark
-                  ? AppColors.completedContainer.withValues(alpha: 0.4)
-                  : AppColors.lightCompletedContainer)
-              : AppColors.ofSurface(context),
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
+      child: InkWell(
+        onTap: widget.onSelect,
+        borderRadius: BorderRadius.circular(10),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          margin: const EdgeInsetsDirectional.only(bottom: 6),
+          padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 6),
+          decoration: BoxDecoration(
             color: isCompleted
-                ? (isPr ? const Color(0xFFFFD700) : AppColors.completed.withValues(alpha: 0.35))
-                : AppColors.ofBorder(context),
-            width: isPr && isCompleted ? 1.4 : 0.8,
-          ),
-          boxShadow: isPr && isCompleted
-              ? [
-                  BoxShadow(
-                    color: const Color(0xFFFFD700).withValues(alpha: 0.15),
-                    blurRadius: 8,
-                    spreadRadius: 1,
-                  ),
-                ]
-              : null,
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                // 1. Set Number / Type Selector Badge
-                _buildSetTypeBadge(context),
-                const SizedBox(width: 8),
-
-                // 2. Previous performance hint
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    previousHint,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.ofTextSecondary(context),
+                ? (Theme.of(context).brightness == Brightness.dark
+                    ? AppColors.completedContainer.withValues(alpha: 0.4)
+                    : AppColors.lightCompletedContainer)
+                : (widget.isSelected
+                    ? AppColors.ofPrimaryContainer(context).withAlpha(50)
+                    : AppColors.ofSurface(context)),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: widget.isSelected
+                  ? AppColors.primary
+                  : (isCompleted
+                      ? (isPr ? const Color(0xFFFFD700) : AppColors.completed.withValues(alpha: 0.35))
+                      : AppColors.ofBorder(context)),
+              width: widget.isSelected ? 1.6 : (isPr && isCompleted ? 1.4 : 0.8),
+            ),
+            boxShadow: isPr && isCompleted
+                ? [
+                    BoxShadow(
+                      color: const Color(0xFFFFD700).withValues(alpha: 0.15),
+                      blurRadius: 8,
+                      spreadRadius: 1,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  ]
+                : null,
+          ),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  // 1. Set Number / Type Selector Badge
+                  _buildSetTypeBadge(context),
+                  const SizedBox(width: 8),
+
+                  // 2. Previous performance hint (1-tap to autofill)
+                  Expanded(
+                    flex: 3,
+                    child: Tooltip(
+                      message: l10n.tapToCopy,
+                      child: InkWell(
+                        onTap: widget.previousSetLog != null &&
+                                (widget.previousSetLog!.weightKg != null ||
+                                    widget.previousSetLog!.reps != null)
+                            ? () {
+                                HapticFeedback.selectionClick();
+                                if (widget.previousSetLog!.weightKg != null) {
+                                  final w = widget.previousSetLog!.weightKg!;
+                                  _weightController.text =
+                                      w.toStringAsFixed(w % 1 == 0 ? 0 : 1);
+                                }
+                                if (widget.previousSetLog!.reps != null) {
+                                  _repsController.text =
+                                      widget.previousSetLog!.reps.toString();
+                                }
+                                _debounceTimer?.cancel();
+                                _commitFields();
+                              }
+                            : null,
+                        borderRadius: BorderRadius.circular(6),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            color: widget.previousSetLog != null
+                                ? AppColors.primary.withAlpha(14)
+                                : Colors.transparent,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              if (widget.previousSetLog != null)
+                                const Padding(
+                                  padding: EdgeInsetsDirectional.only(end: 3),
+                                  child: Icon(
+                                    Icons.copy_rounded,
+                                    size: 11,
+                                    color: AppColors.secondary,
+                                  ),
+                                ),
+                              Flexible(
+                                child: Text(
+                                  previousHint,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: widget.previousSetLog != null
+                                        ? AppColors.ofTextPrimary(context)
+                                        : AppColors.ofTextSecondary(context),
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
                 const SizedBox(width: 8),
 
                 // 3. Weight Input Field + Plate Calculator Shortcut
@@ -351,14 +414,13 @@ class _SetRowWidgetState extends State<SetRowWidget> {
               ],
             ),
 
-            // Pro Metrics Row: PR Badge + Estimated 1RM
-            if ((estimated1RM != null || isPr) && isCompleted)
+            // Pro Metrics & RPE Row
+            if (isCompleted || widget.isSelected || widget.setLog.rpe != null)
               Padding(
-                padding: const EdgeInsetsDirectional.only(top: 4, start: 40, end: 48),
+                padding: const EdgeInsetsDirectional.only(top: 5, start: 40, end: 4),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (isPr)
+                    if (isPr && isCompleted) ...[
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
@@ -382,10 +444,10 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                             ),
                           ],
                         ),
-                      )
-                    else
-                      const SizedBox.shrink(),
-                    if (estimated1RM != null)
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    if (estimated1RM != null && isCompleted) ...[
                       Text(
                         '${l10n.estimatedOneRepMax}: ${estimated1RM.toStringAsFixed(1)} kg',
                         style: const TextStyle(
@@ -394,14 +456,74 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                           color: AppColors.secondary,
                         ),
                       ),
+                      const Spacer(),
+                    ] else
+                      const Spacer(),
+                    // RPE Selector Pill
+                    InkWell(
+                      onTap: () {
+                        RpePickerDialog.show(
+                          context,
+                          currentRpe: widget.setLog.rpe,
+                          onSelected: (newRpe) {
+                            widget.onUpdateValues(
+                              double.tryParse(_weightController.text),
+                              int.tryParse(_repsController.text),
+                              newRpe,
+                              widget.setLog.setType,
+                            );
+                          },
+                        );
+                      },
+                      borderRadius: BorderRadius.circular(5),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
+                        decoration: BoxDecoration(
+                          color: widget.setLog.rpe != null
+                              ? AppColors.primary.withAlpha(30)
+                              : AppColors.ofInputBackground(context),
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                            color: widget.setLog.rpe != null
+                                ? AppColors.primary
+                                : AppColors.ofBorder(context),
+                            width: 0.8,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.speed_rounded,
+                              size: 11,
+                              color: widget.setLog.rpe != null
+                                  ? AppColors.primary
+                                  : AppColors.ofTextTertiary(context),
+                            ),
+                            const SizedBox(width: 3),
+                            Text(
+                              widget.setLog.rpe != null ? '@${widget.setLog.rpe}' : 'RPE',
+                              style: TextStyle(
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w700,
+                                color: widget.setLog.rpe != null
+                                    ? AppColors.primary
+                                    : AppColors.ofTextSecondary(context),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildSetTypeBadge(BuildContext context) {
     Color badgeColor = AppColors.ofTextSecondary(context);

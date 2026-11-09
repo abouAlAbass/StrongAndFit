@@ -27,6 +27,7 @@ class WorkoutSessionBloc
     on<ToggleSetCompletionRequested>(_onToggleSetCompletionRequested);
     on<DeleteSetRequested>(_onDeleteSetRequested);
     on<DeleteExerciseRequested>(_onDeleteExerciseRequested);
+    on<SetExerciseSupersetRequested>(_onSetExerciseSupersetRequested);
     on<CompleteSessionRequested>(_onCompleteSessionRequested);
     on<DiscardSessionRequested>(_onDiscardSessionRequested);
     on<TimerTicked>(_onTimerTicked);
@@ -313,6 +314,16 @@ class WorkoutSessionBloc
     Emitter<WorkoutSessionState> emit,
   ) async {
     await _workoutRepository.deleteWorkoutExercise(event.workoutExerciseId);
+  }
+
+  Future<void> _onSetExerciseSupersetRequested(
+    SetExerciseSupersetRequested event,
+    Emitter<WorkoutSessionState> emit,
+  ) async {
+    await _workoutRepository.setExerciseSuperset(
+      workoutExerciseId: event.workoutExerciseId,
+      supersetGroupId: event.supersetGroupId,
+    );
   }
 
   Future<void> _onCompleteSessionRequested(

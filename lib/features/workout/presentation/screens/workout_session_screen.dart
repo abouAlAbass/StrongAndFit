@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/database/app_database.dart';
 import '../../../../core/l10n/exercise_translation_helper.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -15,6 +16,7 @@ import '../cubit/rest_timer_cubit.dart';
 import '../../../../core/enums/set_type.dart';
 import '../widgets/exercise_rest_chip.dart';
 import '../widgets/plate_calculator_dialog.dart';
+import '../widgets/one_handed_quick_input_bar.dart';
 import '../widgets/rest_timer_dialog.dart';
 import '../widgets/rest_timer_floating_bar.dart';
 import '../widgets/set_row_widget.dart';
@@ -22,7 +24,7 @@ import '../widgets/warmup_sets_dialog.dart';
 
 /// Main screen showcasing active workout tracking with reactive Drift Streams,
 /// dynamic locale switching, adaptive dark/light theming, and responsive layouts.
-class WorkoutSessionScreen extends StatelessWidget {
+class WorkoutSessionScreen extends StatefulWidget {
   final ValueChanged<Locale> onLocaleChanged;
   final Locale currentLocale;
 
@@ -31,6 +33,112 @@ class WorkoutSessionScreen extends StatelessWidget {
     required this.onLocaleChanged,
     required this.currentLocale,
   });
+
+  @override
+  State<WorkoutSessionScreen> createState() => _WorkoutSessionScreenState();
+}
+
+class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
+  int? _selectedSetId;
+
+  ({WorkoutExerciseDetail exercise, SetLog set, SetLog? previousSet})? _findActiveSet(
+    WorkoutSessionDetail detail,
+    WorkoutSessionState state,
+  ) {
+    if (detail.exercises.isEmpty) return null;
+
+    if (_selectedSetId != null) {
+      for (final exerciseItem in detail.exercises) {
+        final matchIndex = exerciseItem.sets.indexWhere((s) => s.id == _selectedSetId);
+        if (matchIndex != -1) {
+          final previousSets = state.previousExerciseSets[exerciseItem.exercise.id] ?? [];
+          final previousSet = matchIndex < previousSets.length ? previousSets[matchIndex] : null;
+          return (
+            exercise: exerciseItem,
+            set: exerciseItem.sets[matchIndex],
+            previousSet: previousSet,
+          );
+        }
+      }
+    }
+
+    // Default to first uncompleted set
+    for (final exerciseItem in detail.exercises) {
+      for (int i = 0; i < exerciseItem.sets.length; i++) {
+        final s = exerciseItem.sets[i];
+        if (!s.isCompleted) {
+          final previousSets = state.previousExerciseSets[exerciseItem.exercise.id] ?? [];
+          final previousSet = i < previousSets.length ? previousSets[i] : null;
+          return (
+            exercise: exerciseItem,
+            set: s,
+            previousSet: previousSet,
+          );
+        }
+      }
+    }
+
+    // Fallback: last set
+    final lastExercise = detail.exercises.last;
+    if (lastExercise.sets.isNotEmpty) {
+      final lastIndex = lastExercise.sets.length - 1;
+      final previousSets = state.previousExerciseSets[lastExercise.exercise.id] ?? [];
+      return (
+        exercise: lastExercise,
+        set: lastExercise.sets[lastIndex],
+        previousSet: lastIndex < previousSets.length ? previousSets[lastIndex] : null,
+      );
+    }
+
+    return null;
+  }
+
+  void _advanceToNextSet(WorkoutSessionDetail detail) {
+    bool foundCurrent = false;
+    for (final exerciseItem in detail.exercises) {
+      for (final s in exerciseItem.sets) {
+        if (foundCurrent && !s.isCompleted) {
+          setState(() => _selectedSetId = s.id);
+          return;
+        }
+        if (s.id == _selectedSetId) {
+          foundCurrent = true;
+        }
+      }
+    }
+    for (final exerciseItem in detail.exercises) {
+      for (final s in exerciseItem.sets) {
+        if (!s.isCompleted) {
+          setState(() => _selectedSetId = s.id);
+          return;
+        }
+      }
+    }
+  }
+
+  Map<int, String> _buildSupersetLabels(List<WorkoutExerciseDetail> exercises) {
+    final groupToLetter = <int, String>{};
+    final groupCounts = <int, int>{};
+    final result = <int, String>{};
+
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    int letterIndex = 0;
+
+    for (final item in exercises) {
+      final gid = item.workoutExercise.supersetGroupId;
+      if (gid != null) {
+        if (!groupToLetter.containsKey(gid)) {
+          groupToLetter[gid] = letters[letterIndex % letters.length];
+          letterIndex++;
+        }
+        final letter = groupToLetter[gid]!;
+        final count = (groupCounts[gid] ?? 0) + 1;
+        groupCounts[gid] = count;
+        result[item.workoutExercise.id] = '$letter$count';
+      }
+    }
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,11 +291,62 @@ class WorkoutSessionScreen extends StatelessWidget {
       bottomNavigationBar: BlocBuilder<WorkoutSessionBloc, WorkoutSessionState>(
         builder: (context, state) {
           if (!state.hasActiveSession) return const SizedBox.shrink();
+          final detail = state.detail!;
+          final active = _findActiveSet(detail, state);
+
           return SafeArea(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // 1. One-Handed Quick Input Bar in Reachable Thumb Zone
+                if (active != null)
+                  ResponsiveContentWrapper(
+                    maxWidth: 820,
+                    child: OneHandedQuickInputBar(
+                      key: ValueKey('one_hand_set_${active.set.id}'),
+                      exerciseItem: active.exercise,
+                      setLog: active.set,
+                      previousSetLog: active.previousSet,
+                      isPr: (state.personalRecords[active.exercise.exercise.id]
+                              ?.evaluateSet(
+                                weightKg: active.set.weightKg ?? 0,
+                                reps: active.set.reps ?? 0,
+                              )
+                              .isNotEmpty ??
+                          false),
+                      onUpdateValues: (weight, reps, [rpe]) {
+                        context.read<WorkoutSessionBloc>().add(
+                              UpdateSetRequested(
+                                setId: active.set.id,
+                                workoutExerciseId: active.set.workoutExerciseId,
+                                setNumber: active.set.setNumber,
+                                setType: active.set.setType,
+                                weightKg: weight,
+                                reps: reps,
+                                rpe: rpe ?? active.set.rpe,
+                                isCompleted: active.set.isCompleted,
+                              ),
+                            );
+                      },
+                      onToggleCompleted: (completed) {
+                        context.read<WorkoutSessionBloc>().add(
+                              ToggleSetCompletionRequested(
+                                setId: active.set.id,
+                                isCompleted: completed,
+                              ),
+                            );
+                        if (completed) {
+                          _triggerRest(context, detail, active.exercise, active.set.id);
+                        }
+                      },
+                      onNextSet: () => _advanceToNextSet(detail),
+                    ),
+                  ),
+
+                // 2. Rest Timer Floating Bar
                 const RestTimerFloatingBar(),
+
+                // 3. Add Exercise Button
                 Padding(
                   padding: const EdgeInsetsDirectional.symmetric(
                     horizontal: 16,
@@ -291,6 +450,7 @@ class WorkoutSessionScreen extends StatelessWidget {
     WorkoutSessionState state,
   ) {
     final l10n = AppLocalizations.of(context)!;
+    final active = _findActiveSet(detail, state);
 
     return ListView(
       padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 80),
@@ -329,21 +489,59 @@ class WorkoutSessionScreen extends StatelessWidget {
         const SizedBox(height: 16),
 
         // List of Exercise Cards
-        ...detail.exercises.map((item) {
-          final previousSets =
-              state.previousExerciseSets[item.exercise.id] ?? [];
+        ...() {
+          final supersetLabels = _buildSupersetLabels(detail.exercises);
+          return detail.exercises.map((item) {
+            final previousSets =
+                state.previousExerciseSets[item.exercise.id] ?? [];
+            final supersetLabel = supersetLabels[item.workoutExercise.id];
 
-          return Container(
-            margin: const EdgeInsetsDirectional.only(bottom: 16),
-            padding: const EdgeInsetsDirectional.all(14),
-            decoration: BoxDecoration(
-              color: AppColors.ofCard(context),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+            return Container(
+              margin: const EdgeInsetsDirectional.only(bottom: 16),
+              padding: const EdgeInsetsDirectional.all(14),
+              decoration: BoxDecoration(
+                color: AppColors.ofCard(context),
+                borderRadius: BorderRadius.circular(16),
+                border: supersetLabel != null
+                    ? Border(
+                        left: const BorderSide(color: Color(0xFF8B5CF6), width: 4.0),
+                        top: BorderSide(color: AppColors.ofBorder(context), width: 0.8),
+                        right: BorderSide(color: AppColors.ofBorder(context), width: 0.8),
+                        bottom: BorderSide(color: AppColors.ofBorder(context), width: 0.8),
+                      )
+                    : Border.all(color: AppColors.ofBorder(context), width: 0.8),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Superset Group Badge
+                  if (supersetLabel != null)
+                    Container(
+                      margin: const EdgeInsetsDirectional.only(bottom: 8),
+                      padding: const EdgeInsetsDirectional.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF7C3AED), Color(0xFF9333EA)],
+                        ),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.link_rounded, size: 13, color: Colors.white),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${l10n.supersetLabel} $supersetLabel',
+                            style: const TextStyle(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w900,
+                              color: Colors.white,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                 // Exercise Header: Name + Badges + Delete Option
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -479,6 +677,10 @@ class WorkoutSessionScreen extends StatelessWidget {
                     setLog: setLog,
                     previousSetLog: previousSet,
                     personalRecords: state.personalRecords[item.exercise.id],
+                    isSelected: (active != null && active.set.id == setLog.id),
+                    onSelect: () {
+                      setState(() => _selectedSetId = setLog.id);
+                    },
                     onToggleCompleted: (completed) {
                       context.read<WorkoutSessionBloc>().add(
                             ToggleSetCompletionRequested(
@@ -566,8 +768,9 @@ class WorkoutSessionScreen extends StatelessWidget {
               ],
             ),
           );
-        }),
-      ],
+        }).toList();
+      }(),
+    ],
     );
   }
 
@@ -626,12 +829,12 @@ class WorkoutSessionScreen extends StatelessWidget {
       color: AppColors.ofSurfaceElevated(context),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       onSelected: (code) {
-        onLocaleChanged(Locale(code));
+        widget.onLocaleChanged(Locale(code));
       },
       itemBuilder: (ctx) => [
-        _buildPopupItem(context, 'en', 'English (EN)', currentLocale.languageCode == 'en'),
-        _buildPopupItem(context, 'fr', 'Français (FR)', currentLocale.languageCode == 'fr'),
-        _buildPopupItem(context, 'ar', 'العربية (AR - RTL)', currentLocale.languageCode == 'ar'),
+        _buildPopupItem(context, 'en', 'English (EN)', widget.currentLocale.languageCode == 'en'),
+        _buildPopupItem(context, 'fr', 'Français (FR)', widget.currentLocale.languageCode == 'fr'),
+        _buildPopupItem(context, 'ar', 'العربية (AR - RTL)', widget.currentLocale.languageCode == 'ar'),
       ],
     );
   }
@@ -727,6 +930,39 @@ class WorkoutSessionScreen extends StatelessWidget {
               },
             ),
             Divider(height: 1, color: AppColors.ofDivider(context)),
+            if (item.workoutExercise.supersetGroupId != null)
+              ListTile(
+                leading: const Icon(Icons.link_off_rounded, color: Color(0xFF8B5CF6)),
+                title: Text(l10n.unlinkSuperset, style: AppTypography.ofBody(context)),
+                subtitle: Text(l10n.supersetUnlinked, style: AppTypography.ofCaption(context)),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  context.read<WorkoutSessionBloc>().add(
+                        SetExerciseSupersetRequested(
+                          workoutExerciseId: item.workoutExercise.id,
+                          supersetGroupId: null,
+                        ),
+                      );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(l10n.supersetUnlinked),
+                      behavior: SnackBarBehavior.floating,
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                },
+              )
+            else
+              ListTile(
+                leading: const Icon(Icons.link_rounded, color: Color(0xFF8B5CF6)),
+                title: Text(l10n.createSuperset, style: AppTypography.ofBody(context)),
+                subtitle: Text(l10n.linkWithNext, style: AppTypography.ofCaption(context)),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _linkExerciseInSuperset(context, item);
+                },
+              ),
+            Divider(height: 1, color: AppColors.ofDivider(context)),
             ListTile(
               leading: const Icon(Icons.delete_outline, color: AppColors.failure),
               title: Text(l10n.delete, style: const TextStyle(color: AppColors.failure)),
@@ -739,6 +975,52 @@ class WorkoutSessionScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _linkExerciseInSuperset(BuildContext context, WorkoutExerciseDetail item) {
+    final l10n = AppLocalizations.of(context)!;
+    final state = context.read<WorkoutSessionBloc>().state;
+    final detail = state.detail;
+    if (detail == null) return;
+
+    final currentIndex = detail.exercises.indexWhere((e) => e.workoutExercise.id == item.workoutExercise.id);
+    if (currentIndex == -1) return;
+
+    int maxGroupId = 0;
+    for (final e in detail.exercises) {
+      final gid = e.workoutExercise.supersetGroupId;
+      if (gid != null && gid > maxGroupId) {
+        maxGroupId = gid;
+      }
+    }
+    final targetGroupId = maxGroupId + 1;
+
+    context.read<WorkoutSessionBloc>().add(
+          SetExerciseSupersetRequested(
+            workoutExerciseId: item.workoutExercise.id,
+            supersetGroupId: targetGroupId,
+          ),
+        );
+
+    // If there is a next exercise in the session, link it as well!
+    if (currentIndex + 1 < detail.exercises.length) {
+      final nextExercise = detail.exercises[currentIndex + 1];
+      context.read<WorkoutSessionBloc>().add(
+            SetExerciseSupersetRequested(
+              workoutExerciseId: nextExercise.workoutExercise.id,
+              supersetGroupId: targetGroupId,
+            ),
+          );
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(l10n.supersetLinked),
+        backgroundColor: const Color(0xFF7C3AED),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 2),
       ),
     );
   }

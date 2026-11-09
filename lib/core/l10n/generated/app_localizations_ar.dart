@@ -33,7 +33,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get heightCm => 'الطول (سم)';
 
   @override
-  String get rpe => 'معدل الجهد (RPE)';
+  String get rpe => 'RPE';
 
   @override
   String get restTimer => 'مؤقت الراحة';
@@ -619,4 +619,79 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get readyTemplates => 'نماذج الجلسات الجاهزة';
+
+  @override
+  String get oneHandedMode => 'إدخال سريع بيد واحدة';
+
+  @override
+  String get validateSet => 'تأكيد المجموعة';
+
+  @override
+  String get copyPrevious => 'نسخ السابق';
+
+  @override
+  String get tapToCopy => 'اضغط للنسخ';
+
+  @override
+  String get activeSet => 'المجموعة الحالية';
+
+  @override
+  String get quickAdjustWeight => 'الوزن';
+
+  @override
+  String get quickAdjustReps => 'التكرارات';
+
+  @override
+  String get exportSectionTitle => 'النسخ الاحتياطي وتصدير البيانات';
+
+  @override
+  String get exportCsvTitle => 'تصدير بتنسيق CSV (Excel / Strong / Hevy)';
+
+  @override
+  String get exportCsvSubtitle =>
+      'ملف جدول بيانات متكامل متوافق مع Excel وتطبيقات التدريب';
+
+  @override
+  String get exportJsonTitle => 'نسخة احتياطية كاملة JSON';
+
+  @override
+  String get exportJsonSubtitle =>
+      'أرشيف كامل لملفك الشخصي وجلساتك وتمارينك وسجلاتك';
+
+  @override
+  String get exportInProgress => 'جارٍ إعداد ملف التصدير...';
+
+  @override
+  String get rateOfPerceivedExertion => 'معدل الجهد المدرك (RPE / RIR)';
+
+  @override
+  String get rpeSubtitle =>
+      'RPE 10 = الفشل العضلي (0 RIR) • RPE 8 = تكراران متبقيان';
+
+  @override
+  String get repsInReserve => 'RIR';
+
+  @override
+  String get clearRpe => 'مسح RPE';
+
+  @override
+  String get superset => 'مجموعة مركبة (Superset)';
+
+  @override
+  String get createSuperset => 'إنشاء مجموعة مركبة';
+
+  @override
+  String get unlinkSuperset => 'فصل من المجموعة المركبة';
+
+  @override
+  String get supersetLinked => 'تم ربط المجموعة المركبة!';
+
+  @override
+  String get supersetUnlinked => 'تم فصل التمرين من المجموعة المركبة';
+
+  @override
+  String get supersetLabel => 'مجموعة مركبة';
+
+  @override
+  String get linkWithNext => 'ربط مع التمرين التالي';
 }

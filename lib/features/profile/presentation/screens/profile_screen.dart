@@ -6,6 +6,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../../../core/theme/theme_cubit.dart';
 import '../../../../core/widgets/responsive_content_wrapper.dart';
+import '../../../history/domain/services/workout_export_service.dart';
 import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 import '../widgets/edit_profile_dialog.dart';
@@ -100,7 +101,11 @@ class ProfileScreen extends StatelessWidget {
                 _buildSettingsCard(context),
                 const SizedBox(height: 20),
 
-                // 6. Danger Zone / Delete Profile Card
+                // 6. Data Backup & Export Card (CSV / JSON)
+                _buildExportCard(context),
+                const SizedBox(height: 20),
+
+                // 7. Danger Zone / Delete Profile Card
                 _buildDangerZoneCard(context),
               ],
             ),
@@ -483,6 +488,164 @@ class ProfileScreen extends StatelessWidget {
     if (bmi < 25.0) return 'Healthy / Athletic';
     if (bmi < 30.0) return 'Overweight';
     return 'High Mass';
+  }
+
+  Widget _buildExportCard(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    WorkoutExportService? exportService;
+    try {
+      exportService = context.read<WorkoutExportService>();
+    } catch (_) {}
+
+    return Container(
+      padding: const EdgeInsetsDirectional.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.ofCard(context),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.download_rounded, color: AppColors.secondary, size: 22),
+              const SizedBox(width: 8),
+              Text(
+                l10n.exportSectionTitle,
+                style: AppTypography.ofTitleMedium(context),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // CSV Export Option (Excel / Strong / Hevy)
+          InkWell(
+            onTap: () async {
+              if (exportService == null) return;
+              try {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(l10n.exportInProgress),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
+                await exportService.shareCsv();
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Export error: $e')),
+                  );
+                }
+              }
+            },
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              padding: const EdgeInsetsDirectional.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.ofSurface(context),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.ofBorder(context), width: 0.6),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withAlpha(25),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.table_chart_outlined, color: AppColors.primary, size: 22),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.exportCsvTitle,
+                          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13.5),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          l10n.exportCsvSubtitle,
+                          style: AppTypography.ofCaption(context),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.ios_share_rounded, size: 20, color: AppColors.primary),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+
+          // JSON Backup Option
+          InkWell(
+            onTap: () async {
+              if (exportService == null) return;
+              try {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(l10n.exportInProgress),
+                    duration: const Duration(seconds: 1),
+                  ),
+                );
+                await exportService.shareJson();
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Backup error: $e')),
+                  );
+                }
+              }
+            },
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              padding: const EdgeInsetsDirectional.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.ofSurface(context),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.ofBorder(context), width: 0.6),
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary.withAlpha(25),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(Icons.data_object_rounded, color: AppColors.secondary, size: 22),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.exportJsonTitle,
+                          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13.5),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          l10n.exportJsonSubtitle,
+                          style: AppTypography.ofCaption(context),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.backup_outlined, size: 20, color: AppColors.secondary),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildDangerZoneCard(BuildContext context) {

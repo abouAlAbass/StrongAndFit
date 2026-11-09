@@ -111,6 +111,14 @@ class WorkoutRepositoryImpl implements WorkoutRepository {
   }
 
   @override
+  Future<int> setExerciseSuperset({
+    required int workoutExerciseId,
+    required int? supersetGroupId,
+  }) {
+    return _workoutDao.setExerciseSuperset(workoutExerciseId, supersetGroupId);
+  }
+
+  @override
   Future<int> completeSession({
     required int sessionId,
     required int durationSeconds,

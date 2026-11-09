@@ -620,4 +620,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get readyTemplates => 'Ready Templates & Routines';
+
+  @override
+  String get oneHandedMode => '1-Hand Quick Input';
+
+  @override
+  String get validateSet => 'Complete Set';
+
+  @override
+  String get copyPrevious => 'Copy Previous';
+
+  @override
+  String get tapToCopy => 'Tap to copy';
+
+  @override
+  String get activeSet => 'Active Set';
+
+  @override
+  String get quickAdjustWeight => 'Weight';
+
+  @override
+  String get quickAdjustReps => 'Reps';
+
+  @override
+  String get exportSectionTitle => 'Backup & Data Export';
+
+  @override
+  String get exportCsvTitle => 'Export to CSV (Excel / Strong / Hevy)';
+
+  @override
+  String get exportCsvSubtitle =>
+      'Complete spreadsheet compatible with Excel, Sheets and fitness apps';
+
+  @override
+  String get exportJsonTitle => 'Full JSON Backup';
+
+  @override
+  String get exportJsonSubtitle =>
+      'Full archive of your athlete profile, sessions, exercises and sets';
+
+  @override
+  String get exportInProgress => 'Generating export file...';
+
+  @override
+  String get rateOfPerceivedExertion =>
+      'Rate of Perceived Exertion (RPE / RIR)';
+
+  @override
+  String get rpeSubtitle =>
+      'RPE 10 = Muscular Failure (0 RIR) • RPE 8 = 2 reps in reserve';
+
+  @override
+  String get repsInReserve => 'RIR';
+
+  @override
+  String get clearRpe => 'Clear RPE';
+
+  @override
+  String get superset => 'Superset';
+
+  @override
+  String get createSuperset => 'Create Superset';
+
+  @override
+  String get unlinkSuperset => 'Unlink from Superset';
+
+  @override
+  String get supersetLinked => 'Superset linked!';
+
+  @override
+  String get supersetUnlinked => 'Exercise unlinked from superset';
+
+  @override
+  String get supersetLabel => 'SUPERSET';
+
+  @override
+  String get linkWithNext => 'Link with next exercise';
 }

@@ -133,6 +133,19 @@ class DeleteExerciseRequested extends WorkoutSessionEvent {
   List<Object?> get props => [workoutExerciseId];
 }
 
+class SetExerciseSupersetRequested extends WorkoutSessionEvent {
+  final int workoutExerciseId;
+  final int? supersetGroupId;
+
+  const SetExerciseSupersetRequested({
+    required this.workoutExerciseId,
+    required this.supersetGroupId,
+  });
+
+  @override
+  List<Object?> get props => [workoutExerciseId, supersetGroupId];
+}
+
 class CompleteSessionRequested extends WorkoutSessionEvent {
   const CompleteSessionRequested();
 }
