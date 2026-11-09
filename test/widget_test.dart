@@ -1457,22 +1457,35 @@ void main() {
           final parsedProgram = ProgramAiAnalysis.fromJson(pJson);
           expect(parsedProgram.programMatchScore, 9);
           expect(parsedProgram.customizedModifications.length, 1);
-          expect(parsedProgram.periodizationAdvice.first, 'Deload en semaine 5');
+          expect(
+            parsedProgram.periodizationAdvice.first,
+            'Deload en semaine 5',
+          );
 
           const historyAnalysis = HistoryAiAnalysis(
-            executiveSummary: 'Progression constante sur les mouvements de base.',
+            executiveSummary:
+                'Progression constante sur les mouvements de base.',
             progressionScore: 8,
-            progressiveOverloadRate: 'Augmentation de 2.5kg toutes les 2 semaines.',
+            progressiveOverloadRate:
+                'Augmentation de 2.5kg toutes les 2 semaines.',
             volumeTrajectory: 'Volume stable et maîtrisé.',
             muscularBalance: 'Bon ratio poussée / tirage.',
-            fatigueAndPlateauAlerts: ['Stagnation légère au développé militaire'],
+            fatigueAndPlateauAlerts: [
+              'Stagnation légère au développé militaire',
+            ],
             nextCycleMilestones: ['Viser 100kg au squat'],
           );
           final hJson = historyAnalysis.toJson();
           final parsedHistory = HistoryAiAnalysis.fromJson(hJson);
           expect(parsedHistory.progressionScore, 8);
-          expect(parsedHistory.fatigueAndPlateauAlerts.first, contains('militaire'));
-          expect(parsedHistory.nextCycleMilestones.first, 'Viser 100kg au squat');
+          expect(
+            parsedHistory.fatigueAndPlateauAlerts.first,
+            contains('militaire'),
+          );
+          expect(
+            parsedHistory.nextCycleMilestones.first,
+            'Viser 100kg au squat',
+          );
         },
       );
 
@@ -1550,7 +1563,12 @@ void main() {
           await tester.pump(const Duration(milliseconds: 500));
           await tester.pumpAndSettle();
 
-          expect(find.text('Aucun bilan IA généré pour l\'instant. Lancez l\'analyse de votre programme ou de votre historique !'), findsOneWidget);
+          expect(
+            find.text(
+              'Aucun bilan IA généré pour l\'instant. Lancez l\'analyse de votre programme ou de votre historique !',
+            ),
+            findsOneWidget,
+          );
           expect(find.text('Bilan de progression IA'), findsOneWidget);
 
           // Drain widget tree cleanly
@@ -1579,9 +1597,7 @@ void main() {
                 localizationsDelegates: AppLocalizations.localizationsDelegates,
                 supportedLocales: AppLocalizations.supportedLocales,
                 locale: Locale('ar'),
-                home: Scaffold(
-                  body: AthleteOnboardingDialog(),
-                ),
+                home: Scaffold(body: AthleteOnboardingDialog()),
               ),
             ),
           );
@@ -1592,14 +1608,26 @@ void main() {
           expect(find.text('العربية'), findsOneWidget);
           expect(find.text('English'), findsOneWidget);
           expect(find.text('Français'), findsOneWidget);
-          expect(find.text('واجهة وتدريبات باللغة العربية مع دعم RTL كامل'), findsOneWidget);
+          expect(
+            find.text('واجهة وتدريبات باللغة العربية مع دعم RTL كامل'),
+            findsOneWidget,
+          );
           expect(find.text('يتبع إعدادات ولغة هاتفك تلقائياً'), findsOneWidget);
-          expect(find.text('تباين داكن مثالي لصالة الألعاب الرياضية'), findsOneWidget);
+          expect(
+            find.text('تباين داكن مثالي لصالة الألعاب الرياضية'),
+            findsOneWidget,
+          );
           expect(find.text('تصميم أنيق وواضح'), findsOneWidget);
 
           // Check that hardcoded French descriptions are NOT present
-          expect(find.text('Suit automatiquement les réglages de votre smartphone'), findsNothing);
-          expect(find.text('Contraste sombre optimal pour la salle de musculation'), findsNothing);
+          expect(
+            find.text('Suit automatiquement les réglages de votre smartphone'),
+            findsNothing,
+          );
+          expect(
+            find.text('Contraste sombre optimal pour la salle de musculation'),
+            findsNothing,
+          );
           expect(find.text('Style clair et épuré'), findsNothing);
         },
       );

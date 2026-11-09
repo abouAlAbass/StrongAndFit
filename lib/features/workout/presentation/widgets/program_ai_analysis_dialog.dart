@@ -141,11 +141,11 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
         final errorText = e is AiTimeoutException
             ? l10n.aiTimeoutError
             : (e is AiNetworkException ||
-                    e.toString().toLowerCase().contains('socket') ||
-                    e.toString().toLowerCase().contains('clientexception') ||
-                    e.toString().toLowerCase().contains('failed host lookup')
-                ? l10n.networkConnectionError
-                : e.toString().replaceAll('Exception: ', ''));
+                      e.toString().toLowerCase().contains('socket') ||
+                      e.toString().toLowerCase().contains('clientexception') ||
+                      e.toString().toLowerCase().contains('failed host lookup')
+                  ? l10n.networkConnectionError
+                  : e.toString().replaceAll('Exception: ', ''));
 
         setState(() {
           _isLoading = false;
@@ -274,8 +274,8 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
             child: _isLoading
                 ? _buildLoadingState(l10n)
                 : (_analysisResult != null
-                    ? _buildAnalysisResultView(l10n, _analysisResult!)
-                    : _buildQuestionnaireView(l10n)),
+                      ? _buildAnalysisResultView(l10n, _analysisResult!)
+                      : _buildQuestionnaireView(l10n)),
           ),
         ],
       ),
@@ -328,8 +328,11 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
             ),
             child: Row(
               children: [
-                const Icon(Icons.error_outline,
-                    color: AppColors.failure, size: 20),
+                const Icon(
+                  Icons.error_outline,
+                  color: AppColors.failure,
+                  size: 20,
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -516,8 +519,10 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide:
-                  const BorderSide(color: AppColors.primary, width: 1.5),
+              borderSide: const BorderSide(
+                color: AppColors.primary,
+                width: 1.5,
+              ),
             ),
             contentPadding: const EdgeInsetsDirectional.all(14),
           ),
@@ -555,7 +560,9 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
       labelStyle: TextStyle(
         fontSize: 12.5,
         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-        color: isSelected ? AppColors.primary : AppColors.ofTextPrimary(context),
+        color: isSelected
+            ? AppColors.primary
+            : AppColors.ofTextPrimary(context),
       ),
       side: BorderSide(
         color: isSelected ? AppColors.primary : AppColors.ofBorder(context),
@@ -708,16 +715,19 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
               const SizedBox(width: 8),
               Text(
                 title,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             content,
-            style: AppTypography.ofBodySecondary(context)
-                .copyWith(fontSize: 12.5, height: 1.4),
+            style: AppTypography.ofBodySecondary(
+              context,
+            ).copyWith(fontSize: 12.5, height: 1.4),
           ),
         ],
       ),
@@ -746,8 +756,10 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
               const SizedBox(width: 8),
               Text(
                 title,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
               ),
             ],
           ),
@@ -770,8 +782,9 @@ class _ProgramAiAnalysisDialogState extends State<ProgramAiAnalysisDialog> {
                   Expanded(
                     child: Text(
                       item,
-                      style: AppTypography.ofBodySecondary(context)
-                          .copyWith(fontSize: 12.5, height: 1.35),
+                      style: AppTypography.ofBodySecondary(
+                        context,
+                      ).copyWith(fontSize: 12.5, height: 1.35),
                     ),
                   ),
                 ],

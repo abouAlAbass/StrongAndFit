@@ -530,11 +530,9 @@ class ProfileScreen extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(16),
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => const WorkoutHistoryScreen(),
-          ),
-        );
+        Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const WorkoutHistoryScreen()));
       },
       child: Container(
         padding: const EdgeInsetsDirectional.all(16),

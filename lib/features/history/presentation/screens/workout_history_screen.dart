@@ -75,10 +75,7 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen>
     }
 
     if (!mounted) return;
-    await HistoryAiAnalysisDialog.show(
-      context,
-      completedSessions: sessions,
-    );
+    await HistoryAiAnalysisDialog.show(context, completedSessions: sessions);
     _loadCachedReports();
   }
 
@@ -92,16 +89,16 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen>
       stream: repo.watchRecentSessions(),
       builder: (context, snapshot) {
         final sessions = snapshot.data ?? [];
-        final completed =
-            sessions.where((s) => s.completedAt != null).toList();
+        final completed = sessions.where((s) => s.completedAt != null).toList();
 
         return Scaffold(
           appBar: AppBar(
             leading: canPop
                 ? IconButton(
                     icon: const Icon(Icons.arrow_back_rounded),
-                    tooltip:
-                        MaterialLocalizations.of(context).backButtonTooltip,
+                    tooltip: MaterialLocalizations.of(
+                      context,
+                    ).backButtonTooltip,
                     onPressed: () => Navigator.of(context).pop(),
                   )
                 : null,
@@ -186,8 +183,9 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen>
       );
     }
 
-    final dateFormat =
-        DateFormat.yMMMMd(Localizations.localeOf(context).toString());
+    final dateFormat = DateFormat.yMMMMd(
+      Localizations.localeOf(context).toString(),
+    );
 
     return ResponsiveContentWrapper(
       maxWidth: 780,
@@ -470,8 +468,9 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen>
                   const SizedBox(height: 10),
                   Text(
                     _cachedHistoryAnalysis!.executiveSummary,
-                    style: AppTypography.ofBodySecondary(context)
-                        .copyWith(fontSize: 13, height: 1.4),
+                    style: AppTypography.ofBodySecondary(
+                      context,
+                    ).copyWith(fontSize: 13, height: 1.4),
                   ),
                   const SizedBox(height: 12),
                   Text(
@@ -549,8 +548,9 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen>
                   const SizedBox(height: 10),
                   Text(
                     _cachedProgramAnalysis!.summary,
-                    style: AppTypography.ofBodySecondary(context)
-                        .copyWith(fontSize: 13, height: 1.4),
+                    style: AppTypography.ofBodySecondary(
+                      context,
+                    ).copyWith(fontSize: 13, height: 1.4),
                   ),
                   const SizedBox(height: 10),
                   Text(

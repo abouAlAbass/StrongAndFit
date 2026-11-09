@@ -103,9 +103,7 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
             color: AppColors.ofTextPrimary(context),
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const WorkoutHistoryScreen(),
-                ),
+                MaterialPageRoute(builder: (_) => const WorkoutHistoryScreen()),
               );
             },
           ),
@@ -669,8 +667,9 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                       backgroundColor: isFeatured
                           ? AppColors.primary
                           : AppColors.ofPrimaryContainer(context),
-                      foregroundColor:
-                          isFeatured ? Colors.white : AppColors.primary,
+                      foregroundColor: isFeatured
+                          ? Colors.white
+                          : AppColors.primary,
                       elevation: 0,
                     ),
                     onPressed: () {

@@ -17,10 +17,7 @@ import '../../../workout/domain/services/workout_ai_service.dart';
 class HistoryAiAnalysisDialog extends StatefulWidget {
   final List<WorkoutSession> completedSessions;
 
-  const HistoryAiAnalysisDialog({
-    super.key,
-    required this.completedSessions,
-  });
+  const HistoryAiAnalysisDialog({super.key, required this.completedSessions});
 
   static Future<void> show(
     BuildContext context, {
@@ -134,11 +131,11 @@ class _HistoryAiAnalysisDialogState extends State<HistoryAiAnalysisDialog> {
         final errorText = e is AiTimeoutException
             ? l10n.aiTimeoutError
             : (e is AiNetworkException ||
-                    e.toString().toLowerCase().contains('socket') ||
-                    e.toString().toLowerCase().contains('clientexception') ||
-                    e.toString().toLowerCase().contains('failed host lookup')
-                ? l10n.networkConnectionError
-                : e.toString().replaceAll('Exception: ', ''));
+                      e.toString().toLowerCase().contains('socket') ||
+                      e.toString().toLowerCase().contains('clientexception') ||
+                      e.toString().toLowerCase().contains('failed host lookup')
+                  ? l10n.networkConnectionError
+                  : e.toString().replaceAll('Exception: ', ''));
 
         setState(() {
           _isLoading = false;
@@ -219,10 +216,10 @@ class _HistoryAiAnalysisDialogState extends State<HistoryAiAnalysisDialog> {
             child: _isLoading
                 ? _buildLoadingState(l10n)
                 : (_errorMessage != null
-                    ? _buildErrorState(l10n)
-                    : (_analysisResult != null
-                        ? _buildResultView(l10n, _analysisResult!)
-                        : const SizedBox.shrink())),
+                      ? _buildErrorState(l10n)
+                      : (_analysisResult != null
+                            ? _buildResultView(l10n, _analysisResult!)
+                            : const SizedBox.shrink())),
           ),
         ],
       ),
@@ -427,16 +424,19 @@ class _HistoryAiAnalysisDialogState extends State<HistoryAiAnalysisDialog> {
               const SizedBox(width: 8),
               Text(
                 title,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
               ),
             ],
           ),
           const SizedBox(height: 8),
           Text(
             content,
-            style: AppTypography.ofBodySecondary(context)
-                .copyWith(fontSize: 12.5, height: 1.4),
+            style: AppTypography.ofBodySecondary(
+              context,
+            ).copyWith(fontSize: 12.5, height: 1.4),
           ),
         ],
       ),
@@ -465,8 +465,10 @@ class _HistoryAiAnalysisDialogState extends State<HistoryAiAnalysisDialog> {
               const SizedBox(width: 8),
               Text(
                 title,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                ),
               ),
             ],
           ),
@@ -489,8 +491,9 @@ class _HistoryAiAnalysisDialogState extends State<HistoryAiAnalysisDialog> {
                   Expanded(
                     child: Text(
                       item,
-                      style: AppTypography.ofBodySecondary(context)
-                          .copyWith(fontSize: 12.5, height: 1.35),
+                      style: AppTypography.ofBodySecondary(
+                        context,
+                      ).copyWith(fontSize: 12.5, height: 1.35),
                     ),
                   ),
                 ],

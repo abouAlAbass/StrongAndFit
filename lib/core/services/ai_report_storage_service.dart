@@ -4,19 +4,22 @@ import '../../features/workout/domain/models/workout_ai_models.dart';
 
 /// Secure local storage service persisting the latest AI Coach reports (Program Audit & History Progression).
 class AiReportStorageService {
-  static const String _kLatestProgramAnalysis = 'strong_latest_program_ai_analysis';
-  static const String _kLatestHistoryAnalysis = 'strong_latest_history_ai_analysis';
+  static const String _kLatestProgramAnalysis =
+      'strong_latest_program_ai_analysis';
+  static const String _kLatestHistoryAnalysis =
+      'strong_latest_history_ai_analysis';
 
   final FlutterSecureStorage _storage;
 
   AiReportStorageService({FlutterSecureStorage? storage})
-      : _storage = storage ??
-            const FlutterSecureStorage(
-              aOptions: AndroidOptions(),
-              iOptions: IOSOptions(
-                accessibility: KeychainAccessibility.first_unlock,
-              ),
-            );
+    : _storage =
+          storage ??
+          const FlutterSecureStorage(
+            aOptions: AndroidOptions(),
+            iOptions: IOSOptions(
+              accessibility: KeychainAccessibility.first_unlock,
+            ),
+          );
 
   /// Saves the latest AI Program Audit analysis.
   Future<void> saveProgramAnalysis(ProgramAiAnalysis analysis) async {
