@@ -68,6 +68,19 @@ class AddSetRequested extends WorkoutSessionEvent {
   List<Object?> get props => [workoutExerciseId, setType, weightKg, reps];
 }
 
+class InsertWarmupSetsRequested extends WorkoutSessionEvent {
+  final int workoutExerciseId;
+  final List<({double weightKg, int reps})> steps;
+
+  const InsertWarmupSetsRequested({
+    required this.workoutExerciseId,
+    required this.steps,
+  });
+
+  @override
+  List<Object?> get props => [workoutExerciseId, steps];
+}
+
 class UpdateSetRequested extends WorkoutSessionEvent {
   final int setId;
   final int workoutExerciseId;

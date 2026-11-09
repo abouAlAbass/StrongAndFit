@@ -343,5 +343,35 @@
   "aiAnalyzeSessionButton": "Analyze with Gemini AI Coach",
   "aiAnalyzingProgress": "AI Coach analysis in progress...",
   "finishWorkoutTitle": "Complete Workout Session",
-  "finishWorkoutNotesHint": "How did the session feel? (RPE, energy, form notes...)"
+  "finishWorkoutNotesHint": "How did the session feel? (RPE, energy, form notes...)",
+  "lastWeighInDate": "Last weigh-in: {date}",
+  "@lastWeighInDate": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "singleWeighInHint": "1 weigh-in recorded ({weight} kg). Add a 2nd weigh-in to plot your progress curve!",
+  "@singleWeighInHint": {
+    "placeholders": {
+      "weight": {"type": "String"}
+    }
+  },
+  "finishWorkoutConfirmTitle": "Finish workout?",
+  "finishWorkoutIncompleteMessage": "You still have incomplete sets. Are you sure you want to finish the workout now?",
+  "deleteExerciseConfirmTitle": "Delete exercise?",
+  "deleteExerciseConfirmMessage": "Are you sure you want to remove this exercise and all its sets from the session?",
+  "deleteSetConfirmTitle": "Delete set?",
+  "deleteSetConfirmMessage": "Are you sure you want to delete this set?",
+  "backupBeforeDelete": "Export backup before deleting",
+  "weightAndHeight": "Weight & Height",
+  "biometricsStepSubtitle": "Personalize your volume and 1RM metrics",
+  "athleteHeightCm": "Height (cm)",
+  "athleteWeightKg": "Weight (kg)",
+  "continueWorkout": "Continue Workout",
+  "beginnerRecommendationNote": "Although you selected {days} days, we recommend starting with 3 sessions per week to optimize neuromuscular recovery.",
+  "@beginnerRecommendationNote": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  }
 }

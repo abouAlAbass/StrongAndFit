@@ -309,5 +309,35 @@
   "aiAnalyzeSessionButton": "Analyser avec le Coach IA Gemini",
   "aiAnalyzingProgress": "Analyse par le Coach IA en cours...",
   "finishWorkoutTitle": "Valider la séance",
-  "finishWorkoutNotesHint": "Comment s'est passée la séance ? (Sensations, RPE, énergie...)"
+  "finishWorkoutNotesHint": "Comment s'est passée la séance ? (Sensations, RPE, énergie...)",
+  "lastWeighInDate": "Dernière pesée : {date}",
+  "@lastWeighInDate": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "singleWeighInHint": "1 pesée enregistrée ({weight} kg). Ajoutez une 2ème pesée pour tracer votre courbe d'évolution !",
+  "@singleWeighInHint": {
+    "placeholders": {
+      "weight": {"type": "String"}
+    }
+  },
+  "finishWorkoutConfirmTitle": "Terminer la séance ?",
+  "finishWorkoutIncompleteMessage": "Il vous reste des séries non complétées. Souhaitez-vous vraiment terminer la séance maintenant ?",
+  "deleteExerciseConfirmTitle": "Supprimer l'exercice ?",
+  "deleteExerciseConfirmMessage": "Voulez-vous supprimer cet exercice et toutes ses séries de la séance ?",
+  "deleteSetConfirmTitle": "Supprimer la série ?",
+  "deleteSetConfirmMessage": "Voulez-vous supprimer cette série ?",
+  "backupBeforeDelete": "Exporter une sauvegarde avant de supprimer",
+  "weightAndHeight": "Poids & Taille",
+  "biometricsStepSubtitle": "Personnalisez vos métriques de volume et de 1RM",
+  "athleteHeightCm": "Taille (cm)",
+  "athleteWeightKg": "Poids (kg)",
+  "continueWorkout": "Continuer la séance",
+  "beginnerRecommendationNote": "Bien que vous ayez sélectionné {days} jours, nous recommandons de débuter par 3 séances par semaine pour optimiser votre récupération neuromusculaire.",
+  "@beginnerRecommendationNote": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  }
 }

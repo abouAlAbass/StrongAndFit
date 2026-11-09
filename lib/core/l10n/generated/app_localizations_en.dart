@@ -960,4 +960,59 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get finishWorkoutNotesHint =>
       'How did the session feel? (RPE, energy, form notes...)';
+
+  @override
+  String lastWeighInDate(String date) {
+    return 'Last weigh-in: $date';
+  }
+
+  @override
+  String singleWeighInHint(String weight) {
+    return '1 weigh-in recorded ($weight kg). Add a 2nd weigh-in to plot your progress curve!';
+  }
+
+  @override
+  String get finishWorkoutConfirmTitle => 'Finish workout?';
+
+  @override
+  String get finishWorkoutIncompleteMessage =>
+      'You still have incomplete sets. Are you sure you want to finish the workout now?';
+
+  @override
+  String get deleteExerciseConfirmTitle => 'Delete exercise?';
+
+  @override
+  String get deleteExerciseConfirmMessage =>
+      'Are you sure you want to remove this exercise and all its sets from the session?';
+
+  @override
+  String get deleteSetConfirmTitle => 'Delete set?';
+
+  @override
+  String get deleteSetConfirmMessage =>
+      'Are you sure you want to delete this set?';
+
+  @override
+  String get backupBeforeDelete => 'Export backup before deleting';
+
+  @override
+  String get weightAndHeight => 'Weight & Height';
+
+  @override
+  String get biometricsStepSubtitle =>
+      'Personalize your volume and 1RM metrics';
+
+  @override
+  String get athleteHeightCm => 'Height (cm)';
+
+  @override
+  String get athleteWeightKg => 'Weight (kg)';
+
+  @override
+  String get continueWorkout => 'Continue Workout';
+
+  @override
+  String beginnerRecommendationNote(int days) {
+    return 'Although you selected $days days, we recommend starting with 3 sessions per week to optimize neuromuscular recovery.';
+  }
 }

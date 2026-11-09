@@ -59,6 +59,8 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
   TrainingGoal _selectedGoal = TrainingGoal.hypertrophy;
   int _selectedDays = 4;
   ExperienceLevel _selectedLevel = ExperienceLevel.intermediate;
+  double _selectedWeight = 75.0;
+  double _selectedHeight = 178.0;
 
   RoutineRecommendation? _recommendation;
 
@@ -75,6 +77,8 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
 
   void _applyToProfile() {
     context.read<ProfileCubit>().updateProfileMetrics(
+      weightKg: _selectedWeight,
+      heightCm: _selectedHeight,
       weeklyWorkoutGoal: _selectedDays,
       experienceLevel: _selectedLevel,
     );
@@ -574,6 +578,134 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
           onTap: () =>
               setState(() => _selectedLevel = ExperienceLevel.advanced),
         ),
+        const SizedBox(height: 20),
+        Text(
+          l10n.weightAndHeight,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          l10n.biometricsStepSubtitle,
+          style: AppTypography.ofCaption(context),
+        ),
+        const SizedBox(height: 10),
+        Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: AppColors.ofSurface(context),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
+          ),
+          child: Row(
+            children: [
+              // Weight
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      l10n.athleteWeightKg,
+                      style: AppTypography.ofCaption(context),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${_selectedWeight.toStringAsFixed(1)} kg',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton.filledTonal(
+                          icon: const Icon(Icons.remove, size: 16),
+                          constraints: const BoxConstraints(
+                            minWidth: 40,
+                            minHeight: 40,
+                          ),
+                          onPressed: () => setState(
+                            () => _selectedWeight = (_selectedWeight - 0.5)
+                                .clamp(30.0, 300.0),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton.filledTonal(
+                          icon: const Icon(Icons.add, size: 16),
+                          constraints: const BoxConstraints(
+                            minWidth: 40,
+                            minHeight: 40,
+                          ),
+                          onPressed: () => setState(
+                            () => _selectedWeight = (_selectedWeight + 0.5)
+                                .clamp(30.0, 300.0),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 1,
+                height: 60,
+                color: AppColors.ofBorder(context),
+              ),
+              // Height
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      l10n.athleteHeightCm,
+                      style: AppTypography.ofCaption(context),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${_selectedHeight.toInt()} cm',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton.filledTonal(
+                          icon: const Icon(Icons.remove, size: 16),
+                          constraints: const BoxConstraints(
+                            minWidth: 40,
+                            minHeight: 40,
+                          ),
+                          onPressed: () => setState(
+                            () => _selectedHeight = (_selectedHeight - 1).clamp(
+                              100.0,
+                              250.0,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton.filledTonal(
+                          icon: const Icon(Icons.add, size: 16),
+                          constraints: const BoxConstraints(
+                            minWidth: 40,
+                            minHeight: 40,
+                          ),
+                          onPressed: () => setState(
+                            () => _selectedHeight = (_selectedHeight + 1).clamp(
+                              100.0,
+                              250.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
         const SizedBox(height: 28),
         Row(
           children: [
@@ -720,7 +852,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
               Text(
                 matchedTemplate != null
                     ? matchedTemplate.template.name
-                    : rec.routineName,
+                    : rec.localizedRoutineName(context),
                 style: AppTypography.ofTitleLarge(
                   context,
                 ).copyWith(fontSize: 19, color: Colors.white),
@@ -758,7 +890,7 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  rec.rationale,
+                  rec.localizedRationale(context, requestedDays: _selectedDays),
                   style: TextStyle(
                     fontSize: 12.5,
                     color: AppColors.ofTextSecondary(context),

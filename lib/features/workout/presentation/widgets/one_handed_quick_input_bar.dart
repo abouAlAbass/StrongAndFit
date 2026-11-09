@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../../core/database/app_database.dart';
+import '../../../../core/enums/set_type.dart';
 import '../../../../core/l10n/exercise_translation_helper.dart';
 import '../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -15,8 +16,9 @@ import 'rpe_picker_dialog.dart';
 /// - Placed in the lower 35% thumb-reachable screen zone
 /// - Touch targets >= 44x44dp for sweaty, chalky hands
 /// - Fast plate steppers (+1, +2.5, +5, +10 kg / -1, -2.5, -5 kg)
-/// - Rep steppers (-1, +1, +2)
+/// - Rep steppers (-2, -1, +1, +2)
 /// - 1-tap autofill from previous performance
+/// - Quick set type switching (Normal, Warmup, Dropset, Failure)
 /// - Giant one-thumb completion button triggering haptic feedback & auto rest timer
 class OneHandedQuickInputBar extends StatefulWidget {
   final WorkoutExerciseDetail exerciseItem;
@@ -26,6 +28,7 @@ class OneHandedQuickInputBar extends StatefulWidget {
   final void Function(double? weight, int? reps, [double? rpe]) onUpdateValues;
   final ValueChanged<bool> onToggleCompleted;
   final VoidCallback onNextSet;
+  final ValueChanged<SetType>? onUpdateSetType;
 
   const OneHandedQuickInputBar({
     super.key,
@@ -36,6 +39,7 @@ class OneHandedQuickInputBar extends StatefulWidget {
     required this.onUpdateValues,
     required this.onToggleCompleted,
     required this.onNextSet,
+    this.onUpdateSetType,
   });
 
   @override
@@ -112,24 +116,8 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
               padding: const EdgeInsetsDirectional.fromSTEB(16, 8, 12, 6),
               child: Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsetsDirectional.symmetric(
-                      horizontal: 8,
-                      vertical: 3,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary.withAlpha(35),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      '${l10n.set} ${widget.setLog.setNumber}',
-                      style: const TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
+                  // Set Number / Type Quick Selector Badge
+                  _buildSetTypeSelector(context, l10n),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -297,7 +285,7 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                                 ),
                               ),
                               const SizedBox(height: 6),
-                              // Fast weight chips
+                              // Fast weight chips with touch targets >= 44x44 dp
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -309,6 +297,22 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                                   _buildStepperButton(
                                     label: '-2.5',
                                     onTap: () => _adjustWeight(-2.5),
+                                  ),
+                                  _buildStepperButton(
+                                    label: '-1',
+                                    onTap: () => _adjustWeight(-1.0),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildStepperButton(
+                                    label: '+1',
+                                    onTap: () => _adjustWeight(1.0),
+                                    isPositive: true,
                                   ),
                                   _buildStepperButton(
                                     label: '+2.5',
@@ -369,15 +373,26 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                                 ),
                               ),
                               const SizedBox(height: 6),
-                              // Fast rep chips
+                              // Fast rep chips with touch targets >= 44x44 dp
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   _buildStepperButton(
+                                    label: '-2',
+                                    onTap: () => _adjustReps(-2),
+                                  ),
+                                  _buildStepperButton(
                                     label: '-1',
                                     onTap: () => _adjustReps(-1),
                                   ),
+                                ],
+                              ),
+                              const SizedBox(height: 6),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
                                   _buildStepperButton(
                                     label: '+1',
                                     onTap: () => _adjustReps(1),
@@ -454,6 +469,119 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
     );
   }
 
+  Widget _buildSetTypeSelector(BuildContext context, AppLocalizations l10n) {
+    Color badgeColor = AppColors.primary;
+    String badgeText = '${l10n.set} ${widget.setLog.setNumber}';
+
+    switch (widget.setLog.setType) {
+      case SetType.warmup:
+        badgeColor = AppColors.warmup;
+        badgeText = 'W · ${widget.setLog.setNumber}';
+        break;
+      case SetType.dropset:
+        badgeColor = AppColors.dropset;
+        badgeText = 'D · ${widget.setLog.setNumber}';
+        break;
+      case SetType.failure:
+        badgeColor = AppColors.failure;
+        badgeText = 'F · ${widget.setLog.setNumber}';
+        break;
+      case SetType.normal:
+        badgeColor = AppColors.primary;
+        badgeText = '${l10n.set} ${widget.setLog.setNumber}';
+        break;
+    }
+
+    return PopupMenuButton<SetType>(
+      tooltip: 'Set Type',
+      color: AppColors.ofSurfaceElevated(context),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      onSelected: (newType) {
+        HapticFeedback.selectionClick();
+        widget.onUpdateSetType?.call(newType);
+      },
+      itemBuilder: (ctx) => [
+        _buildPopupItem(context, SetType.normal, 'Normal', AppColors.primary),
+        _buildPopupItem(
+          context,
+          SetType.warmup,
+          'Warm-up (W)',
+          AppColors.warmup,
+        ),
+        _buildPopupItem(
+          context,
+          SetType.dropset,
+          'Drop Set (D)',
+          AppColors.dropset,
+        ),
+        _buildPopupItem(
+          context,
+          SetType.failure,
+          'Failure (F)',
+          AppColors.failure,
+        ),
+      ],
+      child: Container(
+        padding: const EdgeInsetsDirectional.symmetric(
+          horizontal: 8,
+          vertical: 4,
+        ),
+        decoration: BoxDecoration(
+          color: badgeColor.withAlpha(35),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: badgeColor.withAlpha(80), width: 1),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              badgeText,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+                color: badgeColor,
+              ),
+            ),
+            const SizedBox(width: 2),
+            Icon(Icons.arrow_drop_down_rounded, size: 16, color: badgeColor),
+          ],
+        ),
+      ),
+    );
+  }
+
+  PopupMenuItem<SetType> _buildPopupItem(
+    BuildContext context,
+    SetType type,
+    String label,
+    Color color,
+  ) {
+    final isSelected = widget.setLog.setType == type;
+    return PopupMenuItem<SetType>(
+      value: type,
+      child: Row(
+        children: [
+          Container(
+            width: 10,
+            height: 10,
+            decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w400,
+                color: isSelected ? color : AppColors.ofTextPrimary(context),
+              ),
+            ),
+          ),
+          if (isSelected) Icon(Icons.check, size: 16, color: color),
+        ],
+      ),
+    );
+  }
+
   Widget _buildStepperButton({
     required String label,
     required VoidCallback onTap,
@@ -467,9 +595,10 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
         child: Container(
           padding: const EdgeInsetsDirectional.symmetric(
             horizontal: 6,
-            vertical: 6,
+            vertical: 8,
           ),
-          constraints: const BoxConstraints(minWidth: 32),
+          constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             color: isPositive
                 ? AppColors.primary.withAlpha(25)
@@ -486,8 +615,8 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
             label,
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w700,
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
               color: isPositive
                   ? AppColors.primary
                   : AppColors.ofTextPrimary(context),

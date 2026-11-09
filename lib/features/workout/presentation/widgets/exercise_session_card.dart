@@ -48,13 +48,10 @@ class ExerciseSessionCard extends StatelessWidget {
         color: AppColors.ofCard(context),
         borderRadius: BorderRadius.circular(16),
         border: supersetLabel != null
-            ? Border(
-                left: const BorderSide(color: Color(0xFF8B5CF6), width: 4.0),
+            ? BorderDirectional(
+                start: const BorderSide(color: Color(0xFF8B5CF6), width: 4.0),
                 top: BorderSide(color: AppColors.ofBorder(context), width: 0.8),
-                right: BorderSide(
-                  color: AppColors.ofBorder(context),
-                  width: 0.8,
-                ),
+                end: BorderSide(color: AppColors.ofBorder(context), width: 0.8),
                 bottom: BorderSide(
                   color: AppColors.ofBorder(context),
                   width: 0.8,

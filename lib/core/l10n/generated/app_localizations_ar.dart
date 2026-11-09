@@ -959,4 +959,58 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get finishWorkoutNotesHint =>
       'كيف كان أداؤك وشعورك في التمرين؟ (ملاحظات، الطاقة، مستوى الجهد...)';
+
+  @override
+  String lastWeighInDate(String date) {
+    return 'آخر وزن: $date';
+  }
+
+  @override
+  String singleWeighInHint(String weight) {
+    return 'تم تسجيل وزن واحد ($weight كغ). أضف وزناً ثانياً لرسم منحنى التطور!';
+  }
+
+  @override
+  String get finishWorkoutConfirmTitle => 'إنهاء التمرين؟';
+
+  @override
+  String get finishWorkoutIncompleteMessage =>
+      'لا تزال هناك مجموعات لم تكتمل. هل أنت متأكد من رغبتك في إنهاء التمرين الآن؟';
+
+  @override
+  String get deleteExerciseConfirmTitle => 'حذف التمرين؟';
+
+  @override
+  String get deleteExerciseConfirmMessage =>
+      'هل أنت متأكد من حذف هذا التمرين وكافة مجموعاته من هذه الجلسة؟';
+
+  @override
+  String get deleteSetConfirmTitle => 'حذف المجموعة؟';
+
+  @override
+  String get deleteSetConfirmMessage => 'هل أنت متأكد من حذف هذه المجموعة؟';
+
+  @override
+  String get backupBeforeDelete => 'تصدير نسخة احتياطية قبل الحذف';
+
+  @override
+  String get weightAndHeight => 'الوزن والطول';
+
+  @override
+  String get biometricsStepSubtitle =>
+      'خصص مقاييس الحجم والوزن الأقصى لنتائج أدق';
+
+  @override
+  String get athleteHeightCm => 'الطول (سم)';
+
+  @override
+  String get athleteWeightKg => 'الوزن (كغ)';
+
+  @override
+  String get continueWorkout => 'متابعة التمرين';
+
+  @override
+  String beginnerRecommendationNote(int days) {
+    return 'على الرغم من اختيارك $days أيام، نوصي بالبدء بـ 3 جلسات أسبوعياً لتحقيق أفضل تكيف عصبي عضلي دون إجهاد.';
+  }
 }

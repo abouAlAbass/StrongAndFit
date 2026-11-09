@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../../core/enums/set_type.dart';
 import '../../../../../core/l10n/exercise_translation_helper.dart';
 import '../../../../../core/l10n/generated/app_localizations.dart';
 import '../../../../../core/theme/app_colors.dart';
@@ -144,16 +143,14 @@ class ExerciseSessionOptionsSheet {
                   context,
                   initialWorkingWeight: lastWeight,
                   onAddWarmupSets: (steps) {
-                    for (final step in steps) {
-                      context.read<WorkoutSessionBloc>().add(
-                        AddSetRequested(
-                          item.workoutExercise.id,
-                          setType: SetType.warmup,
-                          weightKg: step.weightKg,
-                          reps: step.reps,
-                        ),
-                      );
-                    }
+                    context.read<WorkoutSessionBloc>().add(
+                      InsertWarmupSetsRequested(
+                        workoutExerciseId: item.workoutExercise.id,
+                        steps: steps
+                            .map((s) => (weightKg: s.weightKg, reps: s.reps))
+                            .toList(),
+                      ),
+                    );
                   },
                 );
               },
@@ -221,8 +218,40 @@ class ExerciseSessionOptionsSheet {
               ),
               onTap: () {
                 Navigator.pop(ctx);
-                context.read<WorkoutSessionBloc>().add(
-                  DeleteExerciseRequested(item.workoutExercise.id),
+                showDialog(
+                  context: context,
+                  builder: (dialogCtx) => AlertDialog(
+                    backgroundColor: AppColors.ofCard(context),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    title: Text(
+                      l10n.deleteExerciseConfirmTitle,
+                      style: AppTypography.ofTitleLarge(context),
+                    ),
+                    content: Text(
+                      l10n.deleteExerciseConfirmMessage,
+                      style: AppTypography.ofBodySecondary(context),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(dialogCtx),
+                        child: Text(l10n.cancel),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.failure,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(dialogCtx);
+                          context.read<WorkoutSessionBloc>().add(
+                            DeleteExerciseRequested(item.workoutExercise.id),
+                          );
+                        },
+                        child: Text(l10n.delete),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),

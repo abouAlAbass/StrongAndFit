@@ -309,5 +309,35 @@
   "aiAnalyzeSessionButton": "تحليل التمرين مع المدرب الذكي Gemini",
   "aiAnalyzingProgress": "جارٍ تحليل التمرين بواسطة المدرب الذكي...",
   "finishWorkoutTitle": "إنهاء وتأكيد التمرين",
-  "finishWorkoutNotesHint": "كيف كان أداؤك وشعورك في التمرين؟ (ملاحظات، الطاقة، مستوى الجهد...)"
+  "finishWorkoutNotesHint": "كيف كان أداؤك وشعورك في التمرين؟ (ملاحظات، الطاقة، مستوى الجهد...)",
+  "lastWeighInDate": "آخر وزن: {date}",
+  "@lastWeighInDate": {
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+  "singleWeighInHint": "تم تسجيل وزن واحد ({weight} كغ). أضف وزناً ثانياً لرسم منحنى التطور!",
+  "@singleWeighInHint": {
+    "placeholders": {
+      "weight": {"type": "String"}
+    }
+  },
+  "finishWorkoutConfirmTitle": "إنهاء التمرين؟",
+  "finishWorkoutIncompleteMessage": "لا تزال هناك مجموعات لم تكتمل. هل أنت متأكد من رغبتك في إنهاء التمرين الآن؟",
+  "deleteExerciseConfirmTitle": "حذف التمرين؟",
+  "deleteExerciseConfirmMessage": "هل أنت متأكد من حذف هذا التمرين وكافة مجموعاته من هذه الجلسة؟",
+  "deleteSetConfirmTitle": "حذف المجموعة؟",
+  "deleteSetConfirmMessage": "هل أنت متأكد من حذف هذه المجموعة؟",
+  "backupBeforeDelete": "تصدير نسخة احتياطية قبل الحذف",
+  "weightAndHeight": "الوزن والطول",
+  "biometricsStepSubtitle": "خصص مقاييس الحجم والوزن الأقصى لنتائج أدق",
+  "athleteHeightCm": "الطول (سم)",
+  "athleteWeightKg": "الوزن (كغ)",
+  "continueWorkout": "متابعة التمرين",
+  "beginnerRecommendationNote": "على الرغم من اختيارك {days} أيام، نوصي بالبدء بـ 3 جلسات أسبوعياً لتحقيق أفضل تكيف عصبي عضلي دون إجهاد.",
+  "@beginnerRecommendationNote": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  }
 }

@@ -1006,8 +1006,8 @@ void main() {
           expect(updatedWeight, 82.5);
 
           // 2. Verify Stepper increments reps (+1)
-          expect(find.text('+1'), findsOneWidget);
-          await tester.tap(find.text('+1'));
+          expect(find.text('+1'), findsNWidgets(2));
+          await tester.tap(find.text('+1').last);
           expect(updatedReps, 9);
 
           // 3. Verify 1-tap previous copy

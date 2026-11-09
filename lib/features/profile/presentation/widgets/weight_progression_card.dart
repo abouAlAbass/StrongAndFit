@@ -139,7 +139,7 @@ class WeightProgressionCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: Text(
-                            'IMC ${state.bmi!.toStringAsFixed(1)}',
+                            '${l10n.bmiLabel.contains('IMC') ? 'IMC' : 'BMI'} ${state.bmi!.toStringAsFixed(1)}',
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
@@ -153,7 +153,11 @@ class WeightProgressionCard extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
-                        'Dernière pesée : ${DateFormat.yMMMd(Localizations.localeOf(context).toString()).format(latestLog.loggedAt)}',
+                        l10n.lastWeighInDate(
+                          DateFormat.yMMMd(
+                            Localizations.localeOf(context).toString(),
+                          ).format(latestLog.loggedAt),
+                        ),
                         style: TextStyle(
                           fontSize: 11,
                           color: AppColors.ofTextTertiary(context),
@@ -185,7 +189,9 @@ class WeightProgressionCard extends StatelessWidget {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            '1 pesée enregistrée (${logs.first.weightKg} kg). Ajoutez une 2ème pesée pour tracer votre courbe d\'évolution !',
+                            l10n.singleWeighInHint(
+                              logs.first.weightKg.toString(),
+                            ),
                             style: TextStyle(
                               fontSize: 12,
                               color: AppColors.ofTextSecondary(context),
@@ -294,6 +300,9 @@ class WeightProgressionCard extends StatelessWidget {
   }
 
   Widget _buildLineChart(BuildContext context, List<BodyWeightLog> logs) {
+    final l10n = AppLocalizations.of(context)!;
+    final isRtl = Directionality.of(context).name == 'rtl';
+
     // Reverse so oldest is at index 0 (left) and newest is at last index (right)
     final chronLogs = logs.reversed.toList();
     final spots = <FlSpot>[];
@@ -310,136 +319,142 @@ class WeightProgressionCard extends StatelessWidget {
     final minY = (minW - 1.5).floorToDouble();
     final maxY = (maxW + 1.5).ceilToDouble();
 
-    return LineChart(
-      LineChartData(
-        minY: minY,
-        maxY: maxY,
-        minX: 0,
-        maxX: (chronLogs.length - 1).toDouble(),
-        gridData: FlGridData(
-          show: true,
-          drawVerticalLine: false,
-          horizontalInterval: (maxY - minY) > 6 ? 2 : 1,
-          getDrawingHorizontalLine: (value) => FlLine(
-            color: AppColors.ofBorder(context).withValues(alpha: 0.4),
-            strokeWidth: 0.8,
-            dashArray: [4, 4],
+    final yTitles = SideTitles(
+      showTitles: true,
+      reservedSize: 34,
+      interval: (maxY - minY) > 6 ? 2 : 1,
+      getTitlesWidget: (val, meta) {
+        if (val == minY || val == maxY) return const SizedBox.shrink();
+        return Text(
+          val.toStringAsFixed(0),
+          style: TextStyle(
+            fontSize: 10,
+            color: AppColors.ofTextTertiary(context),
           ),
-        ),
-        titlesData: FlTitlesData(
-          topTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
-          rightTitles: const AxisTitles(
-            sideTitles: SideTitles(showTitles: false),
-          ),
-          leftTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 34,
-              interval: (maxY - minY) > 6 ? 2 : 1,
-              getTitlesWidget: (val, meta) {
-                if (val == minY || val == maxY) return const SizedBox.shrink();
-                return Text(
-                  val.toStringAsFixed(0),
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: AppColors.ofTextTertiary(context),
-                  ),
-                );
-              },
+        );
+      },
+    );
+
+    return Semantics(
+      label:
+          '${l10n.weightProgression}: ${chronLogs.length} ${l10n.weightHistory}, ${chronLogs.last.weightKg.toStringAsFixed(1)} kg',
+      child: LineChart(
+        LineChartData(
+          minY: minY,
+          maxY: maxY,
+          minX: 0,
+          maxX: (chronLogs.length - 1).toDouble(),
+          gridData: FlGridData(
+            show: true,
+            drawVerticalLine: false,
+            horizontalInterval: (maxY - minY) > 6 ? 2 : 1,
+            getDrawingHorizontalLine: (value) => FlLine(
+              color: AppColors.ofBorder(context).withValues(alpha: 0.4),
+              strokeWidth: 0.8,
+              dashArray: [4, 4],
             ),
           ),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              reservedSize: 22,
-              interval: 1,
-              getTitlesWidget: (val, meta) {
-                final idx = val.toInt();
-                // Show label on first, last, and every other spot
-                if (idx < 0 || idx >= chronLogs.length) {
-                  return const SizedBox.shrink();
-                }
-                if (chronLogs.length > 5 &&
-                    idx % 2 != 0 &&
-                    idx != chronLogs.length - 1) {
-                  return const SizedBox.shrink();
-                }
-                final date = chronLogs[idx].loggedAt;
-                return Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: Text(
-                    DateFormat.Md().format(date),
-                    style: TextStyle(
-                      fontSize: 9,
-                      color: AppColors.ofTextTertiary(context),
-                      fontWeight: idx == chronLogs.length - 1
-                          ? FontWeight.bold
-                          : FontWeight.normal,
+          titlesData: FlTitlesData(
+            topTitles: const AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
+            ),
+            rightTitles: AxisTitles(
+              sideTitles: isRtl ? yTitles : const SideTitles(showTitles: false),
+            ),
+            leftTitles: AxisTitles(
+              sideTitles: isRtl ? const SideTitles(showTitles: false) : yTitles,
+            ),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 22,
+                interval: 1,
+                getTitlesWidget: (val, meta) {
+                  final idx = val.toInt();
+                  // Show label on first, last, and every other spot
+                  if (idx < 0 || idx >= chronLogs.length) {
+                    return const SizedBox.shrink();
+                  }
+                  if (chronLogs.length > 5 &&
+                      idx % 2 != 0 &&
+                      idx != chronLogs.length - 1) {
+                    return const SizedBox.shrink();
+                  }
+                  final date = chronLogs[idx].loggedAt;
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      DateFormat.Md().format(date),
+                      style: TextStyle(
+                        fontSize: 9,
+                        color: AppColors.ofTextTertiary(context),
+                        fontWeight: idx == chronLogs.length - 1
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-        borderData: FlBorderData(show: false),
-        lineTouchData: LineTouchData(
-          touchTooltipData: LineTouchTooltipData(
-            getTooltipItems: (touchedSpots) {
-              return touchedSpots.map((spot) {
-                final idx = spot.spotIndex;
-                final log = chronLogs[idx];
-                final dateStr = DateFormat.yMMMd().format(log.loggedAt);
-                final noteStr = log.notes != null && log.notes!.isNotEmpty
-                    ? '\n${log.notes}'
-                    : '';
-                return LineTooltipItem(
-                  '${spot.y.toStringAsFixed(1)} kg\n$dateStr$noteStr',
-                  const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
-                );
-              }).toList();
-            },
-          ),
-        ),
-        lineBarsData: [
-          LineChartBarData(
-            spots: spots,
-            isCurved: true,
-            curveSmoothness: 0.35,
-            color: AppColors.primary,
-            barWidth: 3.2,
-            isStrokeCapRound: true,
-            dotData: FlDotData(
-              show: true,
-              getDotPainter: (spot, percent, barData, index) {
-                final isLast = index == spots.length - 1;
-                return FlDotCirclePainter(
-                  radius: isLast ? 5 : 3.5,
-                  color: isLast ? Colors.white : AppColors.primary,
-                  strokeWidth: isLast ? 3 : 1.5,
-                  strokeColor: AppColors.primary,
-                );
-              },
-            ),
-            belowBarData: BarAreaData(
-              show: true,
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.primary.withValues(alpha: 0.30),
-                  AppColors.primary.withValues(alpha: 0.0),
-                ],
+                  );
+                },
               ),
             ),
           ),
-        ],
+          borderData: FlBorderData(show: false),
+          lineTouchData: LineTouchData(
+            touchTooltipData: LineTouchTooltipData(
+              getTooltipItems: (touchedSpots) {
+                return touchedSpots.map((spot) {
+                  final idx = spot.spotIndex;
+                  final log = chronLogs[idx];
+                  final dateStr = DateFormat.yMMMd().format(log.loggedAt);
+                  final noteStr = log.notes != null && log.notes!.isNotEmpty
+                      ? '\n${log.notes}'
+                      : '';
+                  return LineTooltipItem(
+                    '${spot.y.toStringAsFixed(1)} kg\n$dateStr$noteStr',
+                    const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  );
+                }).toList();
+              },
+            ),
+          ),
+          lineBarsData: [
+            LineChartBarData(
+              spots: spots,
+              isCurved: true,
+              curveSmoothness: 0.35,
+              color: AppColors.primary,
+              barWidth: 3.2,
+              isStrokeCapRound: true,
+              dotData: FlDotData(
+                show: true,
+                getDotPainter: (spot, percent, barData, index) {
+                  final isLast = index == spots.length - 1;
+                  return FlDotCirclePainter(
+                    radius: isLast ? 5 : 3.5,
+                    color: isLast ? Colors.white : AppColors.primary,
+                    strokeWidth: isLast ? 3 : 1.5,
+                    strokeColor: AppColors.primary,
+                  );
+                },
+              ),
+              belowBarData: BarAreaData(
+                show: true,
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppColors.primary.withValues(alpha: 0.30),
+                    AppColors.primary.withValues(alpha: 0.0),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

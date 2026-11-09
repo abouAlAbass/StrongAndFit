@@ -105,6 +105,50 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
   }
 
   void _advanceToNextSet(WorkoutSessionDetail detail) {
+    if (_selectedSetId != null) {
+      // Check if current set belongs to a superset group (alternating A1 -> A2 flow)
+      WorkoutExerciseDetail? currentExercise;
+      SetLog? currentSet;
+      for (final e in detail.exercises) {
+        for (final s in e.sets) {
+          if (s.id == _selectedSetId) {
+            currentExercise = e;
+            currentSet = s;
+            break;
+          }
+        }
+        if (currentExercise != null) break;
+      }
+
+      if (currentExercise != null &&
+          currentSet != null &&
+          currentExercise.workoutExercise.supersetGroupId != null) {
+        final gid = currentExercise.workoutExercise.supersetGroupId!;
+        final groupExercises = detail.exercises
+            .where((e) => e.workoutExercise.supersetGroupId == gid)
+            .toList();
+
+        if (groupExercises.length > 1) {
+          final currentIdx = groupExercises.indexOf(currentExercise);
+          final nextIdx = (currentIdx + 1) % groupExercises.length;
+          final targetExercise = groupExercises[nextIdx];
+
+          final matchingSet = targetExercise.sets.firstWhere(
+            (s) => s.setNumber == currentSet!.setNumber && !s.isCompleted,
+            orElse: () => targetExercise.sets.firstWhere(
+              (s) => !s.isCompleted,
+              orElse: () => currentSet!,
+            ),
+          );
+
+          if (!matchingSet.isCompleted && matchingSet.id != currentSet.id) {
+            setState(() => _selectedSetId = matchingSet.id);
+            return;
+          }
+        }
+      }
+    }
+
     bool foundCurrent = false;
     for (final exerciseItem in detail.exercises) {
       for (final s in exerciseItem.sets) {
@@ -133,6 +177,20 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
     WorkoutExerciseDetail item,
     int completedSetId,
   ) {
+    // If mid-superset, do not trigger a full rest so athlete moves right to partner exercise
+    final gid = item.workoutExercise.supersetGroupId;
+    if (gid != null) {
+      final group = detail.exercises
+          .where((e) => e.workoutExercise.supersetGroupId == gid)
+          .toList();
+      if (group.length > 1) {
+        final currentIdx = group.indexOf(item);
+        if (currentIdx < group.length - 1) {
+          return;
+        }
+      }
+    }
+
     final hasPendingSets = item.sets.any(
       (s) => s.id != completedSetId && !s.isCompleted,
     );
@@ -263,9 +321,54 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                       padding: const EdgeInsetsDirectional.only(end: 8),
                       child: TextButton(
                         onPressed: () {
-                          context.read<WorkoutSessionBloc>().add(
-                            const CompleteSessionRequested(),
-                          );
+                          final hasIncomplete =
+                              state.detail?.exercises.any(
+                                (e) => e.sets.any((s) => !s.isCompleted),
+                              ) ??
+                              false;
+
+                          if (hasIncomplete) {
+                            showDialog(
+                              context: context,
+                              builder: (dialogCtx) => AlertDialog(
+                                backgroundColor: AppColors.ofCard(context),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                title: Text(
+                                  l10n.finishWorkoutConfirmTitle,
+                                  style: AppTypography.ofTitleLarge(context),
+                                ),
+                                content: Text(
+                                  l10n.finishWorkoutIncompleteMessage,
+                                  style: AppTypography.ofBodySecondary(context),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(dialogCtx),
+                                    child: Text(l10n.continueWorkout),
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.completed,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(dialogCtx);
+                                      context.read<WorkoutSessionBloc>().add(
+                                        const CompleteSessionRequested(),
+                                      );
+                                    },
+                                    child: Text(l10n.finishWorkout),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            context.read<WorkoutSessionBloc>().add(
+                              const CompleteSessionRequested(),
+                            );
+                          }
                         },
                         child: Text(
                           l10n.finishWorkout,
@@ -311,7 +414,7 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
             return ResponsiveContentWrapper(
               maxWidth: 820,
               child: ListView(
-                padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 80),
+                padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 16, 140),
                 children: [
                   ActiveSessionMetricsHeader(
                     completedSetsCount: detail.completedSetsCount,
@@ -334,6 +437,41 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                           _triggerRest(context, detail, item, setId),
                     );
                   }),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Center(
+                      child: OutlinedButton.icon(
+                        icon: const Icon(Icons.add_rounded, size: 20),
+                        label: Text(l10n.addExercise),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.primary,
+                          side: const BorderSide(
+                            color: AppColors.primary,
+                            width: 1.2,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () {
+                          ExercisePickerBottomSheet.show(
+                            context,
+                            onExerciseSelected: (exercise) {
+                              context.read<WorkoutSessionBloc>().add(
+                                AddExerciseRequested(exercise.id),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
                 ],
               ),
             );
@@ -370,17 +508,32 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                                     )
                                     .isNotEmpty ??
                                 false),
-                            onUpdateValues: (weight, reps, [rpe]) {
+                            onUpdateValues: (weight, reps, [rpe, setType]) {
                               context.read<WorkoutSessionBloc>().add(
                                 UpdateSetRequested(
                                   setId: active.set.id,
                                   workoutExerciseId:
                                       active.set.workoutExerciseId,
                                   setNumber: active.set.setNumber,
-                                  setType: active.set.setType,
+                                  setType: setType ?? active.set.setType,
                                   weightKg: weight,
                                   reps: reps,
                                   rpe: rpe ?? active.set.rpe,
+                                  isCompleted: active.set.isCompleted,
+                                ),
+                              );
+                            },
+                            onUpdateSetType: (newType) {
+                              context.read<WorkoutSessionBloc>().add(
+                                UpdateSetRequested(
+                                  setId: active.set.id,
+                                  workoutExerciseId:
+                                      active.set.workoutExerciseId,
+                                  setNumber: active.set.setNumber,
+                                  setType: newType,
+                                  weightKg: active.set.weightKg,
+                                  reps: active.set.reps,
+                                  rpe: active.set.rpe,
                                   isCompleted: active.set.isCompleted,
                                 ),
                               );
@@ -405,32 +558,6 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
                           ),
                         ),
                       const RestTimerFloatingBar(),
-                      Padding(
-                        padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        child: ResponsiveContentWrapper(
-                          maxWidth: 820,
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton.icon(
-                              icon: const Icon(Icons.add, size: 20),
-                              label: Text(l10n.addExercise),
-                              onPressed: () {
-                                ExercisePickerBottomSheet.show(
-                                  context,
-                                  onExerciseSelected: (exercise) {
-                                    context.read<WorkoutSessionBloc>().add(
-                                      AddExerciseRequested(exercise.id),
-                                    );
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 );

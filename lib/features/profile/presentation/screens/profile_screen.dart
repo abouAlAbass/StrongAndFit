@@ -966,9 +966,32 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
-        content: Text(
-          l10n.deleteProfileConfirmMessage,
-          style: AppTypography.ofBodySecondary(context),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.deleteProfileConfirmMessage,
+              style: AppTypography.ofBodySecondary(context),
+            ),
+            const SizedBox(height: 14),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                icon: const Icon(Icons.backup_outlined, size: 16),
+                label: Text(
+                  l10n.backupBeforeDelete,
+                  style: const TextStyle(fontSize: 12),
+                ),
+                onPressed: () async {
+                  try {
+                    final exportService = context.read<WorkoutExportService>();
+                    await exportService.shareJson();
+                  } catch (_) {}
+                },
+              ),
+            ),
+          ],
         ),
         actions: [
           TextButton(

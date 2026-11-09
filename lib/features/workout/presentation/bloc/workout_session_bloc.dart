@@ -23,6 +23,7 @@ class WorkoutSessionBloc
     on<ResumeActiveSessionRequested>(_onResumeActiveSessionRequested);
     on<AddExerciseRequested>(_onAddExerciseRequested);
     on<AddSetRequested>(_onAddSetRequested);
+    on<InsertWarmupSetsRequested>(_onInsertWarmupSetsRequested);
     on<UpdateSetRequested>(_onUpdateSetRequested);
     on<ToggleSetCompletionRequested>(_onToggleSetCompletionRequested);
     on<DeleteSetRequested>(_onDeleteSetRequested);
@@ -292,6 +293,50 @@ class WorkoutSessionBloc
       weightKg: finalWeight,
       reps: finalReps,
     );
+  }
+
+  Future<void> _onInsertWarmupSetsRequested(
+    InsertWarmupSetsRequested event,
+    Emitter<WorkoutSessionState> emit,
+  ) async {
+    final detail = state.detail;
+    if (detail == null || event.steps.isEmpty) return;
+
+    final exerciseItem = detail.exercises.firstWhere(
+      (e) => e.workoutExercise.id == event.workoutExerciseId,
+      orElse: () => throw Exception('Exercise not found in active session'),
+    );
+
+    final shift = event.steps.length;
+
+    // Shift existing sets forward in reverse order to maintain order
+    for (int i = exerciseItem.sets.length - 1; i >= 0; i--) {
+      final s = exerciseItem.sets[i];
+      await _workoutRepository.updateSet(
+        SetLogsCompanion(
+          id: Value(s.id),
+          workoutExerciseId: Value(s.workoutExerciseId),
+          setNumber: Value(s.setNumber + shift),
+          setType: Value(s.setType),
+          weightKg: Value(s.weightKg),
+          reps: Value(s.reps),
+          rpe: Value(s.rpe),
+          isCompleted: Value(s.isCompleted),
+        ),
+      );
+    }
+
+    // Insert warmup sets chronologically at positions 1, 2, ... shift
+    for (int i = 0; i < event.steps.length; i++) {
+      final step = event.steps[i];
+      await _workoutRepository.addSet(
+        workoutExerciseId: event.workoutExerciseId,
+        setNumber: i + 1,
+        setType: SetType.warmup,
+        weightKg: step.weightKg,
+        reps: step.reps,
+      );
+    }
   }
 
   Future<void> _onUpdateSetRequested(

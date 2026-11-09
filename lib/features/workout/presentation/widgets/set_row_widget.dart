@@ -8,7 +8,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_typography.dart';
 import '../../domain/models/exercise_personal_records.dart';
 import '../../domain/services/one_rep_max_calculator.dart';
-import 'plate_calculator_dialog.dart';
 import 'rpe_picker_dialog.dart';
 
 /// Interactive row representing an individual set within a workout exercise.
@@ -147,6 +146,41 @@ class _SetRowWidgetState extends State<SetRowWidget> {
         color: AppColors.failure,
         child: const Icon(Icons.delete_outline, color: Colors.white),
       ),
+      confirmDismiss: (direction) async {
+        if (widget.setLog.isCompleted || (weight > 0 && reps > 0)) {
+          return await showDialog<bool>(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              backgroundColor: AppColors.ofCard(context),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              title: Text(
+                l10n.deleteSetConfirmTitle,
+                style: AppTypography.ofTitleLarge(context),
+              ),
+              content: Text(
+                l10n.deleteSetConfirmMessage,
+                style: AppTypography.ofBodySecondary(context),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx, false),
+                  child: Text(l10n.cancel),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.failure,
+                  ),
+                  onPressed: () => Navigator.pop(ctx, true),
+                  child: Text(l10n.delete),
+                ),
+              ],
+            ),
+          );
+        }
+        return true;
+      },
       onDismissed: (_) => widget.onDelete(),
       child: InkWell(
         onTap: widget.onSelect,
@@ -272,7 +306,7 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                   ),
                   const SizedBox(width: 8),
 
-                  // 3. Weight Input Field + Plate Calculator Shortcut
+                  // 3. Weight Input Field
                   Expanded(
                     flex: 3,
                     child: Container(
@@ -285,69 +319,34 @@ class _SetRowWidgetState extends State<SetRowWidget> {
                           width: 0.9,
                         ),
                       ),
-                      child: Stack(
-                        alignment: AlignmentDirectional.centerEnd,
-                        children: [
-                          TextField(
-                            controller: _weightController,
-                            textAlign: TextAlign.center,
-                            keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,
-                            ),
-                            inputFormatters: [
-                              FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d*\.?\d*'),
-                              ),
-                            ],
-                            style: AppTypography.ofMetricMedium(context)
-                                .copyWith(
-                                  color: AppColors.ofTextPrimary(context),
-                                  fontWeight: FontWeight.w700,
-                                ),
-                            decoration: InputDecoration(
-                              hintText: '0',
-                              hintStyle: AppTypography.ofMetricMedium(context)
-                                  .copyWith(
-                                    color: AppColors.ofTextPlaceholder(context),
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                              border: InputBorder.none,
-                              contentPadding:
-                                  const EdgeInsetsDirectional.symmetric(
-                                    vertical: 8,
-                                  ),
-                            ),
-                            onChanged: (_) => _onFieldsChanged(),
-                          ),
-                          // Quick Plate Calc Icon on Long Press / Tap
-                          PositionedDirectional(
-                            end: 2,
-                            child: InkWell(
-                              onTap: () {
-                                PlateCalculatorDialog.show(
-                                  context,
-                                  initialWeight: weight,
-                                  onWeightApplied: (applied) {
-                                    _weightController.text = applied
-                                        .toStringAsFixed(
-                                          applied % 1 == 0 ? 0 : 1,
-                                        );
-                                    _debounceTimer?.cancel();
-                                    _commitFields();
-                                  },
-                                );
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: Icon(
-                                  Icons.calculate_outlined,
-                                  size: 14,
-                                  color: AppColors.ofTextTertiary(context),
-                                ),
-                              ),
-                            ),
+                      child: TextField(
+                        controller: _weightController,
+                        textAlign: TextAlign.center,
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                            RegExp(r'^\d*\.?\d*'),
                           ),
                         ],
+                        style: AppTypography.ofMetricMedium(context).copyWith(
+                          color: AppColors.ofTextPrimary(context),
+                          fontWeight: FontWeight.w700,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: '0',
+                          hintStyle: AppTypography.ofMetricMedium(context)
+                              .copyWith(
+                                color: AppColors.ofTextPlaceholder(context),
+                                fontWeight: FontWeight.w600,
+                              ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsetsDirectional.symmetric(
+                            vertical: 8,
+                          ),
+                        ),
+                        onChanged: (_) => _onFieldsChanged(),
                       ),
                     ),
                   ),

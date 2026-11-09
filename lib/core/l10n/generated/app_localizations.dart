@@ -1887,6 +1887,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'How did the session feel? (RPE, energy, form notes...)'**
   String get finishWorkoutNotesHint;
+
+  /// No description provided for @lastWeighInDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Last weigh-in: {date}'**
+  String lastWeighInDate(String date);
+
+  /// No description provided for @singleWeighInHint.
+  ///
+  /// In en, this message translates to:
+  /// **'1 weigh-in recorded ({weight} kg). Add a 2nd weigh-in to plot your progress curve!'**
+  String singleWeighInHint(String weight);
+
+  /// No description provided for @finishWorkoutConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish workout?'**
+  String get finishWorkoutConfirmTitle;
+
+  /// No description provided for @finishWorkoutIncompleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You still have incomplete sets. Are you sure you want to finish the workout now?'**
+  String get finishWorkoutIncompleteMessage;
+
+  /// No description provided for @deleteExerciseConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete exercise?'**
+  String get deleteExerciseConfirmTitle;
+
+  /// No description provided for @deleteExerciseConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove this exercise and all its sets from the session?'**
+  String get deleteExerciseConfirmMessage;
+
+  /// No description provided for @deleteSetConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete set?'**
+  String get deleteSetConfirmTitle;
+
+  /// No description provided for @deleteSetConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this set?'**
+  String get deleteSetConfirmMessage;
+
+  /// No description provided for @backupBeforeDelete.
+  ///
+  /// In en, this message translates to:
+  /// **'Export backup before deleting'**
+  String get backupBeforeDelete;
+
+  /// No description provided for @weightAndHeight.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight & Height'**
+  String get weightAndHeight;
+
+  /// No description provided for @biometricsStepSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Personalize your volume and 1RM metrics'**
+  String get biometricsStepSubtitle;
+
+  /// No description provided for @athleteHeightCm.
+  ///
+  /// In en, this message translates to:
+  /// **'Height (cm)'**
+  String get athleteHeightCm;
+
+  /// No description provided for @athleteWeightKg.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight (kg)'**
+  String get athleteWeightKg;
+
+  /// No description provided for @continueWorkout.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Workout'**
+  String get continueWorkout;
+
+  /// No description provided for @beginnerRecommendationNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Although you selected {days} days, we recommend starting with 3 sessions per week to optimize neuromuscular recovery.'**
+  String beginnerRecommendationNote(int days);
 }
 
 class _AppLocalizationsDelegate

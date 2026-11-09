@@ -971,4 +971,58 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get finishWorkoutNotesHint =>
       'Comment s\'est passée la séance ? (Sensations, RPE, énergie...)';
+
+  @override
+  String lastWeighInDate(String date) {
+    return 'Dernière pesée : $date';
+  }
+
+  @override
+  String singleWeighInHint(String weight) {
+    return '1 pesée enregistrée ($weight kg). Ajoutez une 2ème pesée pour tracer votre courbe d\'évolution !';
+  }
+
+  @override
+  String get finishWorkoutConfirmTitle => 'Terminer la séance ?';
+
+  @override
+  String get finishWorkoutIncompleteMessage =>
+      'Il vous reste des séries non complétées. Souhaitez-vous vraiment terminer la séance maintenant ?';
+
+  @override
+  String get deleteExerciseConfirmTitle => 'Supprimer l\'exercice ?';
+
+  @override
+  String get deleteExerciseConfirmMessage =>
+      'Voulez-vous supprimer cet exercice et toutes ses séries de la séance ?';
+
+  @override
+  String get deleteSetConfirmTitle => 'Supprimer la série ?';
+
+  @override
+  String get deleteSetConfirmMessage => 'Voulez-vous supprimer cette série ?';
+
+  @override
+  String get backupBeforeDelete => 'Exporter une sauvegarde avant de supprimer';
+
+  @override
+  String get weightAndHeight => 'Poids & Taille';
+
+  @override
+  String get biometricsStepSubtitle =>
+      'Personnalisez vos métriques de volume et de 1RM';
+
+  @override
+  String get athleteHeightCm => 'Taille (cm)';
+
+  @override
+  String get athleteWeightKg => 'Poids (kg)';
+
+  @override
+  String get continueWorkout => 'Continuer la séance';
+
+  @override
+  String beginnerRecommendationNote(int days) {
+    return 'Bien que vous ayez sélectionné $days jours, nous recommandons de débuter par 3 séances par semaine pour optimiser votre récupération neuromusculaire.';
+  }
 }
