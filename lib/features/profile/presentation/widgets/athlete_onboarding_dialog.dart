@@ -288,38 +288,20 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         const SizedBox(height: 8),
         _buildChoiceCard(
           context: context,
-          title: l10n.systemDefault,
-          description: 'Suit automatiquement les réglages de votre smartphone',
-          icon: Icons.phone_android_rounded,
-          isSelected: _selectedLangCode == 'system',
-          onTap: () {
-            setState(() => _selectedLangCode = 'system');
-            final sysLocale = View.of(context).platformDispatcher.locale;
-            final code = sysLocale.languageCode;
-            final target = code == 'ar'
-                ? const Locale('ar')
-                : (code == 'fr' ? const Locale('fr') : const Locale('en'));
-            widget.onLocaleChanged?.call(target);
-            HapticFeedback.selectionClick();
-          },
-        ),
-        const SizedBox(height: 8),
-        _buildChoiceCard(
-          context: context,
-          title: 'Français 🇫🇷',
-          description: 'Interface, exercices et métriques en français',
+          title: 'العربية',
+          description: 'واجهة وتدريبات باللغة العربية مع دعم RTL',
           icon: Icons.language_rounded,
-          isSelected: _selectedLangCode == 'fr',
+          isSelected: _selectedLangCode == 'ar',
           onTap: () {
-            setState(() => _selectedLangCode = 'fr');
-            widget.onLocaleChanged?.call(const Locale('fr'));
+            setState(() => _selectedLangCode = 'ar');
+            widget.onLocaleChanged?.call(const Locale('ar'));
             HapticFeedback.selectionClick();
           },
         ),
         const SizedBox(height: 8),
         _buildChoiceCard(
           context: context,
-          title: 'English 🇬🇧',
+          title: 'English',
           description: 'English interface, exercise guides, and analytics',
           icon: Icons.language_rounded,
           isSelected: _selectedLangCode == 'en',
@@ -332,13 +314,31 @@ class _AthleteOnboardingDialogState extends State<AthleteOnboardingDialog> {
         const SizedBox(height: 8),
         _buildChoiceCard(
           context: context,
-          title: 'العربية 🇸🇦',
-          description: 'واجهة وتدريبات باللغة العربية مع دعم RTL',
+          title: 'Français',
+          description: 'Interface, exercices et métriques en français',
           icon: Icons.language_rounded,
-          isSelected: _selectedLangCode == 'ar',
+          isSelected: _selectedLangCode == 'fr',
           onTap: () {
-            setState(() => _selectedLangCode = 'ar');
-            widget.onLocaleChanged?.call(const Locale('ar'));
+            setState(() => _selectedLangCode = 'fr');
+            widget.onLocaleChanged?.call(const Locale('fr'));
+            HapticFeedback.selectionClick();
+          },
+        ),
+        const SizedBox(height: 8),
+        _buildChoiceCard(
+          context: context,
+          title: l10n.systemDefault,
+          description: 'Suit automatiquement les réglages de votre smartphone',
+          icon: Icons.phone_android_rounded,
+          isSelected: _selectedLangCode == 'system',
+          onTap: () {
+            setState(() => _selectedLangCode = 'system');
+            final sysLocale = View.of(context).platformDispatcher.locale;
+            final code = sysLocale.languageCode;
+            final target = code == 'ar'
+                ? const Locale('ar')
+                : (code == 'fr' ? const Locale('fr') : const Locale('en'));
+            widget.onLocaleChanged?.call(target);
             HapticFeedback.selectionClick();
           },
         ),

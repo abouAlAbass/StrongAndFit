@@ -1229,13 +1229,14 @@ void main() {
 
           // Step 0 must display language and theme selection
           expect(find.text('Langue & Apparence'), findsOneWidget);
-          expect(find.text('Français 🇫🇷'), findsOneWidget);
-          expect(find.text('English 🇬🇧'), findsOneWidget);
+          expect(find.text('العربية'), findsOneWidget);
+          expect(find.text('English'), findsOneWidget);
+          expect(find.text('Français'), findsOneWidget);
           expect(find.text('Mode Sombre'), findsOneWidget);
           expect(find.text('Mode Clair'), findsOneWidget);
 
           // Tap English
-          await tester.tap(find.text('English 🇬🇧'));
+          await tester.tap(find.text('English'));
           await tester.pumpAndSettle();
           expect(changedLocale, const Locale('en'));
 

@@ -901,21 +901,21 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
       itemBuilder: (ctx) => [
         _buildPopupItem(
           context,
+          'ar',
+          'العربية',
+          widget.currentLocale.languageCode == 'ar',
+        ),
+        _buildPopupItem(
+          context,
           'en',
-          'English (EN)',
+          'English',
           widget.currentLocale.languageCode == 'en',
         ),
         _buildPopupItem(
           context,
           'fr',
-          'Français (FR)',
+          'Français',
           widget.currentLocale.languageCode == 'fr',
-        ),
-        _buildPopupItem(
-          context,
-          'ar',
-          'العربية (AR - RTL)',
-          widget.currentLocale.languageCode == 'ar',
         ),
       ],
     );

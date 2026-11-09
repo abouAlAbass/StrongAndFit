@@ -577,12 +577,9 @@ class ProfileScreen extends StatelessWidget {
                 dropdownColor: AppColors.ofSurfaceElevated(context),
                 underline: const SizedBox.shrink(),
                 items: const [
-                  DropdownMenuItem(value: 'en', child: Text('English (EN)')),
-                  DropdownMenuItem(value: 'fr', child: Text('Français (FR)')),
-                  DropdownMenuItem(
-                    value: 'ar',
-                    child: Text('العربية (AR - RTL)'),
-                  ),
+                  DropdownMenuItem(value: 'ar', child: Text('العربية')),
+                  DropdownMenuItem(value: 'en', child: Text('English')),
+                  DropdownMenuItem(value: 'fr', child: Text('Français')),
                 ],
                 onChanged: (code) {
                   if (code != null) {
