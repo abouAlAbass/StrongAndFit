@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../core/services/ai_key_storage_service.dart';
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_typography.dart';
-import '../../domain/services/workout_ai_service.dart';
+import 'package:strong/core/services/ai_key_storage_service.dart';
+import 'package:strong/core/theme/app_colors.dart';
+import 'package:strong/core/theme/app_typography.dart';
+import 'package:strong/features/workout/domain/services/workout_ai_service.dart';
 
 /// Modal bottom sheet enabling athletes to configure and securely persist
 /// their Google AI Studio (Gemini) API key ("Bring Your Own Key").
@@ -90,9 +90,14 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
   Future<void> _launchAiStudioUrl() async {
     final uri = Uri.parse(_kAiStudioUrl);
     try {
-      final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
       if (!launched && mounted) {
-        setState(() => _errorMessage = 'Impossible d\'ouvrir le lien : $_kAiStudioUrl');
+        setState(
+          () => _errorMessage = 'Impossible d\'ouvrir le lien : $_kAiStudioUrl',
+        );
       }
     } catch (e) {
       if (mounted) {
@@ -130,7 +135,8 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
         setState(() {
           _isLoading = false;
           _hasSavedKey = true;
-          _successMessage = 'Clé Gemini validée et enregistrée de façon sécurisée !';
+          _successMessage =
+              'Clé Gemini validée et enregistrée de façon sécurisée !';
         });
         widget.onKeyUpdated?.call();
 
@@ -250,7 +256,9 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                           children: [
                             Text(
                               'Coach IA — Clé Google Gemini',
-                              style: AppTypography.ofTitleLarge(context).copyWith(fontSize: 18),
+                              style: AppTypography.ofTitleLarge(
+                                context,
+                              ).copyWith(fontSize: 18),
                             ),
                             Text(
                               'Bring Your Own Key (BYOK) — 100% Gratuit',
@@ -274,7 +282,9 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppColors.ofBorder(context).withValues(alpha: 0.25),
+                      color: AppColors.ofBorder(
+                        context,
+                      ).withValues(alpha: 0.25),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: AppColors.ofBorder(context),
@@ -315,9 +325,21 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  _buildStepRow(context, '1', 'Connectez-vous avec votre compte Google sur AI Studio.'),
-                  _buildStepRow(context, '2', 'Cliquez sur "Create API Key" (aucun moyen de paiement requis).'),
-                  _buildStepRow(context, '3', 'Copiez la clé et collez-la dans le champ ci-dessous.'),
+                  _buildStepRow(
+                    context,
+                    '1',
+                    'Connectez-vous avec votre compte Google sur AI Studio.',
+                  ),
+                  _buildStepRow(
+                    context,
+                    '2',
+                    'Cliquez sur "Create API Key" (aucun moyen de paiement requis).',
+                  ),
+                  _buildStepRow(
+                    context,
+                    '3',
+                    'Copiez la clé et collez-la dans le champ ci-dessous.',
+                  ),
                   const SizedBox(height: 12),
 
                   // Direct Button to Google AI Studio
@@ -330,9 +352,14 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                     ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.primary,
-                      side: const BorderSide(color: AppColors.primary, width: 1.2),
+                      side: const BorderSide(
+                        color: AppColors.primary,
+                        width: 1.2,
+                      ),
                       padding: const EdgeInsets.symmetric(vertical: 12),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 18),
@@ -346,7 +373,9 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                       hintText: 'Collez votre clé ici',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: AppColors.ofBorder(context)),
+                        borderSide: BorderSide(
+                          color: AppColors.ofBorder(context),
+                        ),
                       ),
                       prefixIcon: const Icon(Icons.key_rounded),
                       suffixIcon: Row(
@@ -358,13 +387,16 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                                   ? Icons.visibility_outlined
                                   : Icons.visibility_off_outlined,
                             ),
-                            onPressed: () => setState(() => _obscureText = !_obscureText),
+                            onPressed: () =>
+                                setState(() => _obscureText = !_obscureText),
                           ),
                           IconButton(
                             icon: const Icon(Icons.content_paste_rounded),
                             tooltip: 'Coller',
                             onPressed: () async {
-                              final data = await Clipboard.getData('text/plain');
+                              final data = await Clipboard.getData(
+                                'text/plain',
+                              );
                               if (data?.text != null && mounted) {
                                 _apiKeyController.text = data!.text!.trim();
                                 HapticFeedback.selectionClick();
@@ -385,11 +417,17 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                       decoration: BoxDecoration(
                         color: AppColors.error.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
+                        border: Border.all(
+                          color: AppColors.error.withValues(alpha: 0.3),
+                        ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.error_outline_rounded, color: AppColors.error, size: 18),
+                          const Icon(
+                            Icons.error_outline_rounded,
+                            color: AppColors.error,
+                            size: 18,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -412,11 +450,17 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                       decoration: BoxDecoration(
                         color: AppColors.completed.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: AppColors.completed.withValues(alpha: 0.3)),
+                        border: Border.all(
+                          color: AppColors.completed.withValues(alpha: 0.3),
+                        ),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.check_circle_outline_rounded, color: AppColors.completed, size: 18),
+                          const Icon(
+                            Icons.check_circle_outline_rounded,
+                            color: AppColors.completed,
+                            size: 18,
+                          ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -439,7 +483,9 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                       backgroundColor: AppColors.primary,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                     ),
                     child: _isLoading
                         ? const SizedBox(
@@ -447,12 +493,17 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
                             width: 20,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
                             ),
                           )
                         : const Text(
                             'Valider et Sauvegarder',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
                           ),
                   ),
 
@@ -512,4 +563,3 @@ class _AiKeySettingsSheetState extends State<AiKeySettingsSheet> {
     );
   }
 }
-
