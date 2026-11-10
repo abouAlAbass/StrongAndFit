@@ -299,8 +299,8 @@ class ProfileScreen extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final crossAxisCount = constraints.maxWidth > 500 ? 4 : 2;
-        final aspectRatio = constraints.maxWidth > 500 ? 1.25 : 1.45;
+        final crossAxisCount = constraints.maxWidth > 680 ? 4 : 2;
+        final aspectRatio = constraints.maxWidth > 680 ? 1.15 : 1.35;
 
         return GridView.count(
           crossAxisCount: crossAxisCount,
@@ -391,25 +391,34 @@ class ProfileScreen extends StatelessWidget {
               Icon(icon, size: 18, color: accentColor),
             ],
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                value,
-                style: AppTypography.ofMetricLarge(
-                  context,
-                ).copyWith(fontSize: 20),
-              ),
-              if (subtitle != null)
-                Text(
-                  subtitle,
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: accentColor,
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text(
+                    value,
+                    style: AppTypography.ofMetricLarge(
+                      context,
+                    ).copyWith(fontSize: 20),
                   ),
                 ),
-            ],
+                if (subtitle != null)
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: accentColor,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+              ],
+            ),
           ),
         ],
       ),
@@ -605,19 +614,29 @@ class ProfileScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Icon(
-                    isDark
-                        ? Icons.dark_mode_outlined
-                        : Icons.light_mode_outlined,
-                    color: AppColors.primary,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(l10n.themeMode, style: AppTypography.ofBody(context)),
-                ],
+              Expanded(
+                child: Row(
+                  children: [
+                    Icon(
+                      isDark
+                          ? Icons.dark_mode_outlined
+                          : Icons.light_mode_outlined,
+                      color: AppColors.primary,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        l10n.themeMode,
+                        style: AppTypography.ofBody(context),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               DropdownButton<ThemeMode>(
                 value: currentThemeMode,
                 dropdownColor: AppColors.ofSurfaceElevated(context),
@@ -650,20 +669,27 @@ class ProfileScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Icon(
-                    Icons.language,
-                    color: AppColors.primary,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    l10n.languageSelection,
-                    style: AppTypography.ofBody(context),
-                  ),
-                ],
+              Expanded(
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.language,
+                      color: AppColors.primary,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        l10n.languageSelection,
+                        style: AppTypography.ofBody(context),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               DropdownButton<String>(
                 value: currentLocale.languageCode,
                 dropdownColor: AppColors.ofSurfaceElevated(context),
@@ -736,9 +762,13 @@ class ProfileScreen extends StatelessWidget {
                 size: 22,
               ),
               const SizedBox(width: 8),
-              Text(
-                l10n.exportSectionTitle,
-                style: AppTypography.ofTitleMedium(context),
+              Expanded(
+                child: Text(
+                  l10n.exportSectionTitle,
+                  style: AppTypography.ofTitleMedium(context),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),

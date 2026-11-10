@@ -42,12 +42,12 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
   @override
   void initState() {
     super.initState();
-    WakelockPlus.enable();
+    WakelockPlus.enable().catchError((_) {});
   }
 
   @override
   void dispose() {
-    WakelockPlus.disable();
+    WakelockPlus.disable().catchError((_) {});
     super.dispose();
   }
 

@@ -449,15 +449,18 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen>
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        l10n.aiHistoryScoreLabel,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.secondary,
+                      Expanded(
+                        child: Text(
+                          l10n.aiHistoryScoreLabel,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.secondary,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      const Spacer(),
                       IconButton(
                         icon: const Icon(Icons.refresh, size: 20),
                         tooltip: l10n.aiRefreshReport,
@@ -535,12 +538,16 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen>
                         ),
                       ),
                       const SizedBox(width: 10),
-                      Text(
-                        l10n.aiProgramScoreLabel,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primary,
+                      Expanded(
+                        child: Text(
+                          l10n.aiProgramScoreLabel,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
