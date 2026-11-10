@@ -79,56 +79,79 @@ class ExerciseSessionCard extends StatelessWidget {
                       style: AppTypography.ofTitleLarge(context),
                     ),
                     const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Text(
-                          item.exercise.localizedMuscleGroup(context),
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.primary,
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: item.exercise.localizedMuscleGroup(context),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.primary,
+                            ),
                           ),
-                        ),
-                        Text(
-                          ' • ',
-                          style: TextStyle(
-                            color: AppColors.ofTextTertiary(context),
+                          TextSpan(
+                            text: ' • ',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.ofTextTertiary(context),
+                            ),
                           ),
-                        ),
-                        Text(
-                          item.exercise.localizedEquipment(context),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: AppColors.ofTextSecondary(context),
+                          TextSpan(
+                            text: item.exercise.localizedEquipment(context),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: AppColors.ofTextSecondary(context),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
               ),
-              ExerciseRestChip(exercise: item.exercise),
-              IconButton(
-                icon: const Icon(
-                  Icons.menu_book_rounded,
-                  color: AppColors.primary,
-                  size: 20,
-                ),
-                tooltip: l10n.exerciseGuide,
-                onPressed: () => ExerciseGuideSheet.show(
-                  context,
-                  slug: item.exercise.slug,
-                  exerciseName: item.exercise.localizedName(context),
-                ),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.more_vert,
-                  color: AppColors.ofTextTertiary(context),
-                  size: 20,
-                ),
-                onPressed: () =>
-                    ExerciseSessionOptionsSheet.show(context, item: item),
+              const SizedBox(width: 4),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ExerciseRestChip(exercise: item.exercise),
+                  IconButton(
+                    icon: const Icon(
+                      Icons.menu_book_rounded,
+                      color: AppColors.primary,
+                      size: 20,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 36,
+                      minHeight: 36,
+                    ),
+                    padding: EdgeInsets.zero,
+                    visualDensity: VisualDensity.compact,
+                    tooltip: l10n.exerciseGuide,
+                    onPressed: () => ExerciseGuideSheet.show(
+                      context,
+                      slug: item.exercise.slug,
+                      exerciseName: item.exercise.localizedName(context),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: AppColors.ofTextTertiary(context),
+                      size: 20,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 36,
+                      minHeight: 36,
+                    ),
+                    padding: EdgeInsets.zero,
+                    visualDensity: VisualDensity.compact,
+                    onPressed: () =>
+                        ExerciseSessionOptionsSheet.show(context, item: item),
+                  ),
+                ],
               ),
             ],
           ),
@@ -140,11 +163,13 @@ class ExerciseSessionCard extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(
-                  width: 32,
+                  width: 38,
                   child: Text(
                     l10n.set.toUpperCase(),
                     textAlign: TextAlign.center,
                     style: AppTypography.ofCaption(context),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -154,6 +179,8 @@ class ExerciseSessionCard extends StatelessWidget {
                     l10n.previous.toUpperCase(),
                     textAlign: TextAlign.center,
                     style: AppTypography.ofCaption(context),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -163,6 +190,8 @@ class ExerciseSessionCard extends StatelessWidget {
                     l10n.weight.toUpperCase(),
                     textAlign: TextAlign.center,
                     style: AppTypography.ofCaption(context),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -172,6 +201,8 @@ class ExerciseSessionCard extends StatelessWidget {
                     l10n.reps.toUpperCase(),
                     textAlign: TextAlign.center,
                     style: AppTypography.ofCaption(context),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -316,24 +347,29 @@ class ActiveSessionMetricsHeader extends StatelessWidget {
         border: Border.all(color: AppColors.ofBorder(context), width: 0.8),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildMetricColumn(
-            context: context,
-            label: l10n.sets,
-            value: '$completedSetsCount',
+          Expanded(
+            child: _buildMetricColumn(
+              context: context,
+              label: l10n.sets,
+              value: '$completedSetsCount',
+            ),
           ),
           Container(width: 1, height: 32, color: AppColors.ofBorder(context)),
-          _buildMetricColumn(
-            context: context,
-            label: l10n.duration,
-            value: formattedDuration,
+          Expanded(
+            child: _buildMetricColumn(
+              context: context,
+              label: l10n.duration,
+              value: formattedDuration,
+            ),
           ),
           Container(width: 1, height: 32, color: AppColors.ofBorder(context)),
-          _buildMetricColumn(
-            context: context,
-            label: l10n.weightKg,
-            value: totalVolumeKg.toStringAsFixed(0),
+          Expanded(
+            child: _buildMetricColumn(
+              context: context,
+              label: l10n.weightKg,
+              value: totalVolumeKg.toStringAsFixed(0),
+            ),
           ),
         ],
       ),
@@ -345,12 +381,24 @@ class ActiveSessionMetricsHeader extends StatelessWidget {
     required String label,
     required String value,
   }) {
-    return Column(
-      children: [
-        Text(value, style: AppTypography.ofMetricLarge(context)),
-        const SizedBox(height: 2),
-        Text(label, style: AppTypography.ofCaption(context)),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: Column(
+        children: [
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(value, style: AppTypography.ofMetricLarge(context)),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: AppTypography.ofCaption(context),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }

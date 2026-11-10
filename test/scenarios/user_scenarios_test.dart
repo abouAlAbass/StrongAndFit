@@ -664,5 +664,91 @@ void main() {
       },
       timeout: const Timeout(Duration(seconds: 15)),
     );
+
+    testWidgets(
+      'Scenario 6: Arabic RTL Mobile Phone (360x800) Dashboard & Start Workout Layout Audit',
+      (WidgetTester tester) async {
+        // Realistic compact smartphone screen (360 x 800 logical dp)
+        tester.view.physicalSize = const Size(720, 1600);
+        tester.view.devicePixelRatio = 2.0;
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        final workoutBloc = WorkoutSessionBloc(workoutRepo);
+        final restTimerCubit = RestTimerCubit(
+          settings: restSettingsRepo,
+          notifications: MockScenarioRestNotificationService(),
+        );
+
+        await tester.pumpWidget(
+          buildScenarioTestHarness(
+            child: RoutinesDashboardScreen(
+              currentLocale: const Locale('ar'),
+              onLocaleChanged: (_) {},
+            ),
+            locale: const Locale('ar'),
+            workoutBloc: workoutBloc,
+            restTimerCubit: restTimerCubit,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Dismiss auto-prompted onboarding dialog if visible
+        final skipBtn = find.text('تخطي');
+        if (skipBtn.evaluate().isNotEmpty) {
+          await tester.tap(skipBtn);
+          await tester.pumpAndSettle();
+        }
+
+        // Scroll down through entire dashboard in Arabic to detect any RenderFlex overflow
+        await tester.scrollUntilVisible(
+          find.text('نماذج الجلسات الجاهزة'),
+          250.0,
+          scrollable: find.byType(Scrollable).first,
+        );
+        await tester.pumpAndSettle();
+
+        // Start a workout from a routine template in Arabic!
+        final startRoutineBtns = find.text('بدء هذا الروتين');
+        if (startRoutineBtns.evaluate().isNotEmpty) {
+          await tester.ensureVisible(startRoutineBtns.first);
+          await tester.pumpAndSettle();
+          await tester.tap(startRoutineBtns.first);
+        } else {
+          final startFreeBtns = find.byType(ElevatedButton);
+          await tester.tap(startFreeBtns.first);
+        }
+
+        // Let navigation & WorkoutSessionScreen build
+        await tester.pump(const Duration(milliseconds: 300));
+        await tester.pump(const Duration(milliseconds: 300));
+        await tester.pump(const Duration(milliseconds: 300));
+
+        // Verify WorkoutSessionScreen rendered cleanly with RTL direction
+        expect(find.byType(WorkoutSessionScreen), findsOneWidget);
+        expect(
+          Directionality.of(tester.element(find.byType(WorkoutSessionScreen))),
+          TextDirection.rtl,
+        );
+
+        // Clean unmount
+        restTimerCubit.stop();
+        final closeFuture = Future.wait([
+          restTimerCubit.close(),
+          workoutBloc.close(),
+        ]);
+        await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pump(const Duration(milliseconds: 200));
+        await tester.runAsync(
+          () => closeFuture.timeout(
+            const Duration(seconds: 2),
+            onTimeout: () => [],
+          ),
+        );
+      },
+      timeout: const Timeout(Duration(seconds: 15)),
+    );
   });
 }

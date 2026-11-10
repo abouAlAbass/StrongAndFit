@@ -239,12 +239,18 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    l10n.quickAdjustWeight.toUpperCase(),
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.ofTextSecondary(context),
+                                  Flexible(
+                                    child: Text(
+                                      l10n.quickAdjustWeight.toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.ofTextSecondary(
+                                          context,
+                                        ),
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                   InkWell(
@@ -285,49 +291,64 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                                 ),
                               ),
                               const SizedBox(height: 6),
-                              // Fast weight chips with touch targets >= 44x44 dp
+                              // Fast weight chips with touch targets >= 44dp height
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildStepperButton(
-                                    label: '-5',
-                                    onTap: () => _adjustWeight(-5.0),
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '-5',
+                                      onTap: () => _adjustWeight(-5.0),
+                                    ),
                                   ),
-                                  _buildStepperButton(
-                                    label: '-2.5',
-                                    onTap: () => _adjustWeight(-2.5),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '-2.5',
+                                      onTap: () => _adjustWeight(-2.5),
+                                    ),
                                   ),
-                                  _buildStepperButton(
-                                    label: '-1',
-                                    onTap: () => _adjustWeight(-1.0),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '-1',
+                                      onTap: () => _adjustWeight(-1.0),
+                                    ),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 6),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildStepperButton(
-                                    label: '+1',
-                                    onTap: () => _adjustWeight(1.0),
-                                    isPositive: true,
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '+1',
+                                      onTap: () => _adjustWeight(1.0),
+                                      isPositive: true,
+                                    ),
                                   ),
-                                  _buildStepperButton(
-                                    label: '+2.5',
-                                    onTap: () => _adjustWeight(2.5),
-                                    isPositive: true,
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '+2.5',
+                                      onTap: () => _adjustWeight(2.5),
+                                      isPositive: true,
+                                    ),
                                   ),
-                                  _buildStepperButton(
-                                    label: '+5',
-                                    onTap: () => _adjustWeight(5.0),
-                                    isPositive: true,
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '+5',
+                                      onTap: () => _adjustWeight(5.0),
+                                      isPositive: true,
+                                    ),
                                   ),
-                                  _buildStepperButton(
-                                    label: '+10',
-                                    onTap: () => _adjustWeight(10.0),
-                                    isPositive: true,
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '+10',
+                                      onTap: () => _adjustWeight(10.0),
+                                      isPositive: true,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -360,48 +381,59 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
                                   fontWeight: FontWeight.w700,
                                   color: AppColors.ofTextSecondary(context),
                                 ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                               const SizedBox(height: 4),
                               Center(
-                                child: Text(
-                                  '$_currentReps reps',
-                                  style: AppTypography.ofTitleLarge(context)
-                                      .copyWith(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 20,
-                                      ),
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    '$_currentReps ${l10n.reps}',
+                                    style: AppTypography.ofTitleLarge(context)
+                                        .copyWith(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 20,
+                                        ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 6),
-                              // Fast rep chips with touch targets >= 44x44 dp
+                              // Fast rep chips with touch targets >= 44dp height
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildStepperButton(
-                                    label: '-2',
-                                    onTap: () => _adjustReps(-2),
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '-2',
+                                      onTap: () => _adjustReps(-2),
+                                    ),
                                   ),
-                                  _buildStepperButton(
-                                    label: '-1',
-                                    onTap: () => _adjustReps(-1),
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '-1',
+                                      onTap: () => _adjustReps(-1),
+                                    ),
                                   ),
                                 ],
                               ),
                               const SizedBox(height: 6),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildStepperButton(
-                                    label: '+1',
-                                    onTap: () => _adjustReps(1),
-                                    isPositive: true,
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '+1',
+                                      onTap: () => _adjustReps(1),
+                                      isPositive: true,
+                                    ),
                                   ),
-                                  _buildStepperButton(
-                                    label: '+2',
-                                    onTap: () => _adjustReps(2),
-                                    isPositive: true,
+                                  const SizedBox(width: 4),
+                                  Expanded(
+                                    child: _buildStepperButton(
+                                      label: '+2',
+                                      onTap: () => _adjustReps(2),
+                                      isPositive: true,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -594,10 +626,10 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
         borderRadius: BorderRadius.circular(8),
         child: Container(
           padding: const EdgeInsetsDirectional.symmetric(
-            horizontal: 6,
+            horizontal: 4,
             vertical: 8,
           ),
-          constraints: const BoxConstraints(minWidth: 44, minHeight: 44),
+          constraints: const BoxConstraints(minHeight: 44),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: isPositive
@@ -611,15 +643,18 @@ class _OneHandedQuickInputBarState extends State<OneHandedQuickInputBar> {
               width: 0.8,
             ),
           ),
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w800,
-              color: isPositive
-                  ? AppColors.primary
-                  : AppColors.ofTextPrimary(context),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: isPositive
+                    ? AppColors.primary
+                    : AppColors.ofTextPrimary(context),
+              ),
             ),
           ),
         ),

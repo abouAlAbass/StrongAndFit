@@ -229,21 +229,28 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
       canPop: true,
       child: Scaffold(
         appBar: AppBar(
+          titleSpacing: 0,
           title: BlocBuilder<WorkoutSessionBloc, WorkoutSessionState>(
             builder: (context, state) {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     state.hasActiveSession
                         ? state.detail!.session.title
                         : l10n.appTitle,
-                    style: AppTypography.ofTitleLarge(context),
+                    style: AppTypography.ofTitleLarge(
+                      context,
+                    ).copyWith(fontSize: 16),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   if (state.hasActiveSession)
                     Text(
                       state.formattedDuration,
                       style: const TextStyle(
-                        fontSize: 13,
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: AppColors.primary,
                       ),
@@ -266,7 +273,10 @@ class _WorkoutSessionScreenState extends State<WorkoutSessionScreen> {
               icon: const Icon(
                 Icons.timer_outlined,
                 color: AppColors.secondary,
+                size: 21,
               ),
+              constraints: const BoxConstraints(minWidth: 38, minHeight: 38),
+              padding: EdgeInsets.zero,
               tooltip: l10n.restTimer,
               onPressed: () => RestTimerDialog.show(context),
             ),

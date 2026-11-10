@@ -92,8 +92,15 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(width: 10),
-            Text(l10n.navWorkout, style: AppTypography.ofTitleLarge(context)),
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                l10n.navWorkout,
+                style: AppTypography.ofTitleLarge(context),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         actions: [
@@ -475,38 +482,43 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                 const SizedBox(height: 24),
 
                 // 5. "Séances types & modèles" Section Header
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8,
+                  runSpacing: 8,
                   children: [
-                    Expanded(
-                      child: Text(
-                        l10n.readyTemplates,
-                        style: AppTypography.ofTitleLarge(context),
-                      ),
+                    Text(
+                      l10n.readyTemplates,
+                      style: AppTypography.ofTitleLarge(context),
                     ),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        FilledButton.tonalIcon(
-                          icon: const Icon(
-                            Icons.auto_awesome,
-                            size: 16,
-                            color: AppColors.secondary,
-                          ),
-                          label: Text(
-                            l10n.aiGenerateRoutine,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                        Flexible(
+                          child: FilledButton.tonalIcon(
+                            icon: const Icon(
+                              Icons.auto_awesome,
+                              size: 16,
+                              color: AppColors.secondary,
+                            ),
+                            label: Text(
+                              l10n.aiGenerateRoutine,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            onPressed: () => AiRoutineGeneratorDialog.show(
+                              context,
+                              currentLocale: widget.currentLocale,
+                              onLocaleChanged: widget.onLocaleChanged,
                             ),
                           ),
-                          onPressed: () => AiRoutineGeneratorDialog.show(
-                            context,
-                            currentLocale: widget.currentLocale,
-                            onLocaleChanged: widget.onLocaleChanged,
-                          ),
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 4),
                         IconButton(
                           icon: const Icon(Icons.add_rounded),
                           tooltip: l10n.createRoutine,
@@ -681,35 +693,37 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
           const SizedBox(height: 14),
 
           // Action: Start Routine Button & AI Program Audit Button
-          Row(
-            children: [
-              Expanded(
-                child: SizedBox(
-                  height: 42,
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.fitness_center, size: 18),
-                    label: Text(l10n.startRoutine),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: isFeatured
-                          ? AppColors.primary
-                          : AppColors.ofPrimaryContainer(context),
-                      foregroundColor: isFeatured
-                          ? Colors.white
-                          : AppColors.primary,
-                      elevation: 0,
-                    ),
-                    onPressed: () {
-                      context.read<WorkoutSessionBloc>().add(
-                        StartSessionFromTemplateRequested(template),
-                      );
-                      _navigateToActiveWorkout(context);
-                    },
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final startBtn = SizedBox(
+                height: 44,
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.fitness_center, size: 18),
+                  label: Text(
+                    l10n.startRoutine,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isFeatured
+                        ? AppColors.primary
+                        : AppColors.ofPrimaryContainer(context),
+                    foregroundColor: isFeatured
+                        ? Colors.white
+                        : AppColors.primary,
+                    elevation: 0,
+                  ),
+                  onPressed: () {
+                    context.read<WorkoutSessionBloc>().add(
+                      StartSessionFromTemplateRequested(template),
+                    );
+                    _navigateToActiveWorkout(context);
+                  },
                 ),
-              ),
-              const SizedBox(width: 8),
-              SizedBox(
-                height: 42,
+              );
+
+              final aiAuditBtn = SizedBox(
+                height: 44,
                 child: OutlinedButton.icon(
                   icon: const Icon(
                     Icons.auto_awesome,
@@ -719,6 +733,8 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                   label: Text(
                     l10n.aiAnalyzeProgramButton,
                     style: const TextStyle(fontSize: 12),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.ofTextPrimary(context),
@@ -734,8 +750,23 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                     ProgramAiAnalysisDialog.show(context, template: template);
                   },
                 ),
-              ),
-            ],
+              );
+
+              if (constraints.maxWidth < 340) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [startBtn, const SizedBox(height: 8), aiAuditBtn],
+                );
+              }
+
+              return Row(
+                children: [
+                  Expanded(child: startBtn),
+                  const SizedBox(width: 8),
+                  Flexible(child: aiAuditBtn),
+                ],
+              );
+            },
           ),
         ],
       ),
