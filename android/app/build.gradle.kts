@@ -61,6 +61,7 @@ android {
                 keystorePropertiesFile.exists() &&
                     keystoreProperties.getProperty("storeFile") != null &&
                     file(keystoreProperties.getProperty("storeFile")).exists()
+            println("Android Release Signing Mode: ${if (hasReleaseKeystore) "RELEASE_KEYSTORE" else "DEBUG_FALLBACK"}")
             signingConfig = if (hasReleaseKeystore) {
                 signingConfigs.getByName("release")
             } else {
