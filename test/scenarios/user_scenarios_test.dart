@@ -14,6 +14,7 @@ import 'package:strong/core/theme/theme_cubit.dart';
 import 'package:strong/features/exercises/data/repositories/exercise_repository_impl.dart';
 import 'package:strong/features/exercises/domain/repositories/exercise_repository.dart';
 import 'package:strong/features/exercises/presentation/cubit/exercise_list_cubit.dart';
+import 'package:strong/features/exercises/presentation/screens/exercise_display_showcase_screen.dart';
 import 'package:strong/features/history/domain/services/workout_export_service.dart';
 import 'package:strong/features/history/domain/services/workout_import_service.dart';
 import 'package:strong/features/history/presentation/screens/workout_history_screen.dart';
@@ -747,6 +748,71 @@ void main() {
             onTimeout: () => [],
           ),
         );
+      },
+      timeout: const Timeout(Duration(seconds: 15)),
+    );
+
+    testWidgets(
+      'Scenario 7: ExerciseDisplayShowcaseScreen A/B/C Methods & Interactive Slider (360x800)',
+      (WidgetTester tester) async {
+        tester.view.physicalSize = const Size(720, 1600);
+        tester.view.devicePixelRatio = 2.0;
+        addTearDown(() {
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
+
+        await tester.pumpWidget(
+          const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: ExerciseDisplayShowcaseScreen(),
+          ),
+        );
+        await tester.pump(const Duration(milliseconds: 250));
+
+        // Verify header & 3 exercises chips
+        expect(find.text('Labo Visuel Exercices'), findsOneWidget);
+        expect(find.text('Développé couché'), findsOneWidget);
+        expect(find.text('Rowing buste penché'), findsOneWidget);
+        expect(find.text('Écarté à la poulie'), findsOneWidget);
+
+        // Verify Method A phase badge starts at PHASE 1
+        expect(find.text('PHASE 1 : DÉPART'), findsOneWidget);
+
+        // Advance FakeAsync by 1250ms to verify Timer switches to PHASE 2
+        await tester.pump(const Duration(milliseconds: 1250));
+        expect(find.text('PHASE 2 : CONTRACTION'), findsOneWidget);
+
+        // Switch exercise to Rowing buste penché
+        await tester.tap(find.text('Rowing buste penché'));
+        await tester.pump(const Duration(milliseconds: 200));
+
+        // Switch to Method B tab only and verify CustomPainter silhouette & legend
+        await tester.tap(find.text('B · Anatomie'));
+        await tester.pump(const Duration(milliseconds: 200));
+        expect(find.text('MÉTHODE B'), findsOneWidget);
+        expect(find.textContaining('Grand dorsal, Trapèzes'), findsOneWidget);
+
+        // Switch to Method C tab and verify Biomechanical Cues & Slider
+        await tester.tap(find.text('C · Hybride'));
+        await tester.pump(const Duration(milliseconds: 200));
+        expect(find.text('MÉTHODE C'), findsOneWidget);
+        expect(find.text('SETUP'), findsOneWidget);
+        expect(find.text('TRAJECTOIRE'), findsOneWidget);
+        expect(find.text('RESPIRATION & TEMPO'), findsOneWidget);
+
+        // Slide manual trajectory inspector to ~100%
+        final slider = find.byType(Slider);
+        expect(slider, findsOneWidget);
+        await tester.ensureVisible(slider);
+        await tester.pump(const Duration(milliseconds: 100));
+        await tester.drag(slider, const Offset(300, 0));
+        await tester.pump(const Duration(milliseconds: 200));
+        expect(find.text('Pic de contraction'), findsOneWidget);
+
+        // Clean unmount so AnimationController & Timer dispose cleanly
+        await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pump(const Duration(milliseconds: 100));
       },
       timeout: const Timeout(Duration(seconds: 15)),
     );

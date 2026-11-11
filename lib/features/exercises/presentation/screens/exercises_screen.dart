@@ -11,6 +11,7 @@ import '../cubit/exercise_list_state.dart';
 import '../widgets/exercise_guide_sheet.dart';
 import '../widgets/exercise_list_item.dart';
 import '../widgets/exercise_picker_bottom_sheet.dart';
+import 'exercise_display_showcase_screen.dart';
 
 /// Full screen catalogue of default and custom exercises with responsive layout.
 class ExercisesScreen extends StatelessWidget {
@@ -24,6 +25,20 @@ class ExercisesScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(l10n.exercises, style: AppTypography.ofTitleLarge(context)),
         actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.science_outlined,
+              color: AppColors.secondary,
+            ),
+            tooltip: 'Labo Visuel Exercices (Prototype)',
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const ExerciseDisplayShowcaseScreen(),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.add, color: AppColors.primary),
             tooltip: l10n.customExercise,
