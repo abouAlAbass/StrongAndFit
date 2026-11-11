@@ -248,19 +248,28 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                               ],
                             ),
                           ),
+                          const SizedBox(width: 8),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsetsDirectional.symmetric(
                                 horizontal: 14,
-                                vertical: 8,
+                                vertical: 10,
+                              ),
+                              textStyle: const TextStyle(
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                             onPressed: () {
                               _navigateToActiveWorkout(context);
                             },
-                            child: Text(l10n.resumeWorkout),
+                            child: Text(
+                              l10n.resumeWorkout,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ],
                       ),
@@ -278,9 +287,13 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                         size: 20,
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        l10n.yourProgram,
-                        style: AppTypography.ofTitleLarge(context),
+                      Expanded(
+                        child: Text(
+                          l10n.yourProgram,
+                          style: AppTypography.ofTitleLarge(context),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
@@ -291,7 +304,7 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
 
                 // 3. "Séance personnalisée" (Quick Start Empty Workout)
                 Container(
-                  padding: const EdgeInsetsDirectional.all(18),
+                  padding: const EdgeInsetsDirectional.all(16),
                   decoration: BoxDecoration(
                     color: AppColors.ofCard(context),
                     borderRadius: BorderRadius.circular(16),
@@ -300,49 +313,88 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                       width: 0.8,
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: AppColors.ofPrimaryContainer(context),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.add,
-                          color: AppColors.primary,
-                          size: 28,
-                        ),
-                      ),
-                      const SizedBox(width: 14),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              l10n.customWorkoutTitle,
-                              style: AppTypography.ofTitleLarge(context),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final headerRow = Row(
+                        children: [
+                          Container(
+                            width: 46,
+                            height: 46,
+                            decoration: BoxDecoration(
+                              color: AppColors.ofPrimaryContainer(context),
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            const SizedBox(height: 3),
-                            Text(
-                              l10n.customWorkoutSubtitle,
-                              style: AppTypography.ofCaption(context),
+                            child: const Icon(
+                              Icons.add,
+                              color: AppColors.primary,
+                              size: 26,
                             ),
-                          ],
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  l10n.customWorkoutTitle,
+                                  style: AppTypography.ofTitleLarge(context),
+                                ),
+                                const SizedBox(height: 3),
+                                Text(
+                                  l10n.customWorkoutSubtitle,
+                                  style: AppTypography.ofCaption(context),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+
+                      final startButton = ElevatedButton.icon(
+                        icon: const Icon(Icons.play_arrow_rounded, size: 18),
+                        label: Text(
+                          l10n.startWorkout,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsetsDirectional.symmetric(
+                            horizontal: 14,
+                            vertical: 12,
+                          ),
+                          textStyle: const TextStyle(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                         onPressed: () {
                           context.read<WorkoutSessionBloc>().add(
                             const StartSessionRequested(),
                           );
                           _navigateToActiveWorkout(context);
                         },
-                        child: Text(l10n.startWorkout),
-                      ),
-                    ],
+                      );
+
+                      // Stack cleanly full-width on compact mobile screens (<= 420dp inner card)
+                      if (constraints.maxWidth < 420) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            headerRow,
+                            const SizedBox(height: 14),
+                            SizedBox(height: 44, child: startButton),
+                          ],
+                        );
+                      }
+
+                      return Row(
+                        children: [
+                          Expanded(child: headerRow),
+                          const SizedBox(width: 12),
+                          startButton,
+                        ],
+                      );
+                    },
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -712,6 +764,13 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                         ? Colors.white
                         : AppColors.primary,
                     elevation: 0,
+                    padding: const EdgeInsetsDirectional.symmetric(
+                      horizontal: 14,
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   onPressed: () {
                     context.read<WorkoutSessionBloc>().add(
@@ -752,7 +811,7 @@ class _RoutinesDashboardScreenState extends State<RoutinesDashboardScreen> {
                 ),
               );
 
-              if (constraints.maxWidth < 340) {
+              if (constraints.maxWidth < 390) {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [startBtn, const SizedBox(height: 8), aiAuditBtn],
